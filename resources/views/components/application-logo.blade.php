@@ -1,0 +1,1 @@
+<img src="{{ asset('images/daxj.png') }}" alt="" {{ $attributes }}>
