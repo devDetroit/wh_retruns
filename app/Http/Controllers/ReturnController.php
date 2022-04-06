@@ -6,6 +6,8 @@ use App\Models\PartNumber;
 use App\Models\Returns;
 use App\Models\Status;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 
 class ReturnController extends Controller
@@ -77,7 +79,7 @@ class ReturnController extends Controller
             if (request()->hasFile("images$i")) {
                 $file = request()->file("images$i");
                 $name = $file->getClientOriginalName();
-                request()->file("images$i")->storeAs("PartNumbers", request()->return_id . "-" . $name);
+                request()->file("images$i")->storeAs("public/PartNumbers", request()->return_id . "-" . $name);
             }
         }
     }
@@ -87,9 +89,13 @@ class ReturnController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Returns $return)
     {
-        //
+
+        return view('returns.show', [
+            'return' => $return,
+            'statuses' => Status::all(),
+        ]);
     }
 
     /**

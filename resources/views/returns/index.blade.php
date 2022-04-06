@@ -2,96 +2,109 @@
 
 @section('content')
 
-<div class="row border-bottom">
-    <div class="col-md-12">
-        <h4 class="mt-2">Returns</h4>
-    </div>
-</div>
+<div id="indexapp">
+    <div class="row justify-content-md-center mt-4">
+        <div class="col-md-10">
+            <div class="card shadow-sm p-2 bg-body rounded">
+                <div class="card-body">
+                    <h5 class="card-title text-center">ELP Wherehouse Returns</h5>
+                    <form class="row g-3">
+                        <div class="col-md-4">
+                            <label for="trackNumber" class="form-label">Filter by tracking number:</label>
+                            <input type="text" class="form-control" id="trackNumber" v-on:keyup="searchReturns" v-model="trackNumber">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="inputState" class="form-label">Filter by status:</label>
+                            <select id="inputState" class="form-select">
+                                <option selected>Choose...</option>
+                                <option>...</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="mt-4" id="returns-table"></div>
+        </div>
+    </div>
+    <div class="row justify-content-md-center">
+        <div class="col-md-10">
+            <div class="mt-4" id="returns-table"></div>
+        </div>
     </div>
 </div>
 
 @endsection
 
 @section('scripts')
-
+<script src="https://unpkg.com/vue@3"></script>
 <script>
-    var tabledata = [{
-            id: 1,
-            name: "Oli Bob",
-            age: "12",
-            col: "red",
-            dob: ""
-        },
-        {
-            id: 2,
-            name: "Mary May",
-            age: "1",
-            col: "blue",
-            dob: "14/05/1982"
-        },
-        {
-            id: 3,
-            name: "Christine Lobowski",
-            age: "42",
-            col: "green",
-            dob: "22/05/1982"
-        },
-        {
-            id: 4,
-            name: "Brendon Philips",
-            age: "125",
-            col: "orange",
-            dob: "01/08/1980"
-        },
-        {
-            id: 5,
-            name: "Margret Marmajuke",
-            age: "16",
-            col: "yellow",
-            dob: "31/01/1999"
-        },
-    ];
-
-    var printIcon = function(cell, formatterParams, onRendered) { //plain text value
+    var viewBtn = function(cell, formatterParams, onRendered) { //plain text value
         return '<button type="button" class="btn btn-sm btn-primary">View Details</button>';
     };
 
+    var deleteBtn = function(cell, formatterParams, onRendered) { //plain text value
+        return '<button type="button" class="btn btn-sm btn-danger">Delete</button>';
+    };
 
-    var table = new Tabulator("#returns-table", {
-        height: "100%",
-        ajaxURL: '/api/returns',
-        layout: "fitColumns",
-        columns: [{
-                title: "Return Num",
-                formatter: "rownum",
+    Vue.createApp({
+        data() {
+            return {
+                table: null,
+                trackNumber: ''
+            }
+        },
+        methods: {
+            searchReturns() {
+                this.table.setFilter("track_number", "starts", this.trackNumber);
             },
-            {
-                title: "Tracking Number",
-                field: "track_number",
-            },
-            {
-                title: "Status",
-            },
-            {
-                title: "Upload By",
-                field: "user.name",
-            },
-            {
-                title: "Upload At",
-                field: "created_at",
-            },
-            {
-                hozAlign: "center",
-                formatter: printIcon
-            },
-        ],
-    });
-
-    //trigger an alert message when the row is clicked
+            initializeTabulator() {
+                this.table = new Tabulator("#returns-table", {
+                    height: "100%",
+                    ajaxURL: '/api/returns',
+                    layout: "fitColumns",
+                    columns: [{
+                            title: "Row Num",
+                            formatter: "rownum",
+                        },
+                        {
+                            title: "Tracking Number",
+                            field: "track_number",
+                        },
+                        {
+                            title: "Status",
+                        },
+                        {
+                            title: "Upload By",
+                            field: "user.name",
+                        },
+                        {
+                            title: "Upload At",
+                            field: "created_at",
+                        },
+                        {
+                            hozAlign: "center",
+                            formatter: viewBtn,
+                            cellClick: (e, cell) => {
+                                var currentData = cell.getRow().getData();
+                                location.href = 'returns/' + currentData.id;
+                            }
+                        },
+                        {
+                            hozAlign: "center",
+                            formatter: deleteBtn,
+                            cellClick: (e, cell) => {
+                                var currentData = cell.getRow().getData();
+                                location.href = 'returns/' + currentData.id;
+                            }
+                        },
+                    ],
+                });
+            }
+        },
+        mounted() {
+            this.initializeTabulator();
+        },
+    }).mount('#indexapp')
 </script>
 
 

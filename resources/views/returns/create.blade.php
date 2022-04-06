@@ -5,7 +5,7 @@
 
     <div class="row justify-content-md-center mt-4">
         <div class="col-md-8">
-            <div class="card">
+            <div class="card shadow-sm p-2 bg-body rounded">
                 <div class="card-body">
                     <h5 class="card-title text-center">Create Return</h5>
                     <form enctype="multipart/form-data" method="post" @submit.prevent="onSubmit">
@@ -138,7 +138,7 @@
                     }
                 }
                 var extension = imageFile.files[0].name.split('.').pop();
-                this.formData.append(`images${this.partNumber.index}`, imageFile.files[0], `${this.partNumber.partnumber}.${extension}`);
+                this.formData.append(`images${this.partNumber.index}`, imageFile.files[0]);
 
                 this.partNumber.image = imageFile.files[0].name;
 

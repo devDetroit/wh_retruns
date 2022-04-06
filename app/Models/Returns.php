@@ -23,6 +23,10 @@ class Returns extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function returnstatus()
+    {
+        return $this->belongsTo(ReturnStatus::class);
+    }
 
     public function partnumbers()
     {

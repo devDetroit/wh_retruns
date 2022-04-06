@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePartNumbersTable extends Migration
+class CreateReturnStatusesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,9 @@ class CreatePartNumbersTable extends Migration
      */
     public function up()
     {
-        Schema::create('part_numbers', function (Blueprint $table) {
+        Schema::create('return_statuses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('returns_id');
-            $table->foreignId('status_id');
-            $table->string('partnumber');
-            $table->string('image');
-            $table->string('note');
+            $table->string('description')->unique();
             $table->timestamps();
         });
     }
@@ -31,6 +27,6 @@ class CreatePartNumbersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('part_numbers');
+        Schema::dropIfExists('return_statuses');
     }
 }

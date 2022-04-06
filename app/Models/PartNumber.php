@@ -9,10 +9,17 @@ class PartNumber extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['status_id', 'note', 'returns_id', 'partnumber'];
+    protected $fillable = ['status_id', 'note', 'returns_id', 'partnumber', 'image'];
+
+    protected $with = ['status'];
 
     public function whreturn()
     {
         return $this->belongsTo(Returns::class, 'returns_id');
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
     }
 }

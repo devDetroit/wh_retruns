@@ -16,6 +16,7 @@ class CreateReturnsTable extends Migration
         Schema::create('returns', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('returnstatus_id')->references('id')->on('return_statuses');
             $table->string('track_number');
             $table->integer('lastUpdateBy');
             $table->timestamps();
