@@ -18,8 +18,8 @@ class CreatePartNumbersTable extends Migration
             $table->foreignId('returns_id');
             $table->foreignId('status_id');
             $table->string('partnumber');
-            $table->string('image');
-            $table->string('note');
+            $table->string('image')->nullable();
+            $table->string('note')->nullable();
             $table->timestamps();
         });
     }

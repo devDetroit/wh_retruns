@@ -14,19 +14,19 @@ class ReturnStatusSeeder extends Seeder
      */
     public function run()
     {
-        ReturnStatus::created([
+        ReturnStatus::create([
             'description' => 'New'
         ]);
 
-        ReturnStatus::created([
+        ReturnStatus::create([
             'description' => 'In Proccess'
         ]);
 
-        ReturnStatus::created([
+        ReturnStatus::create([
             'description' => 'Done'
         ]);
 
-        ReturnStatus::created([
+        ReturnStatus::create([
             'description' => 'Canceled'
         ]);
     }

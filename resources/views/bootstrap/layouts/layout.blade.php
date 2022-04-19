@@ -12,7 +12,6 @@
     <title>WH Returns</title>
 
     <link href="https://unpkg.com/tabulator-tables@5.1.7/dist/css/tabulator.min.css" rel="stylesheet">
-    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.1.7/dist/js/tabulator.min.js"></script>
 </head>
 
@@ -67,7 +66,6 @@
     </main>
     <script src="/js/app.js"></script>
     <script src="https://unpkg.com/vue@3"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     @yield('scripts')
 </body>
 

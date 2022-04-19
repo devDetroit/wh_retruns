@@ -13,9 +13,9 @@ class Returns extends Model
         'created_at' => 'datetime:Y-m-d',
     ];
 
-    protected $fillable = ['track_number', 'user_id', 'lastUpdateBy'];
+    protected $fillable = ['track_number', 'user_id', 'lastUpdateBy', 'returnstatus_id'];
 
-    protected $with = ['user'];
+    protected $with = ['user', 'returnstatus'];
 
 
     public function user()

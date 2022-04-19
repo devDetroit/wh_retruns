@@ -71,7 +71,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="image" class="form-label">Image</label>
-                            <input type="file" class="form-control" id="imageFile" required>
+                            <input type="file" class="form-control" id="imageFile">
                         </div>
                         <div class="mb-3">
                             <label for="trakNumber" class="form-label">Status</label>
@@ -101,7 +101,6 @@
 
 @section('scripts')
 <script src="https://unpkg.com/vue@3"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     Vue.createApp({
         data() {
@@ -137,11 +136,12 @@
                         return;
                     }
                 }
-                var extension = imageFile.files[0].name.split('.').pop();
-                this.formData.append(`images${this.partNumber.index}`, imageFile.files[0]);
+                if (imageFile.files.length > 0) {
+                    var extension = imageFile.files[0].name.split('.').pop();
+                    this.formData.append(`images${this.partNumber.index}`, imageFile.files[0]);
 
-                this.partNumber.image = imageFile.files[0].name;
-
+                    this.partNumber.image = imageFile.files[0].name;
+                }
                 var tmpPartNumber = {
                     ...this.partNumber
                 }
@@ -190,8 +190,7 @@
                         sweetAlertAutoClose('success', response.data.message);
                     })
                     .catch(function(error) {
-                        new sweetAlert('error', 'something went wrong, please contact IT Department');
-                        console.error(error);
+                        new sweetAlert('error', error.response.data?.errors?.track_number[0]);
                     });
 
                 // this.myModal.hide();

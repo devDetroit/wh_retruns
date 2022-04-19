@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\PartNumber;
 use App\Models\Returns;
+use App\Models\ReturnStatus;
 use App\Models\Status;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 
 
 class ReturnController extends Controller
 {
+
+    protected $isValidOperation = 1;
+    protected $message = '';
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +22,9 @@ class ReturnController extends Controller
      */
     public function index()
     {
-        return view('returns.index');
+        return view('returns.index', [
+            'return_status' => ReturnStatus::all(),
+        ]);
     }
 
     /**
@@ -43,32 +48,48 @@ class ReturnController extends Controller
     public function store()
     {
 
-        $return = Returns::create(array_merge(request()->validate([
-            'track_number' => 'required'
-        ]), [
-            'user_id' => request()->user()->id,
-            'lastUpdateBy' => request()->user()->id,
-        ]));
+        $attributes = request()->validate([
+            'track_number' => ['required', Rule::unique('returns', 'track_number')]
+        ]);
 
-        $partNumbers = [];
-
-        foreach (request()->all() as $row) {
-            if (is_array($row)) {
-                array_push($partNumbers, array_merge($row, [
-                    'returns_id' => $return->id
-                ]));
-            }
+        if (isset($attributes['errors'])) {
+            $this->isValidOperation = 0;
+            $this->message = 'something went wrong';
         }
 
-        foreach ($partNumbers as $partNumber) {
-            PartNumber::create($partNumber);
+        try {
+            $return = Returns::create(array_merge([
+                'returnstatus_id' => 1,
+                'user_id' => request()->user()->id,
+                'lastUpdateBy' => request()->user()->id,
+            ], $attributes));
+
+            $partNumbers = [];
+
+            foreach (request()->all() as $row) {
+                if (is_array($row)) {
+                    array_push($partNumbers, array_merge($row, [
+                        'returns_id' => $return->id
+                    ]));
+                }
+            }
+
+            foreach ($partNumbers as $partNumber) {
+                PartNumber::create($partNumber);
+            }
+
+            $this->message = 'record successfully inserted';
+        } catch (\Throwable $th) {
+            $this->isValidOperation = 0;
+            $this->message = $th;
         }
 
 
         return response()->json([
-            'operation' => 'success',
+            'status' => $this->operationDescritpion(),
             'returnValue' => $return->id,
-            'message' => 'record successfully inserted',
+            'message' => $this->message,
+            'errors' => isset($attributes['errors']) ? $attributes : []
         ]);
     }
 
@@ -91,10 +112,9 @@ class ReturnController extends Controller
      */
     public function show(Returns $return)
     {
-
         return view('returns.show', [
             'return' => $return,
-            'statuses' => Status::all(),
+            'return_status' => ReturnStatus::all(),
         ]);
     }
 
@@ -104,7 +124,7 @@ class ReturnController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Returns $return)
     {
         //
     }
@@ -116,9 +136,11 @@ class ReturnController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Returns $return)
     {
-        //
+        $return->returnstatus_id = request()->returnstatus_id;
+        $return->save();
+        return  redirect()->back()->with('status', 'Record Updated');
     }
 
     /**
@@ -130,5 +152,10 @@ class ReturnController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function operationDescritpion()
+    {
+        return $this->isValidOperation == 1 ? 'success' : 'error';
     }
 }

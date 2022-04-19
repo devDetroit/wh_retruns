@@ -20,11 +20,12 @@ Route::get('/', function () {
 
 
 Route::controller(ReturnController::class)->group(function () {
-    Route::get('/returns', 'index');
-    Route::get('/returns/create', 'create');
-    Route::get('/returns/{return}', 'show');
-    Route::post('/returns/store', 'store');
-    Route::post('/returns/files', 'storeFiles');
+    Route::get('returns', 'index');
+    Route::get('returns/create', 'create');
+    Route::get('returns/{return}', 'show');
+    Route::post('returns/store', 'store');
+    Route::post('returns/files', 'storeFiles');
+    Route::put('returns/{return}', 'update');
 });
 
 /* Route::get('/dashboard', function () {

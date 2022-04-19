@@ -15,9 +15,11 @@
                         </div>
                         <div class="col-md-4">
                             <label for="inputState" class="form-label">Filter by status:</label>
-                            <select id="inputState" class="form-select">
-                                <option selected>Choose...</option>
-                                <option>...</option>
+                            <select id="inputState" class="form-select" v-model="status" v-on:change="searchByStatus">
+                                <option value="" selected>Select status</option>
+                                @foreach ($return_status as $status)
+                                <option value="{{ $status->description }}"> {{ $status->description }} </option>
+                                @endforeach
                             </select>
                         </div>
                     </form>
@@ -50,12 +52,19 @@
         data() {
             return {
                 table: null,
-                trackNumber: ''
+                trackNumber: '',
+                status: ''
             }
         },
         methods: {
             searchReturns() {
                 this.table.setFilter("track_number", "starts", this.trackNumber);
+            },
+            searchByStatus() {
+                if (this.status.length > 0)
+                    this.table.setFilter("returnstatus.description", "=", this.status);
+                else
+                    this.table.clearFilter();
             },
             initializeTabulator() {
                 this.table = new Tabulator("#returns-table", {
@@ -72,6 +81,7 @@
                         },
                         {
                             title: "Status",
+                            field: "returnstatus.description",
                         },
                         {
                             title: "Upload By",
