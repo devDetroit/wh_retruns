@@ -17,6 +17,10 @@
                             <input type="text" class="form-control" value="{{ $return->track_number }}" id="trakNumber" name="track_number" disabled>
                         </div>
                         <div class="mb-3">
+                            <label for="orderNumber" class="form-label">Order Number</label>
+                            <input type="text" class="form-control" value="{{ $return->track_number }}" id="orderNumber" name="order_number">
+                        </div>
+                        <div class="mb-3">
                             <label for="trakNumber" class="form-label">Status</label>
                             <select id="statusSelect" class="form-select" name="returnstatus_id" required>
                                 @foreach ($return_status as $status)
@@ -25,7 +29,6 @@
                             </select>
                         </div>
                         <div class="text-end">
-                            <button type="button" class="btn btn-sm btn-secondary">New Return</button>
                             <button type="submit" class="btn btn-sm btn-primary">Submit</button>
                         </div>
                     </form>

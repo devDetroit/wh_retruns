@@ -17,7 +17,8 @@ class CreateReturnsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('returnstatus_id')->references('id')->on('return_statuses');
-            $table->string('track_number');
+            $table->string('track_number')->unique();
+            $table->string('order_number')->nullable();
             $table->integer('lastUpdateBy');
             $table->timestamps();
         });

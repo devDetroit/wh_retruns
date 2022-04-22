@@ -15,7 +15,7 @@ class CreatePartNumbersTable extends Migration
     {
         Schema::create('part_numbers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('returns_id');
+            $table->foreignId('returns_id')->constrained()->cascadeOnDelete();
             $table->foreignId('status_id');
             $table->string('partnumber');
             $table->string('image')->nullable();

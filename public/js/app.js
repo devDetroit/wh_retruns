@@ -8177,6 +8177,26 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"];
 alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].start();
 
+function sweetAlert(icon, message) {
+  Swal.fire({
+    icon: icon,
+    title: message
+  });
+}
+
+function sweetAlertAutoClose(icon, message) {
+  var timerInterval;
+  Swal.fire({
+    icon: icon,
+    title: message,
+    showConfirmButton: false,
+    timer: 1500,
+    willClose: function willClose() {
+      clearInterval(timerInterval);
+    }
+  });
+}
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":

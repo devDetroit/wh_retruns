@@ -7,8 +7,7 @@ use App\Models\Returns;
 use App\Models\ReturnStatus;
 use App\Models\Status;
 use Illuminate\Validation\Rule;
-
-
+use Illuminate\Support\Facades\Storage;
 
 class ReturnController extends Controller
 {
@@ -149,9 +148,17 @@ class ReturnController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Returns $return)
     {
-        //
+
+        $return->delete();
+
+        return response()->json([
+            'status' => 1,
+            'returnValue' => 1,
+            'message' => 'Record deleted succesfully',
+            'errors' => null
+        ]);
     }
 
     private function operationDescritpion()

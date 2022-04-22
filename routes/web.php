@@ -18,16 +18,17 @@ Route::get('/', function () {
     return view('bootstrap.layouts.layout');
 })->middleware('auth');
 
-
-Route::controller(ReturnController::class)->group(function () {
-    Route::get('returns', 'index');
-    Route::get('returns/create', 'create');
-    Route::get('returns/{return}', 'show');
-    Route::post('returns/store', 'store');
-    Route::post('returns/files', 'storeFiles');
-    Route::put('returns/{return}', 'update');
+Route::middleware('auth')->group(function () {
+    Route::controller(ReturnController::class)->group(function () {
+        Route::get('returns', 'index');
+        Route::get('returns/create', 'create');
+        Route::get('returns/{return}', 'show');
+        Route::post('returns/store', 'store');
+        Route::post('returns/files', 'storeFiles');
+        Route::put('returns/{return}', 'update');
+        Route::post('returns/{return}', 'destroy');
+    });
 });
-
 /* Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');

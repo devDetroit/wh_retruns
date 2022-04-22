@@ -66,7 +66,7 @@ Route::post('return', function () {
 
 Route::get('user', function (Request $request) {
 
-    $user = User::where('email', $request->email)->first()->makeVisible('password');
+    $user = User::where('username', $request->username)->firstOrFail()->makeVisible('password');
     if (Hash::check($request->password, $user->password)) {
         return $user;
     }
