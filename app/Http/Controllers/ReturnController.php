@@ -137,8 +137,16 @@ class ReturnController extends Controller
      */
     public function update(Returns $return)
     {
+
+        request()->validate([
+            'order_number' => 'required'
+        ]);
+
         $return->returnstatus_id = request()->returnstatus_id;
+        $return->order_number = request()->order_number;
+
         $return->save();
+
         return  redirect()->back()->with('status', 'Record Updated');
     }
 

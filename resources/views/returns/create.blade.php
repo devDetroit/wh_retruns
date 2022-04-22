@@ -190,7 +190,7 @@
                         sweetAlertAutoClose('success', response.data.message);
                     })
                     .catch(function(error) {
-                        new sweetAlert('error', error.response.data?.errors?.track_number[0]);
+                        sweetAlert('error', error.response.data?.errors?.track_number[0]);
                     });
 
                 // this.myModal.hide();
@@ -224,7 +224,6 @@
             }
         },
     }).mount('#app')
-
 </script>
 
 

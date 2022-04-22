@@ -65,6 +65,7 @@
 
     </main>
     <script src="/js/app.js"></script>
+    <script src="/js/fngeneral.js"></script>
     <script src="https://unpkg.com/vue@3"></script>
     @yield('scripts')
 </body>

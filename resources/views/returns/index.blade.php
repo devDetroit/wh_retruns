@@ -72,13 +72,13 @@
             },
             onDelete(data) {
                 let deleteConfirmation = confirm('are you sure to delete this record?');
-                console.log(data);
                 if (!deleteConfirmation)
                     return;
-
+                let inst = this;
                 axios.post(`/returns/${data.id}`)
                     .then(function(response) {
-                        alert(response.data?.returnMessage)
+                        sweetAlertAutoClose('success', response.data.message);
+                        inst.table.setData();
                     })
                     .catch(function(error) {
                         alert('something went wrong')
@@ -101,6 +101,10 @@
                         {
                             title: "Tracking Number",
                             field: "track_number",
+                        },
+                        {
+                            title: "Order Number",
+                            field: "order_number",
                         },
                         {
                             title: "Status",

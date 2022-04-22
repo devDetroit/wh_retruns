@@ -18,7 +18,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="orderNumber" class="form-label">Order Number</label>
-                            <input type="text" class="form-control" value="{{ $return->track_number }}" id="orderNumber" name="order_number">
+                            <input type="text" class="form-control" value="{{ $return->order_number }}" id="orderNumber" name="order_number">
                         </div>
                         <div class="mb-3">
                             <label for="trakNumber" class="form-label">Status</label>
