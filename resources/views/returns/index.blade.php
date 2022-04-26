@@ -33,6 +33,11 @@
         </div>
     </div>
     <input type="hidden" id="btnUserType" value="{{ Auth::user()->user_type }}">
+    <div class="row">
+        <div class="col-md-12 text-end">
+            <button type="button" class="btn btn-sm btn-primary" v-on:click="refreshData">Refresh</button>
+        </div>
+    </div>
     <div class="row justify-content-md-center">
         <div class="col-md-12">
             <div class="mt-4" id="returns-table"></div>
@@ -76,6 +81,9 @@
                         },
                     ]
                 ]);
+            },
+            refreshData() {
+                this.table.setData();
             },
             searchByStatus() {
                 if (this.status.length > 0)
