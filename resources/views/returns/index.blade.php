@@ -43,7 +43,7 @@
 @endsection
 
 @section('scripts')
-<script src="https://unpkg.com/vue@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
 <script>
     var viewBtn = function(cell, formatterParams, onRendered) { //plain text value
         return '<button type="button" class="btn btn-sm btn-primary">View Details</button>';
@@ -53,13 +53,13 @@
         return '<button type="button" class="btn btn-sm btn-danger">Delete</button>';
     };
 
-    Vue.createApp({
-        data() {
-            return {
-                table: null,
-                trackNumber: '',
-                status: ''
-            }
+    new Vue({
+        el: '#indexapp',
+        data: {
+            table: null,
+            trackNumber: '',
+            status: '',
+            updateDate: null
         },
         methods: {
             searchReturns() {
@@ -84,7 +84,8 @@
                     this.table.clearFilter();
             },
             removefilters() {
-                this.table.clearFilter(true);
+                let instance = this;
+                instance.table.clearFilter(true);
             },
             onDelete(data) {
                 let deleteConfirmation = confirm('are you sure to delete this record?');
@@ -169,7 +170,7 @@
         mounted() {
             this.initializeTabulator();
         },
-    }).mount('#indexapp')
+    })
 </script>
 
 
