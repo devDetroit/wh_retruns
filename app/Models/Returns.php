@@ -13,16 +13,20 @@ class Returns extends Model
         'created_at' => 'datetime:Y-m-d',
     ];
 
-    protected $fillable = ['track_number', 'user_id', 'lastUpdateBy', 'returnstatus_id'];
+    protected $fillable = ['track_number', 'created_by', 'last_updated_by', 'returnstatus_id'];
 
-    protected $with = ['user', 'returnstatus'];
+    protected $with = ['createdBy', 'returnstatus', 'updatedBy'];
 
 
-    public function user()
+    public function createdBy()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'created_by');
     }
 
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'last_updated_by');
+    }
     public function returnstatus()
     {
         return $this->belongsTo(ReturnStatus::class);

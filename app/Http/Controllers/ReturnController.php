@@ -7,7 +7,7 @@ use App\Models\Returns;
 use App\Models\ReturnStatus;
 use App\Models\Status;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class ReturnController extends Controller
 {
@@ -59,8 +59,7 @@ class ReturnController extends Controller
         try {
             $return = Returns::create(array_merge([
                 'returnstatus_id' => 1,
-                'user_id' => request()->user()->id,
-                'lastUpdateBy' => request()->user()->id,
+                'created_by' => request()->user()->id,
             ], $attributes));
 
             $partNumbers = [];
@@ -144,6 +143,7 @@ class ReturnController extends Controller
 
         $return->returnstatus_id = request()->returnstatus_id;
         $return->order_number = request()->order_number;
+        $return->last_updated_by = request()->user()->id;
 
         $return->save();
 

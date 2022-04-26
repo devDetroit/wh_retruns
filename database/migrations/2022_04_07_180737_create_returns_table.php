@@ -15,11 +15,11 @@ class CreateReturnsTable extends Migration
     {
         Schema::create('returns', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('returnstatus_id')->references('id')->on('return_statuses');
             $table->string('track_number')->unique();
             $table->string('order_number')->nullable();
-            $table->integer('lastUpdateBy');
+            $table->foreignId('created_by')->references('id')->on('users');
+            $table->integer('last_updated_by')->nullable();
             $table->timestamps();
         });
     }

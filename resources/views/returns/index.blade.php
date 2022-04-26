@@ -10,11 +10,7 @@
                     <h5 class="card-title text-center">ELP Wherehouse Returns</h5>
                     <form class="row g-3">
                         <div class="col-md-4">
-                            <label for="trackNumber" class="form-label">Filter by Tracking Number:</label>
-                            <input type="text" class="form-control" id="trackNumber" v-on:keyup="searchReturns" v-model="trackNumber">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="trackNumber" class="form-label">Filter by Order Number:</label>
+                            <label for="trackNumber" class="form-label">Filter by tracking or order Number:</label>
                             <input type="text" class="form-control" id="trackNumber" v-on:keyup="searchReturns" v-model="trackNumber">
                         </div>
                         <div class="col-md-4">
@@ -26,14 +22,19 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="col-md-2">
+                            <label class="form-label" style="color: transparent;">Remove filters:</label>
+                            <button type="button" class="btn btn-sm btn-danger form-control" v-on:click="removefilters">Remove all filters</button>
+                        </div>
                     </form>
                 </div>
             </div>
 
         </div>
     </div>
+    <input type="hidden" id="btnUserType" value="{{ Auth::user()->user_type }}">
     <div class="row justify-content-md-center">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="mt-4" id="returns-table"></div>
         </div>
     </div>
@@ -62,13 +63,28 @@
         },
         methods: {
             searchReturns() {
-                this.table.setFilter("track_number", "starts", this.trackNumber);
+                this.table.setFilter([
+                    [{
+                            field: "order_number",
+                            type: "starts",
+                            value: this.trackNumber
+                        },
+                        {
+                            field: "track_number",
+                            type: "starts",
+                            value: this.trackNumber
+                        },
+                    ]
+                ]);
             },
             searchByStatus() {
                 if (this.status.length > 0)
                     this.table.setFilter("returnstatus.description", "=", this.status);
                 else
                     this.table.clearFilter();
+            },
+            removefilters() {
+                this.table.clearFilter(true);
             },
             onDelete(data) {
                 let deleteConfirmation = confirm('are you sure to delete this record?');
@@ -85,37 +101,48 @@
                         console.error(error)
                     });
 
-
+            },
+            isAllowed() {
+                return document.getElementById('btnUserType').value == 'admin';
             },
             initializeTabulator() {
 
                 let ins = this;
+                let isAllowedToDelete = this.isAllowed();
                 this.table = new Tabulator("#returns-table", {
                     height: "100%",
                     ajaxURL: '/api/returns',
                     layout: "fitColumns",
                     columns: [{
-                            title: "Row Num",
+                            title: "#",
                             formatter: "rownum",
                         },
                         {
-                            title: "Tracking Number",
+                            title: "tracking number",
                             field: "track_number",
                         },
                         {
-                            title: "Order Number",
+                            title: "order number",
                             field: "order_number",
                         },
                         {
-                            title: "Status",
+                            title: "status",
                             field: "returnstatus.description",
                         },
                         {
-                            title: "Upload By",
-                            field: "user.name",
+                            title: "created by",
+                            field: "created_by.complete_name",
                         },
                         {
-                            title: "Upload At",
+                            title: "created At",
+                            field: "created_at",
+                        },
+                        {
+                            title: "updated by",
+                            field: "updated_by.complete_name",
+                        },
+                        {
+                            title: "updated At",
                             field: "created_at",
                         },
                         {
@@ -129,6 +156,7 @@
                         {
                             hozAlign: "center",
                             formatter: deleteBtn,
+                            visible: isAllowedToDelete,
                             cellClick: (e, cell) => {
                                 var currentData = cell.getRow().getData();
                                 ins.onDelete(currentData);

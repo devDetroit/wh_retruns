@@ -56,7 +56,7 @@ Route::post('return', function () {
         'user_id' => request()->lastUpdateBy,
         'returnstatus_id' => 1,
         'track_number' => request()->track_number,
-        'lastUpdateBy' => request()->lastUpdateBy,
+        'created_by' => request()->lastUpdateBy,
     ]);
 
     return response()->json([
