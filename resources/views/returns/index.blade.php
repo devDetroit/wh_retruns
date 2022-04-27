@@ -35,8 +35,8 @@
     <input type="hidden" id="btnUserType" value="{{ Auth::user()->user_type }}">
     <div class="row">
         <div class="col-md-12 text-end">
-            <button type="button" class="btn btn-sm btn-primary" v-on:click="refreshData">Refresh</button>
-        </div>
+           <strong>Last Updated At:</strong> @{{ updateDate }}  <!-- <button type="button" class="btn btn-sm btn-primary" v-on:click="refreshData">Refresh</button>
+        </div> -->
     </div>
     <div class="row justify-content-md-center">
         <div class="col-md-12">
@@ -57,8 +57,11 @@
     var deleteBtn = function(cell, formatterParams, onRendered) { //plain text value
         return '<button type="button" class="btn btn-sm btn-danger">Delete</button>';
     };
-
-    new Vue({
+let getCUrrentTime = function(){
+    var date = new Date();
+            app.updateDate = date.toLocaleString();
+}
+   const app = new Vue({
         el: '#indexapp',
         data: {
             table: null,
@@ -119,7 +122,9 @@
                 let ins = this;
                 let isAllowedToDelete = this.isAllowed();
                 this.table = new Tabulator("#returns-table", {
-                    height: "100%",
+                    height: '600',
+                    pagination:true, //enable.
+                    paginationSize:50, 
                     ajaxURL: '/api/returns',
                     layout: "fitColumns",
                     columns: [{
@@ -177,8 +182,19 @@
         },
         mounted() {
             this.initializeTabulator();
+
+            var date = new Date();
+            this.updateDate = date.toLocaleString();
+
+          setInterval(() => {
+                if(this.table != null){                  
+                    this.table.setData().then(getCUrrentTime);
+                }
+            }, 9000000);  
         },
     })
+
+
 </script>
 
 
