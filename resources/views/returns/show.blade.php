@@ -25,6 +25,14 @@ $canUpdate = Auth::user()->can('update-return');
                             <input type="text" class="form-control" value="{{ $return->order_number }}" id="orderNumber" name="order_number" {{ $canUpdate ? '' : 'disabled' }}>
                         </div>
                         <div class="mb-3">
+                            <label for="stores" class="form-label">Store</label>
+                            <select id="statusSelect" class="form-select" name="store" {{ $canUpdate ? '' : 'disabled' }} required>
+                                @foreach ($stores as $store)
+                                <option value="{{ $store->id }}" {{ $return->store_id == $store->id ? 'selected' : ''}}> {{ $store->name }} </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
                             <label for="trakNumber" class="form-label">Status</label>
                             <select id="statusSelect" class="form-select" name="returnstatus_id" {{ $canUpdate ? '' : 'disabled' }} required>
                                 @foreach ($return_status as $status)
@@ -32,6 +40,7 @@ $canUpdate = Auth::user()->can('update-return');
                                 @endforeach
                             </select>
                         </div>
+
                         @if($canUpdate)
                         <div class="text-end">
                             <button type="submit" class="btn btn-sm btn-primary">Submit</button>
@@ -83,19 +92,5 @@ $canUpdate = Auth::user()->can('update-return');
 
     @section('scripts')
 
-    @if (session('status'))
-    <script>
-        let timerInterval;
-        let message = '<?= session('status') ?>';
-        Swal.fire({
-            icon: 'success',
-            title: message,
-            showConfirmButton: false,
-            timer: 1500,
-            willClose: () => {
-                clearInterval(timerInterval)
-            }
-        });
-    </script>
-    @endif
+
     @endsection

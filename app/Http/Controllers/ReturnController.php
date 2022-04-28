@@ -6,6 +6,7 @@ use App\Models\PartNumber;
 use App\Models\Returns;
 use App\Models\ReturnStatus;
 use App\Models\Status;
+use App\Models\Store;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,7 +23,7 @@ class ReturnController extends Controller
     public function index()
     {
         return view('returns.index', [
-            'return_status' => ReturnStatus::all(),
+            'return_status' => ReturnStatus::all()
         ]);
     }
 
@@ -63,6 +64,7 @@ class ReturnController extends Controller
             ], $attributes));
 
             $partNumbers = [];
+
 
             foreach (request()->all() as $row) {
                 if (is_array($row)) {
@@ -113,6 +115,7 @@ class ReturnController extends Controller
         return view('returns.show', [
             'return' => $return,
             'return_status' => ReturnStatus::all(),
+            'stores' => Store::all(),
         ]);
     }
 
@@ -144,10 +147,11 @@ class ReturnController extends Controller
         $return->returnstatus_id = request()->returnstatus_id;
         $return->order_number = request()->order_number;
         $return->last_updated_by = request()->user()->id;
+        $return->store_id = request()->store;
 
         $return->save();
 
-        return  redirect()->back()->with('status', 'Record Updated');
+        return  redirect('returns')->with('status', 'Record Updated');
     }
 
     /**

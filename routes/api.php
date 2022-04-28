@@ -28,6 +28,12 @@ Route::get('returns', function () {
     return  Returns::all();
 });
 
+Route::get('tracking/{tracking}', function ($tracking) {
+    return  response()->json([
+        'returnValue' => Returns::where('track_number', $tracking)->count()
+    ]);
+});
+
 Route::post('return/partnumbers', function () {
 
     PartNumber::create(request()->all());
