@@ -5,6 +5,7 @@ use App\Models\Returns;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
@@ -31,6 +32,14 @@ Route::get('returns', function () {
 Route::get('tracking/{tracking}', function ($tracking) {
     return  response()->json([
         'returnValue' => Returns::where('track_number', $tracking)->count()
+    ]);
+});
+
+Route::get('dashboard', function () {
+    $getCurrentDate = date('m/d/y');
+    return  response()->json([
+        'generalSummary' => DB::select('CALL elpdashboarGeneral()'),
+        'dailySummary' =>  DB::select("CALL elpdasboard('$getCurrentDate')")
     ]);
 });
 

@@ -66,7 +66,7 @@
     </main>
     <script src="/js/app.js"></script>
     <script src="/js/fngeneral.js"></script>
-    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     @yield('scripts')
 </body>
 

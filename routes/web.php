@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('bootstrap.layouts.layout');
+Route::get('/elp-dashboard', function () {
+    return view('returns.wh_dashboard');
 })->middleware('auth');
 
 Route::middleware('auth')->group(function () {

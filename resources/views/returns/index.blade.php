@@ -37,7 +37,7 @@
         });
     </script>
     @endif
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
     <script>
         var viewBtn = function(cell, formatterParams, onRendered) { //plain text value
             return '<button type="button" class="btn btn-sm btn-primary">View Details</button>';
@@ -124,13 +124,13 @@
                             {
                                 title: "tracking number",
                                 field: "track_number",
-                                headerFilter:true
+                                headerFilter: true
                             },
                             {
                                 title: "order number",
                                 field: "order_number",
-                                headerFilter:true
-                                
+                                headerFilter: true
+
                             },
                             {
                                 title: "status",
@@ -143,17 +143,17 @@
                             {
                                 title: "created by",
                                 field: "created_by.complete_name",
-                                headerFilter:true
+                                headerFilter: true
                             },
                             {
                                 title: "created At",
                                 field: "created_at",
-                                headerFilter:true
+                                headerFilter: true
                             },
                             {
                                 title: "updated by",
                                 field: "updated_by.complete_name",
-                                 headerFilter:true
+                                headerFilter: true
                             },
                             {
                                 title: "updated At",

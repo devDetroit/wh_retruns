@@ -89,8 +89,3 @@ $canUpdate = Auth::user()->can('update-return');
 
 
     @endsection
-
-    @section('scripts')
-
-
-    @endsection
