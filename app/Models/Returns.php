@@ -11,6 +11,7 @@ class Returns extends Model
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d',
+        'updated_at' => 'datetime:Y-m-d',
     ];
 
     protected $fillable = ['track_number', 'created_by', 'last_updated_by', 'returnstatus_id', 'store_id'];

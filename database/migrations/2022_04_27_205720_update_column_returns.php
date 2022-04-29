@@ -14,7 +14,7 @@ class UpdateColumnReturns extends Migration
     public function up()
     {
         Schema::table('returns', function (Blueprint $table) {
-            $table->integer('store_id');
+            $table->integer('store_id')->nullable();
         });
     }
 
