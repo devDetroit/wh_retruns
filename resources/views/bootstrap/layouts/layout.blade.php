@@ -32,6 +32,9 @@
                             <a class="nav-link active" aria-current="page" href="/returns">Home</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="elp-dashboard">WH Dashboard</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="/returns/create">Add Return</a>
                         </li>
                         <!--    <li class="nav-item dropdown">

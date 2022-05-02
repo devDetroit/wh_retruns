@@ -36,7 +36,7 @@ Route::get('tracking/{tracking}', function ($tracking) {
 });
 
 Route::get('dashboard', function () {
-    $getCurrentDate = date('m/d/y');
+    $getCurrentDate = date('m/d/Y');
     return  response()->json([
         'generalSummary' => DB::select('CALL elpdashboarGeneral()'),
         'dailySummary' =>  DB::select("CALL elpdasboard('$getCurrentDate')")

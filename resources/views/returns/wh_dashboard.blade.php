@@ -9,7 +9,7 @@
             <canvas id="myChart" height="105"></canvas>
         </div>
         <div class="col-md-6">
-            <h4 class="m-4">Daily Summary</h4>
+            <h4 class="m-4">Daily Summary   -  {{ date('m/d/Y') }}</h4>
             <canvas id="myChart2" height="105"></canvas>
         </div>
     </div>
@@ -19,6 +19,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                    <th scope="col">#</th>
                         <th scope="col">User</th>
                         <th scope="col">Total Registred</th>
                     </tr>
@@ -36,6 +37,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th scope="col">#</th>
                         <th scope="col">User</th>
                         <th scope="col">Total Registred</th>
                     </tr>
@@ -103,8 +105,8 @@
                     data: {
                         datasets: [{
                             label: 'Records daily per User',
-                            data: data.generalSummary,
-                            backgroundColor: 'rgba(210, 154, 176, 0.8)'
+                            data: data,
+                            backgroundColor: 'rgba(255, 69, 69, 0.8)'
                         }, ]
                     },
                     options: {
