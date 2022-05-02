@@ -9,7 +9,18 @@
             <canvas id="myChart" height="105"></canvas>
         </div>
         <div class="col-md-6">
-            <h4 class="m-4">Daily Summary   -  {{ date('m/d/Y') }}</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="m-4">Daily Summary - @{{ filterDate }}</h5>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="dateFilter" class="form-label">Filter by date</label>
+                        <input type="date" class="form-control form-control-sm" id="dateFilter" v-model="filterDate">
+                    </div>
+                </div>
+            </div>
             <canvas id="myChart2" height="105"></canvas>
         </div>
     </div>
@@ -19,7 +30,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                    <th scope="col">#</th>
+                        <th scope="col">#</th>
                         <th scope="col">User</th>
                         <th scope="col">Total Registred</th>
                     </tr>
@@ -64,13 +75,22 @@
         data: {
             general: [],
             daily: [],
+            filterDate: new Date().toLocaleDateString(),
+            generalGraph: null,
+            dailyGraph: null,
         },
         methods: {
             initializeData() {
                 let ins = this
+                this.general = [];
+                this.daily = [];
+
                 axios({
                         method: 'get',
                         url: 'api/dashboard',
+                        params: {
+                            date: ins.filterDate
+                        }
                     })
                     .then(function(response) {
                         ins.general = response.data.generalSummary;
@@ -81,7 +101,7 @@
             },
             initializeGraphics(data) {
                 const ctx = document.getElementById('myChart');
-                const myChart = new Chart(ctx, {
+                this.generalGraph = new Chart(ctx, {
                     type: 'bar',
                     data: {
                         datasets: [{
@@ -100,7 +120,7 @@
             },
             initializeDailyGraphics(data) {
                 const ctx = document.getElementById('myChart2');
-                const myChart = new Chart(ctx, {
+                this.dailyGraph = new Chart(ctx, {
                     type: 'bar',
                     data: {
                         datasets: [{
@@ -118,11 +138,22 @@
                 });
             }
         },
-
         mounted() {
 
             this.initializeData();
         },
+        watch: {
+            filterDate: function() {
+                if (this.filterDate != null) {
+                    if (this.generalGraph != null)
+                        this.generalGraph.destroy();
+
+                    if (this.dailyGraph != null)
+                        this.dailyGraph.destroy();
+                    this.initializeData();
+                }
+            }
+        }
     })
 </script>
 @endsection

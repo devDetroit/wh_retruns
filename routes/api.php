@@ -37,9 +37,11 @@ Route::get('tracking/{tracking}', function ($tracking) {
 
 Route::get('dashboard', function () {
     $getCurrentDate = date('m/d/Y');
+
+    $searchByDate = isset(request()->date) ? date_format(date_create(request()->date), 'm/d/Y')  : $getCurrentDate;
     return  response()->json([
         'generalSummary' => DB::select('CALL elpdashboarGeneral()'),
-        'dailySummary' =>  DB::select("CALL elpdasboard('$getCurrentDate')")
+        'dailySummary' =>  DB::select("CALL elpdasboard('$searchByDate')")
     ]);
 });
 

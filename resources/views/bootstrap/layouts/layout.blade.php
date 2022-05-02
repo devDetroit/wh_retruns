@@ -34,9 +34,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="elp-dashboard">WH Dashboard</a>
                         </li>
-                        <li class="nav-item">
+                        <!--    <li class="nav-item">
                             <a class="nav-link" href="/returns/create">Add Return</a>
-                        </li>
+                        </li> -->
                         <!--    <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Reports
