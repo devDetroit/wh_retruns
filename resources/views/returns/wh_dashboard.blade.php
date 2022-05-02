@@ -107,7 +107,7 @@
                         datasets: [{
                             label: 'Records per User',
                             data: data,
-                            backgroundColor: 'rgba(82, 102, 255, 0.8)'
+                            backgroundColor: 'rgba(0, 81, 251, 0.6)'
                         }, ]
                     },
                     options: {
@@ -126,7 +126,7 @@
                         datasets: [{
                             label: 'Records daily per User',
                             data: data,
-                            backgroundColor: 'rgba(255, 69, 69, 0.8)'
+                            backgroundColor: 'rgba(251, 118, 0, 0.42)'
                         }, ]
                     },
                     options: {

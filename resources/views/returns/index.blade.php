@@ -146,7 +146,7 @@
                     let ins = this;
                     let isAllowedToDelete = this.isAllowed();
                     this.table = new Tabulator("#returns-table", {
-                        height: '800',
+                        height: '700',
                         pagination: true, //enable.
                         paginationSize: 50,
                         ajaxURL: '/api/returns',
@@ -170,10 +170,12 @@
                             {
                                 title: "status",
                                 field: "returnstatus.description",
+                                headerFilter: true
                             },
                             {
                                 title: "store",
                                 field: "store.name",
+                                headerFilter: true
                             },
                             {
                                 title: "created by",
@@ -193,6 +195,7 @@
                             {
                                 title: "updated At",
                                 field: "updated_at",
+                                headerFilter: true
                             },
                             {
                                 hozAlign: "center",
