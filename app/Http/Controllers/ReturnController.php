@@ -24,7 +24,7 @@ class ReturnController extends Controller
     {
         return view('returns.index', [
             "counters" => DB::select('CALL sp_counters()'),
-            "totalRecords" => DB::select('SELECT COUNT(id) As totalRecords FROM returns')
+            "totalRecords" => DB::table('returns')->count()
         ]);
     }
 

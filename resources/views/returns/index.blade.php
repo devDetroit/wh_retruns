@@ -14,7 +14,7 @@
         <div class="col-md-3">
             <div class="card border-primary">
                 <div class="card-body">
-                    <h5 class="card-title font-monospace"><i class="fa-solid fa-list-ol"></i> Total records:<strong> {{ $totalRecords[0]->totalRecords }}</strong></h5>
+                    <h5 class="card-title font-monospace"><i class="fa-solid fa-list-ol"></i> Total records:<strong> {{ $totalRecords }}</strong></h5>
                 </div>
             </div>
         </div>
