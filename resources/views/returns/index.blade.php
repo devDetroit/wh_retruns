@@ -3,16 +3,51 @@
 @section('content')
 
 <div id="indexapp">
-    <input type="hidden" id="btnUserType" value="{{ Auth::user()->user_type }}">
-    <div class="row">
+    <div class="row mt-2">
         <div class="col-md-12 text-end">
             <strong>Last Updated At:</strong> @{{ updateDate }}
             <!-- <button type="button" class="btn btn-sm btn-primary" v-on:click="refreshData">Refresh</button>
         </div> -->
         </div>
-        <div class="row justify-content-md-center">
-            <div class="col-md-12">
-                <div class="mt-4" id="returns-table"></div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card border-primary">
+                <div class="card-body">
+                    <h5 class="card-title font-monospace"><i class="fa-solid fa-list-ol"></i> Total records:<strong> {{ $totalRecords[0]->totalRecords }}</strong></h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-success">
+                <div class="card-body">
+                    <h5 class="card-title font-monospace"><i class="fa-solid fa-circle-check"></i> Total Done: <strong> {{ isset($counters[2]) ? $counters[2]->totalCounter : 0}}</strong></h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-danger">
+                <div class="card-body">
+                    <h5 class="card-title font-monospace"><i class="fa-solid fa-circle-plus"></i> Total records new: <strong>{{ isset($counters[0]) ? $counters[0]->totalCounter : 0}}</strong></h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-dark">
+                <div class="card-body">
+                    <h5 class="card-title font-monospace"><i class="fa-solid fa-table-list"></i> Records in process: <strong>{{ isset($counters[1]) ? $counters[1]->totalCounter : 0}}</strong></h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="btnUserType" value="{{ Auth::user()->user_type }}">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="" id="returns-table"></div>
+                </div>
             </div>
         </div>
     </div>

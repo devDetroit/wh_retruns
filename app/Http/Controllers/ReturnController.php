@@ -8,7 +8,7 @@ use App\Models\ReturnStatus;
 use App\Models\Status;
 use App\Models\Store;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ReturnController extends Controller
 {
@@ -23,7 +23,8 @@ class ReturnController extends Controller
     public function index()
     {
         return view('returns.index', [
-            'return_status' => ReturnStatus::all()
+            "counters" => DB::select('CALL sp_counters()'),
+            "totalRecords" => DB::select('SELECT COUNT(id) As totalRecords FROM returns')
         ]);
     }
 
