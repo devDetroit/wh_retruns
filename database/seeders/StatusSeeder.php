@@ -15,31 +15,15 @@ class StatusSeeder extends Seeder
     public function run()
     {
         Status::create([
-            'description' => 'Defective'
+            'description' => 'Packing Slip'
         ]);
 
         Status::create([
-            'description' => 'Good'
+            'description' => 'Return Label'
         ]);
 
         Status::create([
-            'description' => 'Damaged'
-        ]);
-
-        Status::create([
-            'description' => 'Possible damage by carrier'
-        ]);
-
-        Status::create([
-            'description' => 'Used'
-        ]);
-
-        Status::create([
-            'description' => 'Missing'
-        ]);
-
-        Status::create([
-            'description' => 'Not Our Part'
+            'description' => 'Core'
         ]);
     }
 }
