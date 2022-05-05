@@ -1,5 +1,5 @@
 window._ = require('lodash');
-const bootstrap = require('bootstrap');
+window.bootstrap = require('bootstrap');
 window.Chart = require('chart.js/auto').default;
 
 import Swal from 'sweetalert2';

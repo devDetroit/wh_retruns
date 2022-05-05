@@ -45,14 +45,31 @@ Route::get('dashboard', function () {
     ]);
 });
 
+Route::get('photos', function () {
+    $partnumber = PartNumber::findOrFail(request()->partNumber_id)->partNumberPhotos;
+
+    return  response()->json([
+        'photos' => $partnumber
+    ]);
+});
+
 Route::post('return/partnumbers', function () {
 
-    PartNumber::create(request()->all());
+    $partnumber = PartNumber::create(request()->all());
 
-    if (request()->hasFile("picture")) {
-        $file = request()->file("picture");
-        $name = $file->getClientOriginalName();
-        request()->file("picture")->storeAs("public/PartNumbers", request()->returns_id . "-" . $name);
+
+    if (request()->totalImages > 0) {
+        for ($i = 0; $i < request()->totalImages; $i++) {
+            if (request()->hasFile("picture$i")) {
+                $file = request()->file("picture$i");
+                $name = $file->getClientOriginalName();
+                $fileName = request()->returns_id . "-" . $partnumber->id . "-" . $name;
+                request()->file("picture$i")->storeAs("public/PartNumbers", $fileName);
+                $partnumber->partNumberPhotos()->create([
+                    "image" => $fileName
+                ]);
+            }
+        }
     }
 });
 

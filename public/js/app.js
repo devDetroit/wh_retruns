@@ -8196,6 +8196,7 @@ var bootstrap = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/d
 window.Chart = (__webpack_require__(/*! chart.js/auto */ "./node_modules/chart.js/auto/auto.esm.js")["default"]);
 
 window.Swal = (sweetalert2__WEBPACK_IMPORTED_MODULE_0___default());
+window.bootstrap = bootstrap;
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
