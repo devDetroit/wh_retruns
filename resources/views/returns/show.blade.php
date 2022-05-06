@@ -54,45 +54,9 @@ $totalImages = 0;
         </div>
     </div>
 
+
+    <input type="hidden" id="bntHiddenModal" data-bs-toggle="modal" data-bs-target="#photosModal">
     <!-- Modal -->
-    <div class="modal fade" id="photosModal" tabindex="-1" aria-labelledby="photosModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="photosModalLabel">Photos</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-indicators">
-                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                        </div>
-                        <div class="carousel-inner">
-                            @verbatim
-                            <div class="carousel-item active" v-for="item in photos">
-                                <img :src="'/storage/PartNumbers/' +item.image" class="d-block w-100" alt="">
-                            </div>
-                            @endverbatim
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
     <div class="row justify-content-md-center mt-4">
@@ -143,45 +107,73 @@ $totalImages = 0;
         </div>
     </div>
 
+    <div class="modal fade" id="photosModal" tabindex="-1" aria-labelledby="photosModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photosModalLabel">Photos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            @verbatim
+                            <div class="carousel-item" v-for="(item, index) in photos" :key="index">
+                                <img :src="'/storage/PartNumbers/'+item.image" class="d-block w-100" :alt="item.image">
+                            </div>
+                            @endverbatim
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+</div>
 
-    @endsection
+@endsection
 
-    @section('scripts')
+@section('scripts')
 
-    <script>
-        new Vue({
-            el: '#app',
-            data: {
-                photosModal: new bootstrap.Modal(document.getElementById('photosModal')),
-                photos: []
-            },
-            methods: {
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            photosModal: new bootstrap.Modal(document.getElementById('photosModal')),
+            photos: []
+        },
+        methods: {
+            getPhotos(partnumber_id) {
+                let instance = this;
+                this.photos = [];
+                axios({
+                        method: 'get',
+                        url: '/api/photos',
+                        params: {
+                            partNumber_id: partnumber_id
+                        }
+                    })
+                    .then(function(response) {
+                        instance.photos = response.data.photos;
+                    }).then(() => {
+                        if (instance.photos.lenth > 0) {
+                            bntHiddenModal.click();
+                        }
+                    }).catch(error => sweetAlertAutoClose('error', "no photos to show"));
+            }
+        },
+        mounted() {
 
-                getPhotos(partnumber_id) {
-                    let instance = this;
-                    this.photos = [];
-                    axios({
-                            method: 'get',
-                            url: '/api/photos',
-                            params: {
-                                partNumber_id: partnumber_id
-                            }
-                        })
-                        .then(function(response) {
-                            instance.photos = response.data.photos;
-                        }).then(() => {
-                            if (instance.photos.lenth > 0){
-                                console.log('entro')
-                                instance.photosModal.show();
-                            }
-                        }).catch(error => sweetAlertAutoClose('error', "no photos to show"));
-                }
-            },
-            mounted() {
+        },
+    })
+</script>
 
-            },
-        })
-    </script>
-
-    @endsection
+@endsection
