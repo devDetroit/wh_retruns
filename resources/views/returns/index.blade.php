@@ -228,7 +228,7 @@
                     if (this.table != null) {
                         this.table.setData().then(getCUrrentTime);
                     }
-                }, 1000000);
+                }, 1500000);
             },
         })
     </script>

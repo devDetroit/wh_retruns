@@ -64,7 +64,9 @@ $totalImages = 0;
             <div class="row row-cols-1 row-cols-md-3 g-4">
 
                 @foreach($return->partnumbers as $partnumber)
-
+                        @php
+                        $totalImages = 0;
+                        @endphp
                 <div class="col">
                     <div class="card h-100 shadow-sm p-1 mb-1 bg-body rounded">
                         <div class="card-header">
