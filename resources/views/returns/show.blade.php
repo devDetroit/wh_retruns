@@ -169,12 +169,12 @@ $totalImages = 0;
                             }
                         })
                         .then(function(response) {
-                            instance.photos = response.data;
+                            instance.photos = response.data.photos;
                         }).then(() => {
-                            if (instance.photos.lenth > 0)
+                            if (instance.photos.lenth > 0){
+                                console.log('entro')
                                 instance.photosModal.show();
-                            else
-                                sweetAlertAutoClose('error', "no photos to show")
+                            }
                         }).catch(error => sweetAlertAutoClose('error', "no photos to show"));
                 }
             },
