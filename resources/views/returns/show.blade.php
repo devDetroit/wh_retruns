@@ -105,11 +105,17 @@ $canUpdate = Auth::user()->can('update-return');
                         <div class="card-header">
                             <strong> Part Number:</strong> {{ $partnumber->partnumber }}
                         </div>
+                        @if(isset($partnumber->images))
+                        <a href="/storage/PartNumbers/{{$partnumber->returns_id+'-'+$partnumber->image}}"> <img src="/storage/PartNumbers/{{$partnumber->returns_id+'-'+$partnumber->image}}" class="card-img-top" alt="{{$partnumber->returns_id+'-'+$partnumber->image}}"></a>
+                        @else
                         @if($partnumber->partNumberPhotos()->count() > 0)
                         <a href="/storage/PartNumbers/{{$partnumber->partNumberPhotos[0]->image}}"> <img src="/storage/PartNumbers/{{$partnumber->partNumberPhotos[0]->image}}" class="card-img-top" alt="{{$partnumber->partNumberPhotos[0]->image}}"></a>
                         @else
                         <img src="/storage/PartNumbers/noimage.jpg" class="card-img-top">
                         @endif
+
+                        @endif
+
 
                         <div class="card-body">
                             <div class="text-end">
