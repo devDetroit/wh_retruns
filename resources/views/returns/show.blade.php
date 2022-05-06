@@ -90,7 +90,7 @@ $totalImages = 0;
 
                         <div class="card-body">
                             <div class="text-end">
-                                <h6 class="card-subtitle mb-2 text-muted">Total images {{ $totalImages }} <i style="cursor: pointer;" class="fa-solid fa-eye" v-on:click="getPhotos({{ $partnumber->id }})"></i></h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Total images {{ $totalImages }} <i style="cursor: pointer;" class="fa-solid fa-eye" v-on:click="getPhotos({{ $partnumber->id}}, '{{$partnumber->partnumber}}')"></i></h6>
                             </div>
                             <h5 class="card-title">Notes:</h5>
                             <p class="card-text">{{ $partnumber->note ?? 'No notes available' }}</p>
@@ -111,23 +111,23 @@ $totalImages = 0;
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="photosModalLabel">Photos</h5>
+                    <h5 class="modal-title" id="photosModalLabel">Part Number: "<strong>@{{currentPartNumber}}</strong>"  Photos</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             @verbatim
-                            <div class="carousel-item" v-for="(item, index) in photos" :key="index">
+                            <div :class="index == 0 ? 'carousel-item active' : 'carousel-item'" v-for="(item, index) in photos" :key="index">
                                 <img :src="'/storage/PartNumbers/'+item.image" class="d-block w-100" :alt="item.image">
                             </div>
                             @endverbatim
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
@@ -148,12 +148,16 @@ $totalImages = 0;
         el: '#app',
         data: {
             photosModal: new bootstrap.Modal(document.getElementById('photosModal')),
-            photos: []
+            photos: [],
+            currentPartNumber: '',
         },
         methods: {
-            getPhotos(partnumber_id) {
+            getPhotos(partnumber_id, partnumber) {
+                
                 let instance = this;
+                this.currentPartNumber = partnumber;
                 this.photos = [];
+                 document.getElementById('bntHiddenModal').click();
                 axios({
                         method: 'get',
                         url: '/api/photos',
@@ -162,16 +166,9 @@ $totalImages = 0;
                         }
                     })
                     .then(function(response) {
-                        instance.photos = response.data.photos;
-                    }).then(() => {
-                        if (instance.photos.lenth > 0) {
-                            bntHiddenModal.click();
-                        }
+                        instance.photos = response.data.photos;                  
                     }).catch(error => sweetAlertAutoClose('error', "no photos to show"));
             }
-        },
-        mounted() {
-
         },
     })
 </script>
