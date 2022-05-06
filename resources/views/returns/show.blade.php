@@ -2,6 +2,7 @@
 
 @php
 $canUpdate = Auth::user()->can('update-return');
+$totalImages = 0;
 @endphp
 
 @section('content')
@@ -107,8 +108,14 @@ $canUpdate = Auth::user()->can('update-return');
                         </div>
                         @if(isset($partnumber->images))
                         <a href="/storage/PartNumbers/{{$partnumber->returns_id+'-'+$partnumber->image}}"> <img src="/storage/PartNumbers/{{$partnumber->returns_id+'-'+$partnumber->image}}" class="card-img-top" alt="{{$partnumber->returns_id+'-'+$partnumber->image}}"></a>
+                        @php
+                        $totalImages = 1;
+                        @endphp
                         @else
                         @if($partnumber->partNumberPhotos()->count() > 0)
+                        @php
+                        $totalImages = $partnumber->partNumberPhotos()->count();
+                        @endphp
                         <a href="/storage/PartNumbers/{{$partnumber->partNumberPhotos[0]->image}}"> <img src="/storage/PartNumbers/{{$partnumber->partNumberPhotos[0]->image}}" class="card-img-top" alt="{{$partnumber->partNumberPhotos[0]->image}}"></a>
                         @else
                         <img src="/storage/PartNumbers/noimage.jpg" class="card-img-top">
@@ -119,7 +126,7 @@ $canUpdate = Auth::user()->can('update-return');
 
                         <div class="card-body">
                             <div class="text-end">
-                                <h6 class="card-subtitle mb-2 text-muted">Total images {{ $partnumber->partNumberPhotos()->count() }} <i style="cursor: pointer;" class="fa-solid fa-eye" v-on:click="getPhotos({{ $partnumber->id }})"></i></h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Total images {{ $totalImages }} <i style="cursor: pointer;" class="fa-solid fa-eye" v-on:click="getPhotos({{ $partnumber->id }})"></i></h6>
                             </div>
                             <h5 class="card-title">Notes:</h5>
                             <p class="card-text">{{ $partnumber->note ?? 'No notes available' }}</p>
