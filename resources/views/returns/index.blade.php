@@ -169,17 +169,17 @@
                             },
                             {
                                 title: "status",
-                                field: "returnstatus.description",
+                                field: "description",
                                 headerFilter: true
                             },
                             {
                                 title: "store",
-                                field: "store.name",
+                                field: "name",
                                 headerFilter: true
                             },
                             {
                                 title: "created by",
-                                field: "created_by.complete_name",
+                                field: "createdBy",
                                 headerFilter: true
                             },
                             {
@@ -189,7 +189,7 @@
                             },
                             {
                                 title: "updated by",
-                                field: "updated_by.complete_name",
+                                field: "updatedBy",
                                 headerFilter: true
                             },
                             {

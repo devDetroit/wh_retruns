@@ -22,6 +22,7 @@ Route::get('/elp-dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::controller(ReturnController::class)->group(function () {
         Route::get('returns', 'index');
+        Route::get('/', 'index');
         Route::get('returns/create', 'create');
         Route::get('returns/{return}', 'show');
         Route::post('returns/store', 'store');

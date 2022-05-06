@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('returns', function () {
-    return  Returns::all();
+    return  DB::select('CALL `SelectReturns`()');
 });
 
 Route::get('tracking/{tracking}', function ($tracking) {
@@ -40,7 +40,7 @@ Route::get('dashboard', function () {
 
     $searchByDate = isset(request()->date) ? date_format(date_create(request()->date), 'm/d/Y')  : $getCurrentDate;
     return  response()->json([
-        'generalSummary' => DB::select('CALL elpdashboarGeneral()'),
+        'generalSummary' => DB::select('CALL `elpdashboarGeneral`()'),
         'dailySummary' =>  DB::select("CALL elpdasboard('$searchByDate')")
     ]);
 });
