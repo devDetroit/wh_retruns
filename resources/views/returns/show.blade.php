@@ -106,8 +106,8 @@ $totalImages = 0;
                         <div class="card-header">
                             <strong> Part Number:</strong> {{ $partnumber->partnumber }}
                         </div>
-                        @if(isset($partnumber->images))
-                        <a href="/storage/PartNumbers/{{$partnumber->returns_id+'-'+$partnumber->image}}"> <img src="/storage/PartNumbers/{{$partnumber->returns_id+'-'+$partnumber->image}}" class="card-img-top" alt="{{$partnumber->returns_id+'-'+$partnumber->image}}"></a>
+                        @if(isset($partnumber->image))
+                        <a href="/storage/PartNumbers/{{$partnumber->returns_id}}-{{$partnumber->image}}"> <img src="/storage/PartNumbers/{{$partnumber->returns_id}}-{{$partnumber->image}}" class="card-img-top" alt="{{$partnumber->returns_id}}-{{$partnumber->image}}"></a>
                         @php
                         $totalImages = 1;
                         @endphp
