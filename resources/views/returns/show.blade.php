@@ -64,9 +64,9 @@ $totalImages = 0;
             <div class="row row-cols-1 row-cols-md-3 g-4">
 
                 @foreach($return->partnumbers as $partnumber)
-                        @php
-                        $totalImages = 0;
-                        @endphp
+                @php
+                $totalImages = $partnumber->partNumberPhotos()->count();
+                @endphp
                 <div class="col">
                     <div class="card h-100 shadow-sm p-1 mb-1 bg-body rounded">
                         <div class="card-header">
@@ -78,9 +78,9 @@ $totalImages = 0;
                         $totalImages = 1;
                         @endphp
                         @else
-                        @if($partnumber->partNumberPhotos()->count() > 0)
+                        @if($totalImages > 0)
                         @php
-                        $totalImages = $partnumber->partNumberPhotos()->count();
+                        $totalImages = $totalImages;
                         @endphp
                         <a href="/storage/PartNumbers/{{$partnumber->partNumberPhotos[0]->image}}"> <img src="/storage/PartNumbers/{{$partnumber->partNumberPhotos[0]->image}}" class="card-img-top" alt="{{$partnumber->partNumberPhotos[0]->image}}"></a>
                         @else
@@ -104,7 +104,6 @@ $totalImages = 0;
                 </div>
 
                 @endforeach
-
             </div>
         </div>
     </div>
@@ -113,7 +112,7 @@ $totalImages = 0;
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="photosModalLabel">Part Number: "<strong>@{{currentPartNumber}}</strong>"  Photos</h5>
+                    <h5 class="modal-title" id="photosModalLabel">Part Number: "<strong>@{{currentPartNumber}}</strong>" Photos</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -155,11 +154,11 @@ $totalImages = 0;
         },
         methods: {
             getPhotos(partnumber_id, partnumber) {
-                
+
                 let instance = this;
                 this.currentPartNumber = partnumber;
                 this.photos = [];
-                 document.getElementById('bntHiddenModal').click();
+                document.getElementById('bntHiddenModal').click();
                 axios({
                         method: 'get',
                         url: '/api/photos',
@@ -168,7 +167,7 @@ $totalImages = 0;
                         }
                     })
                     .then(function(response) {
-                        instance.photos = response.data.photos;                  
+                        instance.photos = response.data.photos;
                     }).catch(error => sweetAlertAutoClose('error', "no photos to show"));
             }
         },

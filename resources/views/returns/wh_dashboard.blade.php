@@ -139,7 +139,6 @@
             }
         },
         mounted() {
-
             this.initializeData();
         },
         watch: {

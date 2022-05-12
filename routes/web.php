@@ -15,11 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/elp-dashboard', function () {
-    return view('returns.wh_dashboard');
-})->middleware('auth');
+
 
 Route::middleware('auth')->group(function () {
+
     Route::controller(ReturnController::class)->group(function () {
         Route::get('returns', 'index');
         Route::get('/', 'index');
@@ -29,6 +28,12 @@ Route::middleware('auth')->group(function () {
         Route::post('returns/files', 'storeFiles');
         Route::put('returns/{return}', 'update');
         Route::post('returns/{return}', 'destroy');
+    });
+    Route::get('returns/reports/general', function () {
+        return view('returns.report-tracking');
+    });
+    Route::get('/elp-dashboard', function () {
+        return view('returns.wh_dashboard');
     });
 });
 /* Route::get('/dashboard', function () {

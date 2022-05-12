@@ -35,22 +35,14 @@
                         <li class="nav-item">
                             <a class="nav-link" href="elp-dashboard">WH Dashboard</a>
                         </li>
-                        <!--    <li class="nav-item">
-                            <a class="nav-link" href="/returns/create">Add Return</a>
-                        </li> -->
-                        <!--    <li class="nav-item dropdown">
+                        <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Reports
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                <li><a class="dropdown-item" href="/returns/reports/general">Tracking Number</a></li>
                             </ul>
-                        </li> -->
+                        </li>
                     </ul>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

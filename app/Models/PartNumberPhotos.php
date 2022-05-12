@@ -10,4 +10,9 @@ class PartNumberPhotos extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function returns()
+    {
+        return $this->belongsTo(Returns::class);
+    }
 }

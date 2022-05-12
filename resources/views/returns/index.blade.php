@@ -6,8 +6,6 @@
     <div class="row mt-2">
         <div class="col-md-12 text-end">
             <strong>Last Updated At:</strong> @{{ updateDate }}
-            <!-- <button type="button" class="btn btn-sm btn-primary" v-on:click="refreshData">Refresh</button>
-        </div> -->
         </div>
     </div>
     <div class="row mt-4">
@@ -43,7 +41,6 @@
     <input type="hidden" id="btnUserType" value="{{ Auth::user()->user_type }}">
     <div class="row">
         <div class="col-md-12">
-
             <div class="row mt-4">
                 <div class="col-md-12">
                     <div class="" id="returns-table"></div>
@@ -94,39 +91,14 @@
                 updateDate: null
             },
             methods: {
-                searchReturns() {
-                    this.table.setFilter([
-                        [{
-                                field: "order_number",
-                                type: "starts",
-                                value: this.trackNumber
-                            },
-                            {
-                                field: "track_number",
-                                type: "starts",
-                                value: this.trackNumber
-                            },
-                        ]
-                    ]);
-                },
-                refreshData() {
-                    this.table.setData();
-                },
-                searchByStatus() {
-                    if (this.status.length > 0)
-                        this.table.setFilter("returnstatus.description", "=", this.status);
-                    else
-                        this.table.clearFilter();
-                },
-                removefilters() {
-                    let instance = this;
-                    instance.table.clearFilter(true);
-                },
                 onDelete(data) {
                     let deleteConfirmation = confirm('are you sure to delete this record?');
+
                     if (!deleteConfirmation)
                         return;
+
                     let inst = this;
+
                     axios.post(`/returns/${data.id}`)
                         .then(function(response) {
                             sweetAlertAutoClose('success', response.data.message);
