@@ -63,9 +63,9 @@ $totalImages = 0;
         <div class="col-md-8">
             <div class="row row-cols-1 row-cols-md-3 g-4">
 
-                @foreach($return->partnumbers as $partnumber)
+                @foreach($partnumbers as $partnumber)
                 @php
-                $totalImages = $partnumber->partNumberPhotos()->count();
+                $totalImages = $partnumber->photos->count();
                 @endphp
                 <div class="col">
                     <div class="card h-100 shadow-sm p-1 mb-1 bg-body rounded">
@@ -82,7 +82,7 @@ $totalImages = 0;
                         @php
                         $totalImages = $totalImages;
                         @endphp
-                        <a href="/storage/PartNumbers/{{$partnumber->partNumberPhotos[0]->image}}"> <img src="/storage/PartNumbers/{{$partnumber->partNumberPhotos[0]->image}}" class="card-img-top" alt="{{$partnumber->partNumberPhotos[0]->image}}"></a>
+                        <a href="/storage/PartNumbers/{{$partnumber->photos[0]->image}}"> <img src="/storage/PartNumbers/{{$partnumber->photos[0]->image}}" class="card-img-top" alt="{{$partnumber->photos[0]->image}}"></a>
                         @else
                         <img src="/storage/PartNumbers/noimage.jpg" class="card-img-top">
                         @endif
@@ -94,7 +94,11 @@ $totalImages = 0;
                             <div class="text-end">
                                 <h6 class="card-subtitle mb-2 text-muted">Total images {{ $totalImages }} <i style="cursor: pointer;" class="fa-solid fa-eye" v-on:click="getPhotos({{ $partnumber->id}}, '{{$partnumber->partnumber}}')"></i></h6>
                             </div>
-                            <h5 class="card-title">Notes:</h5>
+                            <h6 style="color:red; font-weight: bold;">Deposco PN</h6>
+                            <ul>
+                                <li><strong>{{ $partnumber->UPC == 0 ? 'Not Found' : $partnumber->item}}</strong></li>
+                            </ul>
+                            <h5 class=" card-title">Notes:</h5>
                             <p class="card-text">{{ $partnumber->note ?? 'No notes available' }}</p>
                         </div>
                         <div class="card-footer">

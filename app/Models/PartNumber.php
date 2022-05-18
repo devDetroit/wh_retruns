@@ -11,7 +11,7 @@ class PartNumber extends Model
 
     protected $fillable = ['status_id', 'note', 'returns_id', 'partnumber', 'image'];
 
-    protected $with = ['status', 'partNumberPhotos'];
+    protected $with = ['status', 'photos'];
 
     public function whreturn()
     {
@@ -23,7 +23,7 @@ class PartNumber extends Model
         return $this->belongsTo(Status::class);
     }
 
-    public function partNumberPhotos()
+    public function photos()
     {
         return $this->hasMany(PartNumberPhotos::class, 'partnumber_id');
     }
