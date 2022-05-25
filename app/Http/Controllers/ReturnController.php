@@ -113,6 +113,7 @@ class ReturnController extends Controller
      */
     public function show(Returns $return)
     {
+
         return view('returns.show', [
             'return' => $return,
             'partnumbers' => $return->partnumbers()->leftJoin('upcpartnumbers', 'part_numbers.partnumber', '=', 'upcpartnumbers.upc')->select('part_numbers.*', 'upcpartnumbers.item', 'upcpartnumbers.UPC')->get(),

@@ -3,6 +3,7 @@
 @php
 $canUpdate = Auth::user()->can('update-return');
 $totalImages = 0;
+
 @endphp
 
 @section('content')
@@ -73,18 +74,30 @@ $totalImages = 0;
                             <strong> Part Number:</strong> {{ $partnumber->partnumber }}
                         </div>
                         @if(isset($partnumber->image))
-                        <a href="/storage/PartNumbers/{{$partnumber->returns_id}}-{{$partnumber->image}}"> <img src="/storage/PartNumbers/{{$partnumber->returns_id}}-{{$partnumber->image}}" class="card-img-top" alt="{{$partnumber->returns_id}}-{{$partnumber->image}}"></a>
+                            <a href="/storage/PartNumbers/{{$partnumber->returns_id}}-{{$partnumber->image}}"> <img src="/storage/PartNumbers/{{$partnumber->returns_id}}-{{$partnumber->image}}" class="card-img-top" alt="{{$partnumber->returns_id}}-{{$partnumber->image}}"></a>
                         @php
-                        $totalImages = 1;
+                            $totalImages = 1;
                         @endphp
                         @else
                         @if($totalImages > 0)
-                        @php
-                        $totalImages = $totalImages;
-                        @endphp
-                        <a href="/storage/PartNumbers/{{$partnumber->photos[0]->image}}"> <img src="/storage/PartNumbers/{{$partnumber->photos[0]->image}}" class="card-img-top" alt="{{$partnumber->photos[0]->image}}"></a>
+                            @php
+                            $totalImages = $totalImages;
+                            @endphp
+                            <a href="/storage/PartNumbers/{{$partnumber->photos[0]->image}}"> <img src="/storage/PartNumbers/{{$partnumber->photos[0]->image}}" class="card-img-top" alt="{{$partnumber->photos[0]->image}}"></a>                        
                         @else
-                        <img src="/storage/PartNumbers/noimage.jpg" class="card-img-top">
+                            @php
+                            $files = Storage::files('public/PartNumbers');
+                                foreach ($files as $key => $value) {
+                                    if(str_starts_with(basename($value), "$return->id-$partnumber->id")){
+                                         $tmpFile = basename($value);
+                                    }
+                                }
+                            @endphp
+                                @if(strlen($tmpFile) > 0)
+                                <a href="/storage/PartNumbers/{{$tmpFile}}"> <img src="/storage/PartNumbers/{{$tmpFile}}" class="card-img-top" alt="{{$tmpFile}}"></a>
+                                @else
+                                <img src="/storage/PartNumbers/noimage.jpg" class="card-img-top">
+                                @endif
                         @endif
 
                         @endif
