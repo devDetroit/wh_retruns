@@ -3,7 +3,7 @@
 @php
 $canUpdate = Auth::user()->can('update-return');
 $totalImages = 0;
-
+$files = Storage::files('public/PartNumbers');
 @endphp
 
 @section('content')
@@ -85,8 +85,7 @@ $totalImages = 0;
                             @endphp
                             <a href="/storage/PartNumbers/{{$partnumber->photos[0]->image}}"> <img src="/storage/PartNumbers/{{$partnumber->photos[0]->image}}" class="card-img-top" alt="{{$partnumber->photos[0]->image}}"></a>                        
                         @else
-                            @php
-                            $files = Storage::files('public/PartNumbers');
+                            @php                           
                                 foreach ($files as $key => $value) {
                                     if(str_starts_with(basename($value), "$return->id-$partnumber->id")){
                                          $tmpFile = basename($value);
