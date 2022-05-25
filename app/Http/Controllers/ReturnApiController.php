@@ -67,7 +67,7 @@ class ReturnApiController extends Controller
                     $name = $file->getClientOriginalName();
                     $fileName = request()->returns_id . "-" . $partnumber->id . "-" . $name;
                     request()->file("picture$i")->storeAs("public/PartNumbers", $fileName);
-                    $partnumber->partNumberPhotos()->create([
+                    $partnumber->photos()->create([
                         "image" => $fileName
                     ]);
                 }
