@@ -93,7 +93,7 @@ $totalImages = 0;
                                     }
                                 }
                             @endphp
-                                @if(strlen($tmpFile) > 0)
+                                @if(isset($tmpFile))
                                 <a href="/storage/PartNumbers/{{$tmpFile}}"> <img src="/storage/PartNumbers/{{$tmpFile}}" class="card-img-top" alt="{{$tmpFile}}"></a>
                                 @else
                                 <img src="/storage/PartNumbers/noimage.jpg" class="card-img-top">
