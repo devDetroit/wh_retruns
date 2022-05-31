@@ -41,7 +41,7 @@ class ReturnApiController extends Controller
 
     public function getPhotosPerPartNumber()
     {
-        $partnumber = PartNumber::findOrFail(request()->partNumber_id)->partNumberPhotos;
+        $partnumber = PartNumber::findOrFail(request()->partNumber_id)->photos;
 
         return  response()->json([
             'photos' => $partnumber
