@@ -50,7 +50,7 @@ class PrintLabelController extends Controller
 ^XA
 ^FO155,57^A0,57^FDPart #:' . request()->partNumber . '^FS
 ^BY3,2,65
-^FO50,110^BCN,120,N,N^FD791405328430^FS
+^FO50,110^BCN,120,N,N^FD' . request()->upc . '^FS
 ^FO10,245^A0,32^FD' . request()->location . '^FS
 ^FO350,245^A0,32^FD Made in china^FS
 ^XZ
