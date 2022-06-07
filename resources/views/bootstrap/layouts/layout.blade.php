@@ -21,13 +21,14 @@
     <main>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/returns">
+                <a class="navbar-brand" @auth href="/returns" @endauth>
                     <x-application-logo width="110" height="35" class="d-inline-block align-text-top" />
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    @auth
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/returns">Home</a>
@@ -51,6 +52,7 @@
                             {{ __('Log Out') }}
                         </a>
                     </form>
+                    @endauth
                 </div>
             </div>
         </nav>
@@ -62,6 +64,7 @@
     </main>
     <script src="/js/app.js"></script>
     <script src="/js/fngeneral.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     @yield('scripts')
 </body>

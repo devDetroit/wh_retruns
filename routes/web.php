@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ReturnController;
+use App\Http\Controllers\PrintLabelController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
+Route::get('labels/print', [PrintLabelController::class, 'index']);
 
 Route::middleware('auth')->group(function () {
 
