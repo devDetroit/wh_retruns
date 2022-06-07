@@ -64,11 +64,6 @@ $isValid = isset($computer[0]);
             generateLabel() {
 
                 if (this.upc.trim().length <= 0) {
-                    if (!is_integer(this.upc)) {
-                        sweetAlertAutoClose('warning', "Numero UPC ingresado no es numerico");
-                        this.upc = '';
-                        return;
-                    }
                     sweetAlertAutoClose('warning', "No se escaneo ni un UPC");
                     this.upc = '';
                     return;
