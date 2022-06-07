@@ -14,6 +14,7 @@ class CreatePrintLabelHistoriesTable extends Migration
     public function up()
     {
         Schema::create('print_label_histories', function (Blueprint $table) {
+            $table->foreignId('user_id');
             $table->ipAddress('printer_from');
             $table->string('upc_scanned');
             $table->string('part_number');

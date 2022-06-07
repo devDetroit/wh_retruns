@@ -34,7 +34,7 @@
                             <a class="nav-link active" aria-current="page" href="/returns">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="elp-dashboard">WH Dashboard</a>
+                            <a class="nav-link" href="/elp-dashboard">WH Dashboard</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -43,6 +43,9 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="/returns/reports/general">Tracking Number</a></li>
                             </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/labels/print">Print Labels</a>
                         </li>
                     </ul>
                     <form method="POST" action="{{ route('logout') }}">

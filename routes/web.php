@@ -16,8 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('labels/print', [PrintLabelController::class, 'index']);
-
 Route::middleware('auth')->group(function () {
 
     Route::controller(ReturnController::class)->group(function () {
@@ -30,6 +28,9 @@ Route::middleware('auth')->group(function () {
         Route::put('returns/{return}', 'update');
         Route::post('returns/{return}', 'destroy');
     });
+
+    Route::get('labels/print', [PrintLabelController::class, 'index']);
+
     Route::get('returns/reports/general', function () {
         return view('returns.report-tracking');
     });
@@ -37,6 +38,10 @@ Route::middleware('auth')->group(function () {
         return view('returns.wh_dashboard');
     });
 });
+
+/* LABELS REMAN */
+Route::get('upc', [PrintLabelController::class, 'validateUPC']);
+Route::get('print', [PrintLabelController::class, 'printLabel']);
 /* Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');

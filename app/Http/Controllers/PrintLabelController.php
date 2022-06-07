@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Printer;
+use App\Models\PrintLabelHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,6 +16,7 @@ class PrintLabelController extends Controller
      */
     public function index()
     {
+
         return view('reman_labels.print', [
             "computer" => Printer::whereRelation('computer', 'computer_ip', request()->getClientIp())->get()
         ]);
@@ -60,6 +62,16 @@ class PrintLabelController extends Controller
             }
         } catch (\Throwable $th) {
             $message = $th->getMessage();
+        }
+
+        if ($returnValue == 1) {
+            PrintLabelHistory::create([
+                "user_id" => request()->user()->id,
+                "printer_from" => request()->getClientIp(),
+                "upc_scanned" => request()->upc,
+                "part_number" => request()->partNumber,
+                "location" =>  request()->location
+            ]);
         }
 
         return response()->json([

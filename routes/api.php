@@ -28,7 +28,3 @@ Route::get('dashboard', [ReturnApiController::class, 'getProductionPerUserDashbo
 Route::get('photos', [ReturnApiController::class, 'getPhotosPerPartNumber']);
 Route::post('return/partnumbers', [ReturnApiController::class, 'submitPartNumber']);
 Route::post('return', [ReturnApiController::class, 'submitTrackingNumber']);
-
-/* LABELS REMAN */
-Route::get('upc', [PrintLabelController::class, 'validateUPC']);
-Route::get('print', [PrintLabelController::class, 'printLabel']);

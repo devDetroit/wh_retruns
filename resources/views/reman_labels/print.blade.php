@@ -72,13 +72,12 @@ $isValid = isset($computer[0]);
                 let instance = this;
                 axios({
                         method: 'get',
-                        url: '/api/upc',
+                        url: '/upc',
                         params: {
                             upc: instance.upc.trim()
                         }
                     })
                     .then(function(response) {
-                        console.log(response)
                         if (response.data.upc.length <= 0) {
                             sweetAlertAutoClose('error', "UPC no encontrado")
                             instance.clearFields()
@@ -110,8 +109,9 @@ $isValid = isset($computer[0]);
                 let instance = this;
                 axios({
                         method: 'get',
-                        url: '/api/print',
+                        url: '/print',
                         params: {
+                            upc: instance.upc.trim(),
                             partNumber: instance.partNumber.trim(),
                             location: instance.location.trim()
                         }
