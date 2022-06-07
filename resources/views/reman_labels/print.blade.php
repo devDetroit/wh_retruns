@@ -132,6 +132,7 @@ $isValid = isset($computer[0]);
                 this.partNumber = '';
                 this.location = '';
                 document.getElementById('barcode').replaceChildren();
+                document.getElementById('scanningInput').focus();
             }
         },
     })
