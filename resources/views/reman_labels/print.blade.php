@@ -84,6 +84,7 @@ $isValid = isset($computer[0]);
                         } else {
                             instance.partNumber = response.data.upc[0]['Item'];
                             instance.location = response.data.upc[0]['LocationNumber'];
+                            instance.upc = response.data.upc[0]['UPC'];
                             instance.generateCodeBar()
                         }
 
