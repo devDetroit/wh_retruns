@@ -26,6 +26,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        Gate::define('show-menu', function (User $user) {
+            return !str_contains($user->complete_name, 'station');
+        });
+
         Gate::define('update-return', function (User $user) {
             return $user->user_type == 'editor'  ||  $user->user_type == 'admin';
         });

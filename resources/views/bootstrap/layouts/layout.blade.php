@@ -30,6 +30,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     @auth
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        @can('show-menu')
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/returns">Home</a>
                         </li>
@@ -44,6 +45,7 @@
                                 <li><a class="dropdown-item" href="/returns/reports/general">Tracking Number</a></li>
                             </ul>
                         </li>
+                        @endcan
                         <li class="nav-item">
                             <a class="nav-link" href="/labels/print">Print Labels</a>
                         </li>
