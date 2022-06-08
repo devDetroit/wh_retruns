@@ -34,7 +34,7 @@ class PrintLabelController extends Controller
         $upcNumber = request()->upc;
 
         return response()->json([
-            "upc" => DB::select("CALL `SelectUPCPartNumber`($upcNumber)"),
+            "upc" => DB::select("CALL `SelectUPCPartNumber`('$upcNumber')"),
         ]);
     }
 
