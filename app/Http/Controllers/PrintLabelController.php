@@ -29,10 +29,22 @@ class PrintLabelController extends Controller
             return;
 
 
-        $upcNumber = request()->upc;
+        $upc = DB::table('upclocations')
+            ->where([
+                ['UPC', request()->upc],
+                ['UPC', '>', 0],
+            ])
+            ->limit(1)
+            ->get();
+
+        $partNumber = DB::table('upclocations')
+            ->where('Item', request()->upc)
+            ->limit(1)
+            ->get();
+
 
         return response()->json([
-            "upc" => DB::select("CALL `SelectUPCPartNumber`('$upcNumber')"),
+            "upc" => isset($upc[0]->Item) ? $upc : $partNumber,
         ]);
     }
 
