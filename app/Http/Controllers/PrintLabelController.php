@@ -28,8 +28,6 @@ class PrintLabelController extends Controller
         if (!request()->has('upc'))
             return;
 
-        if (intval(request()->upc) <= 0)
-            return;
 
         $upcNumber = request()->upc;
 
