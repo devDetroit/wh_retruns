@@ -72,7 +72,7 @@ class PrintLabelController extends Controller
 ^FO350,245^A0,32^FD Made in china^FS
 ^XZ
 ';
-                $fput = fputs($conn, $data, strlen($data));
+                fputs($conn, $data, strlen($data));
                 fclose($conn);
                 $returnValue = 1;
                 $message = 'Etiqueta impresa exitosamente';
