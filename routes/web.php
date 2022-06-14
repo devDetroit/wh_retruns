@@ -29,7 +29,8 @@ Route::middleware('auth')->group(function () {
         Route::post('returns/{return}', 'destroy');
     });
 
-    Route::get('labels/print', [PrintLabelController::class, 'index']);
+    Route::get('labels/print', [PrintLabelController::class, 'index'])->name('labels');
+    Route::get('labels/add', [PrintLabelController::class, 'create'])->name('upcnumber');
 
     Route::get('returns/reports/general', function () {
         return view('returns.report-tracking');

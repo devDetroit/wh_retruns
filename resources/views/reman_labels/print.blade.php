@@ -9,12 +9,16 @@ $isValid = isset($computer[0]);
 <div id="printLabelApp">
     @if($isValid)
     <div class="row mt-4">
-        <div class="col-md-12 text-end">
+        <div class="col-md-6">
+            <h5>Impresion etiquetas:</h5>
+            <h1> <strong style="color: red;">@{{warehouseDescription}}</strong></h1>
+        </div>
+        <div class="col-md-6 text-end">
             <h5>Impresora asignada: <strong>{{$computer[0]->printer}}</strong></h5>
         </div>
     </div>
     @endif
-    <div class="container">
+    <div class="container" v-show="!showInputs">
         <div class="row  mt-4 justify-content-center">
             <div class="col-md-10">
                 @if($isValid)
@@ -43,6 +47,7 @@ $isValid = isset($computer[0]);
         @endif
     </div>
 
+    <x-location-labels></x-location-labels>
 
 </div>
 @endsection
@@ -50,22 +55,26 @@ $isValid = isset($computer[0]);
 
 
 @section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+<script src=" https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 <script>
     const app = new Vue({
         el: '#printLabelApp',
         data: {
+            fieldToSearch: '',
             upc: '',
             partNumber: '',
             location: '',
-            upcNotFoundList: []
+            warehouse: ''
         },
         methods: {
+            getWarehouse(warehouse) {
+                this.warehouse = warehouse;
+                closeModalButton.click();
+            },
             generateLabel() {
-
-                if (this.upc.trim().length <= 0) {
+                if (this.fieldToSearch.trim().length <= 0) {
                     sweetAlertAutoClose('warning', "No se escaneo ni un UPC");
-                    this.upc = '';
+                    this.clearFields()
                     return;
                 }
 
@@ -74,7 +83,8 @@ $isValid = isset($computer[0]);
                         method: 'get',
                         url: '/upc',
                         params: {
-                            upc: instance.upc.trim()
+                            upc: instance.fieldToSearch.trim(),
+                            warehouse: instance.warehouse
                         }
                     })
                     .then(function(response) {
@@ -82,6 +92,7 @@ $isValid = isset($computer[0]);
                             sweetAlertAutoClose('error', "UPC no encontrado")
                             instance.clearFields()
                         } else {
+
                             instance.partNumber = response.data.upc[0]['Item'];
                             instance.location = response.data.upc[0]['LocationNumber'];
                             instance.upc = response.data.upc[0]['UPC'];
@@ -129,6 +140,7 @@ $isValid = isset($computer[0]);
                     });
             },
             clearFields() {
+                this.fieldToSearch = '';
                 this.upc = '';
                 this.partNumber = '';
                 this.location = '';
@@ -136,6 +148,31 @@ $isValid = isset($computer[0]);
                 document.getElementById('scanningInput').focus();
             }
         },
+        mounted() {
+            locationButton.click();
+        },
+        computed: {
+            warehouseDescription: function() {
+                var description = ''
+                switch (this.warehouse) {
+                    case 'jrz':
+                        description = 'REMAN'
+                        break;
+
+                    case 'elp':
+                        description = 'ELP WH'
+                        break;
+
+                    default:
+                        description = ''
+                        break;
+                }
+                return description;
+            },
+            showInputs: function() {
+                return this.warehouse.length <= 0;
+            }
+        }
     })
 </script>
 

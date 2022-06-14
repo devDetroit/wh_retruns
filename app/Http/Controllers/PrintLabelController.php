@@ -16,9 +16,8 @@ class PrintLabelController extends Controller
      */
     public function index()
     {
-
         return view('reman_labels.print', [
-            "computer" => Printer::whereRelation('computer', 'computer_ip', request()->getClientIp())->get()
+            "computer" => $this->getPrinter()
         ]);
     }
 
@@ -28,8 +27,11 @@ class PrintLabelController extends Controller
         if (!request()->has('upc'))
             return;
 
+        if (!request()->has('warehouse'))
+            return;
+        $table = request()->warehouse == 'jrz' ? 'upclocations' : 'upcdetroitlocations';
 
-        $upc = DB::table('upclocations')
+        $upc = DB::table($table)
             ->where([
                 ['UPC', request()->upc],
                 ['UPC', '>', 0],
@@ -37,7 +39,7 @@ class PrintLabelController extends Controller
             ->limit(1)
             ->get();
 
-        $partNumber = DB::table('upclocations')
+        $partNumber = DB::table($table)
             ->where('Item', request()->upc)
             ->limit(1)
             ->get();
@@ -48,10 +50,15 @@ class PrintLabelController extends Controller
         ]);
     }
 
+    public function getPrinter()
+    {
+        return Printer::whereRelation('computer', 'computer_ip', request()->getClientIp())->get();
+    }
+
     public function printLabel()
     {
         try {
-            $printer = Printer::whereRelation('computer', 'computer_ip', request()->getClientIp())->get();
+            $printer = $this->getPrinter();
             $message = '';
             $returnValue = 0;
             if (isset($printer[0])) {
@@ -96,7 +103,7 @@ class PrintLabelController extends Controller
      */
     public function create()
     {
-        //
+        return view('reman_labels.add-upcnumbers');
     }
 
     /**

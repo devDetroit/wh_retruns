@@ -5,7 +5,7 @@
             <div class="row mb-3">
                 <label for="scanning" class="col-md-4 col-form-label text-md-end">Numero UPC o Num de Parte:</label>
                 <div class="col-md-4">
-                    <input id="scanningInput" type="text" class="form-control" name="scanning" required="" autocomplete="scanning" v-model="upc">
+                    <input id="scanningInput" type="text" class="form-control" name="scanning" required="" autocomplete="scanning" v-model="fieldToSearch">
                 </div>
                 <div class="col-md-2">
                     <button type="button" id="printButton" class="btn btn-danger" v-on:click="clearFields">Limpiar</button>

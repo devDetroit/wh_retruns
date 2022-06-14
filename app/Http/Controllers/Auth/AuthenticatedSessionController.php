@@ -32,7 +32,11 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect(RouteServiceProvider::HOME);
+        if (str_contains(Auth::user()->complete_name, 'station')) {
+            return redirect()->route('labels');
+        } else {
+            return redirect(RouteServiceProvider::HOME);
+        }
     }
 
     /**
