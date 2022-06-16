@@ -125,7 +125,7 @@ $isValid = isset($computer[0]);
                         params: {
                             upc: instance.upc.trim(),
                             partNumber: instance.partNumber.trim(),
-                            location: instance.location.trim()
+                            location: instance.location
                         }
                     })
                     .then(function(response) {
