@@ -24,11 +24,9 @@ class PrintLabelController extends Controller
 
     public function validateUPC()
     {
-        if (!request()->has('upc'))
+        if (!request()->has('upc')  && !request()->has('warehouse'))
             return;
 
-        if (!request()->has('warehouse'))
-            return;
         $table = request()->warehouse == 'jrz' ? 'upclocations' : 'upcdetroitlocations';
 
         $upc = DB::table($table)

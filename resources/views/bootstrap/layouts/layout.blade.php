@@ -13,6 +13,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://unpkg.com/tabulator-tables@5.1.7/dist/css/tabulator.min.css" rel="stylesheet">
+    @yield('styles')
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.1.7/dist/js/tabulator.min.js"></script>
 </head>
 

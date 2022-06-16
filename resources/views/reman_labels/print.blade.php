@@ -113,7 +113,7 @@ $isValid = isset($computer[0]);
                 });
             },
             printLabel() {
-                if (this.partNumber.length <= 0 || this.location.length <= 0) {
+                if (this.partNumber.length <= 0) {
                     sweetAlertAutoClose('error', "Informacion incompleta o campos vacios")
                     return
                 }
