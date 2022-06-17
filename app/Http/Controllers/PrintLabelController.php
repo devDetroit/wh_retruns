@@ -85,7 +85,7 @@ class PrintLabelController extends Controller
                 "printer_from" => request()->getClientIp(),
                 "upc_scanned" => request()->upc,
                 "part_number" => request()->partNumber,
-                "location" =>  request()->location
+                "location" =>  isset(request()->location) ? request()->location : ''
             ]);
         }
 
