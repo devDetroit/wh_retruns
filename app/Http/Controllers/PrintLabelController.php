@@ -59,34 +59,36 @@ class PrintLabelController extends Controller
             $printer = $this->getPrinter();
             $message = '';
             $returnValue = 0;
+            $location = isset(request()->location) ? request()->location : '';
             if (isset($printer[0])) {
+                    
+               
+
                 $conn = fsockopen($printer[0]->printer, 9100, $errno, $errstr);
                 $data = ' 
 ^XA
 ^FO155,57^A0,57^FDPart #:' . request()->partNumber . '^FS
 ^BY3,2,65
 ^FO50,110^BCN,120,N,N^FD' . request()->upc . '^FS
-^FO10,245^A0,32^FD' . request()->location . '^FS
+^FO10,245^A0,32^FD' . $location . '^FS
 ^FO350,245^A0,32^FD Made in china^FS
 ^XZ
 ';
                 fputs($conn, $data, strlen($data));
                 fclose($conn);
-                $returnValue = 1;
+                $returnValue = 1;            
                 $message = 'Etiqueta impresa exitosamente';
+
+                PrintLabelHistory::create([
+                    "user_id" => request()->user()->id,
+                    "printer_from" => request()->getClientIp(),
+                    "upc_scanned" => request()->upc,
+                    "part_number" => request()->partNumber,
+                    "location" =>  isset(request()->location) ? request()->location : ''
+                ]);
             }
         } catch (\Throwable $th) {
             $message = $th->getMessage();
-        }
-
-        if ($returnValue == 1) {
-            PrintLabelHistory::create([
-                "user_id" => request()->user()->id,
-                "printer_from" => request()->getClientIp(),
-                "upc_scanned" => request()->upc,
-                "part_number" => request()->partNumber,
-                "location" =>  isset(request()->location) ? request()->location : ''
-            ]);
         }
 
         return response()->json([
