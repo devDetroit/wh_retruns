@@ -220,7 +220,7 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td>{{ counters.target[index]['TotalScanned']['total_labels_scanned'] }}</td>
+                                                            <td>{{ counters.target[index]['TotalScanned']['total_labels_scanned'] ?? 0}}</td>
                                                             <td>{{ counters.target[index]['goal'] }}</td>
                                                         </tr>
                                                     </tbody>
@@ -303,7 +303,7 @@
                 this.counters = data
                 for (let index = 0; index < data.target.length; index++) {
                     this.counters.target[index]['stationID'] = data.info[data.target[index]['station']];
-                    this.counters.target[index]['TotalScanned'] = data.totalScanned.find(element => element.user_id == this.counters.target[index]['stationID']['id'])
+                    this.counters.target[index]['TotalScanned'] = data.totalScanned.find(element => element.user_id == this.counters.target[index]['stationID']['id']) ?? 0;
                     this.counters.target[index]['Porcent'] = Math.round((this.counters.target[index]['TotalScanned']['total_labels_scanned'] / this.counters.target[index]['goal']) * 100);
                     this.total.total += this.counters.target[index]['goal'];
                     this.total.actuales += this.counters.target[index]['TotalScanned']['total_labels_scanned'];
