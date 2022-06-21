@@ -304,9 +304,9 @@
                 for (let index = 0; index < data.target.length; index++) {
                     this.counters.target[index]['stationID'] = data.info[data.target[index]['station']];
                     this.counters.target[index]['TotalScanned'] = data.totalScanned.find(element => element.user_id == this.counters.target[index]['stationID']['id']) ?? 0;
-                    this.counters.target[index]['Porcent'] = Math.round((this.counters.target[index]['TotalScanned']['total_labels_scanned'] / this.counters.target[index]['goal']) * 100);
+                    this.counters.target[index]['Porcent'] = Math.round((this.counters.target[index]['TotalScanned']?.total_labels_scanned / this.counters.target[index]['goal']) * 100);
                     this.total.total += this.counters.target[index]['goal'];
-                    this.total.actuales += this.counters.target[index]['TotalScanned']['total_labels_scanned'];
+                    this.total.actuales += this.counters.target[index]['TotalScanned']['total_labels_scanned'] ?? 0;
                 }
                 this.total.porcentaje = Math.round((this.total.actuales / this.total.total) * 100)
             }
