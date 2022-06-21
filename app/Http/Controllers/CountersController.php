@@ -44,7 +44,6 @@ class CountersController extends Controller
             array_push($filterUsers['stations'], $key);
         }
 
-        //return $filterUsers;
 
         return response()->json([
             "target" => Target::where([
@@ -57,7 +56,10 @@ class CountersController extends Controller
             "totalScanned" => DB::table('print_label_histories')
                 ->select(DB::raw('count(user_id) as total_labels_scanned, user_id'))
                 ->where($filters)
-                ->whereIn('user_id', $filterUsers['users'])
+                ->where(function ($query) use ($filterUsers) {
+                    $query->where('user_id', $filterUsers['users'][0])
+                        ->orWhere('user_id', $filterUsers['users'][1]);
+                })
                 ->groupBy('user_id')
                 ->get(),
             "info" => isset($this->groupLines[request()->warehouse]) ?  $this->groupLines[request()->warehouse][request()->line] : []

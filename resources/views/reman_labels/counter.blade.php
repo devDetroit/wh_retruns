@@ -184,6 +184,11 @@
                                 @endverbatim
                             </div>
                         </div>
+                        <div class="row mt-4 justify-content-center">
+                            <div class="col-md-12 d-flex justify-content-center">
+                                <h4> ultima Actualizacion : @{{ updateDate }}</h4>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6 ">
@@ -315,7 +320,7 @@
 
             setInterval(() => {
                 this.getData();
-            }, 20000);
+            }, 200000)
 
         },
         computed: {
