@@ -6,6 +6,7 @@ use App\Models\Printer;
 use App\Models\PrintLabelHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class PrintLabelController extends Controller
 {
@@ -61,8 +62,6 @@ class PrintLabelController extends Controller
             $returnValue = 0;
             $location = isset(request()->location) ? request()->location : '';
             if (isset($printer[0])) {
-                    
-               
 
                 $conn = fsockopen($printer[0]->printer, 9100, $errno, $errstr);
                 $data = ' 
@@ -71,21 +70,15 @@ class PrintLabelController extends Controller
 ^BY3,2,65
 ^FO50,110^BCN,120,N,N^FD' . request()->upc . '^FS
 ^FO10,245^A0,32^FD' . $location . '^FS
-^FO350,245^A0,32^FD Made in china^FS
 ^XZ
 ';
                 fputs($conn, $data, strlen($data));
                 fclose($conn);
-                $returnValue = 1;            
+                $returnValue = 1;
                 $message = 'Etiqueta impresa exitosamente';
 
-                PrintLabelHistory::create([
-                    "user_id" => request()->user()->id,
-                    "printer_from" => request()->getClientIp(),
-                    "upc_scanned" => request()->upc,
-                    "part_number" => request()->partNumber,
-                    "location" =>  isset(request()->location) ? request()->location : ''
-                ]);
+                $this->saveHistory();
+                $this->updateCounter();
             }
         } catch (\Throwable $th) {
             $message = $th->getMessage();
@@ -95,6 +88,20 @@ class PrintLabelController extends Controller
             'message' => $message,
             'returnValue' => $returnValue,
         ]);
+    }
+    private  function saveHistory()
+    {
+        PrintLabelHistory::create([
+            "user_id" => request()->user()->id,
+            "printer_from" => request()->getClientIp(),
+            "upc_scanned" => request()->upc,
+            "part_number" => request()->partNumber,
+            "location" =>  isset(request()->location) ? request()->location : ''
+        ]);
+    }
+    private function updateCounter()
+    {
+        DB::table('targets')->where('station', Str::of(request()->user()->complete_name)->ucfirst())->increment('total_printed');
     }
     /**
      * Show the form for creating a new resource.

@@ -123,7 +123,7 @@ $isValid = isset($computer[0]);
                         method: 'get',
                         url: '/print',
                         params: {
-                            upc: instance.upc.trim(),
+                            upc: instance.upc.toString().trim(),
                             partNumber: instance.partNumber.trim(),
                             location: instance.location
                         }

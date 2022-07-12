@@ -3,6 +3,7 @@
 use App\Http\Controllers\CountersController;
 use App\Http\Controllers\ReturnController;
 use App\Http\Controllers\PrintLabelController;
+use App\Http\Controllers\TargetController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -34,6 +35,10 @@ Route::middleware('auth')->group(function () {
     Route::get('labels/add', [PrintLabelController::class, 'create'])->name('upcnumber');
     Route::get('labels/counters', [CountersController::class, 'index']);
     Route::get('labels/actual', [CountersController::class, 'counters']);
+
+    Route::get('target', [TargetController::class, 'index']);
+    Route::get('target/create', [TargetController::class, 'create']);
+    Route::post('target/create', [TargetController::class, 'store']);
 
     Route::get('returns/reports/general', function () {
         return view('returns.report-tracking');

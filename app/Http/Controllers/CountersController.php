@@ -11,10 +11,10 @@ class CountersController extends Controller
         "jrz" => [
             "line 1" => [
                 "Station 1" => [
-                    "id" => 3,
+                    "id" => 1,
                 ],
                 "Station 2" => [
-                    "id" => 4,
+                    "id" => 2,
                 ]
             ]
         ]
@@ -53,7 +53,7 @@ class CountersController extends Controller
                 ->whereIn('station', $filterUsers['stations'])
                 ->get(),
 
-            "totalScanned" => DB::table('print_label_histories')
+            /*  "totalScanned" => DB::table('print_label_histories')
                 ->select(DB::raw('count(user_id) as total_labels_scanned, user_id'))
                 ->where($filters)
                 ->where(function ($query) use ($filterUsers) {
@@ -61,7 +61,7 @@ class CountersController extends Controller
                         ->orWhere('user_id', $filterUsers['users'][1]);
                 })
                 ->groupBy('user_id')
-                ->get(),
+                ->get(), */
             "info" => isset($this->groupLines[request()->warehouse]) ?  $this->groupLines[request()->warehouse][request()->line] : []
         ]);
     }

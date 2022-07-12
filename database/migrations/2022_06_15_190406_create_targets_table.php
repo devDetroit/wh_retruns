@@ -19,6 +19,7 @@ class CreateTargetsTable extends Migration
             $table->string('warehouse');
             $table->string('station');
             $table->integer('goal');
+            $table->integer('total_printed');
             $table->integer('created_by');
             $table->timestamps();
         });

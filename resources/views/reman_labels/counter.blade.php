@@ -220,7 +220,7 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td>{{ counters.target[index]['TotalScanned']['total_labels_scanned'] ?? 0}}</td>
+                                                            <td>{{ counters.target[index]['TotalScanned'] ?? 0}}</td>
                                                             <td>{{ counters.target[index]['goal'] }}</td>
                                                         </tr>
                                                     </tbody>
@@ -302,12 +302,12 @@
             initializeCounters(data) {
                 this.counters = data
                 for (let index = 0; index < data.target.length; index++) {
-                    this.counters.target[index]['stationID'] = data.info[data.target[index]['station']];
-                    this.counters.target[index]['TotalScanned'] = data.totalScanned.find(element => element.user_id == this.counters.target[index]['stationID']['id']) ?? 0;
-                    var totalScanned = this.counters.target[index]['TotalScanned']?.total_labels_scanned ?? 0;
+                    this.counters.target[index]['stationID'] = data.target[index]['station'];
+                    this.counters.target[index]['TotalScanned'] = data.target[index]['total_printed']
+                    var totalScanned = this.counters.target[index]['TotalScanned'];
                     this.counters.target[index]['Porcent'] = Math.round((totalScanned / this.counters.target[index]['goal']) * 100);
                     this.total.total += this.counters.target[index]['goal'];
-                    this.total.actuales += this.counters.target[index]['TotalScanned']['total_labels_scanned'] ?? 0;
+                    this.total.actuales += this.counters.target[index]['TotalScanned'];
                 }
                 this.total.porcentaje = Math.round((this.total.actuales / this.total.total) * 100)
             }
@@ -330,7 +330,24 @@
             },
             validateIfCounterIsNotNull: function() {
                 return this.counters != null;
-            }
+            },
+            warehouseDescription: function() {
+                var description = ''
+                switch (this.warehouse) {
+                    case 'jrz':
+                        description = 'REMAN'
+                        break;
+
+                    case 'elp':
+                        description = 'ELP WH'
+                        break;
+
+                    default:
+                        description = ''
+                        break;
+                }
+                return description;
+            },
         }
     })
 </script>
