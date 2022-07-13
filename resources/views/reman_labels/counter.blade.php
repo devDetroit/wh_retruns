@@ -241,7 +241,7 @@
 
 
 
-    <x-location-labels></x-location-labels>
+    <!--     <x-location-labels></x-location-labels> -->
 </div>
 @endsection
 
@@ -255,7 +255,7 @@
     const app = new Vue({
         el: '#printLabelApp',
         data: {
-            warehouse: '',
+            warehouse: 'jrz',
             totalPZS: 0,
             totalScanned: 0,
             url: new URLSearchParams(location.search),
@@ -313,7 +313,7 @@
             }
         },
         mounted() {
-            locationButton.click();
+            //locationButton.click();
             const urlParams = new URLSearchParams(location.search);
 
             var date = new Date();
