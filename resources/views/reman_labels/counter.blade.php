@@ -272,7 +272,7 @@
             getWarehouse(warehouse) {
                 this.warehouse = warehouse;
                 closeModalButton.click();
-                this.getData()
+                //this.getData()
             },
             getData() {
                 let currentInstance = this
@@ -315,7 +315,7 @@
         mounted() {
             //locationButton.click();
             const urlParams = new URLSearchParams(location.search);
-
+            this.getData();
             var date = new Date();
             this.updateDate = date.toLocaleString();
 
