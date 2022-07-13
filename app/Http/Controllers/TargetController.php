@@ -54,7 +54,7 @@ class TargetController extends Controller
 
         Target::updateOrCreate(
             ["production_day" => date('Y-m-d'), "station" => $request->station],
-            ["goal" => $request->input('goal'), "warehouse" => "jrz", "total_printed" => 0, "created_by" => $request->user()->id]
+            ["goal" => $request->input('goal'), "warehouse" => "jrz", "total_printed" => isset($request->total_printed) ? $request->total_printed : 0, "created_by" => $request->user()->id]
         );
 
         return back()->with('success', 'Registro insertado');

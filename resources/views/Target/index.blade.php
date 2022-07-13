@@ -12,8 +12,8 @@
                 <form method="POST" action="/target/create">
                     @csrf
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Cantidad a producir</label>
-                        <select class="form-select" name="station">
+                        <label for="station" class="form-label">Estacion</label>
+                        <select class="form-select" name="station" id="station">
                             @foreach($lines as $line)
                             <option value="{{$line}}">{{$line}}</option>
                             @endforeach
@@ -21,7 +21,11 @@
                     </div>
                     <div class="mb-3">
                         <label for="goal" class="form-label">Cantidad a producir</label>
-                        <input type="numeric" class="form-control" id="goal" name="goal" required>
+                        <input type="text" class="form-control" id="goal" name="goal" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="goal" class="form-label">Total impresas</label>
+                        <input type="text" class="form-control" id="total_printed" name="total_printed" required>
                     </div>
                     <div class="text-end">
                         <button type="submit" class="btn btn-primary">Guardar</button>
@@ -36,7 +40,7 @@
                 Registro
             </div>
             <div class="card-body">
-                <table class="table text-center">
+                <table id="goalsTable" class="table text-center">
                     <thead>
                         <tr>
                             <th scope="col">Fecha</th>
@@ -54,7 +58,7 @@
                             <td>{{$goals->station}}</td>
                             <td>{{$goals->goal}}</td>
                             <td>{{$goals->total_printed}}</td>
-                            <td><button class="btn btn-sm btn-secondary">Modificar</button></td>
+                            <td><button type="button" class="btn btn-sm btn-secondary" onclick="fillInput(<?= $loop->index + 1 ?>)">Modificar</button></td>
                         </tr>
                         @endforeach
 
@@ -84,4 +88,14 @@
     });
 </script>
 @endif
+
+<script>
+    function fillInput(row) {
+        var dataTable = document.getElementById("goalsTable").rows[row].cells;
+        console.log(dataTable)
+        goal.value = dataTable[2].innerHTML;
+        total_printed.value = dataTable[3].innerHTML;
+        station.value = dataTable[1].innerHTML;
+    }
+</script>
 @endsection
