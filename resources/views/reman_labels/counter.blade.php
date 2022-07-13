@@ -142,7 +142,7 @@
 @section('content')
 
 <div id="printLabelApp">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center" style="background-color: #f6f6f6;">
         <div class="col-md-10">
             <div class="row">
                 <div class="col-md-6 border-end" style="margin-top: 5rem !important;">
@@ -239,9 +239,6 @@
         </div>
     </div>
 
-
-
-    <!--     <x-location-labels></x-location-labels> -->
 </div>
 @endsection
 
