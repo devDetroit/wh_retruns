@@ -50,11 +50,11 @@
 
     .cardCircle .number h3 {
         font-weight: 500;
-        font-size: 3rem;
+        font-size: 4rem;
     }
 
     .cardCircle .number h3 span {
-        font-size: 2rem;
+        font-size: 3rem;
     }
 
     .cardCircle .title h2 {
@@ -167,7 +167,7 @@
                                         </div>
                                     </div>
                                     <div class="title" style="width: 100%;">
-                                        <table class="table table-borderless text-center" style="font-size: 2.2em;">
+                                        <table class="table table-borderless text-center" style="font-size: 2.7em;">
                                             <thead>
                                                 <th>Actual</th>
                                                 <th>Total</th>
@@ -202,7 +202,7 @@
                                             <p style="font-size: 2em;  color: black; font-weight: bold;">@{{ counters.target[index]['station'] }}</p>
                                         </div>
                                         @verbatim
-                                        <div class="cardOriginal border border-secondary">
+                                        <div class="cardOriginal border border-secondary shadow p-1 bg-body rounded">
                                             <div class="percent">
                                                 <svg>
                                                     <circle cx="105" cy="105" r="100"></circle>
