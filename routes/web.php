@@ -33,8 +33,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('labels/print', [PrintLabelController::class, 'index'])->name('labels');
     Route::get('labels/add', [PrintLabelController::class, 'create'])->name('upcnumber');
-    Route::get('labels/counters', [CountersController::class, 'index']);
-    Route::get('labels/actual', [CountersController::class, 'counters']);
+
+
 
     Route::get('target', [TargetController::class, 'index']);
     Route::get('target/create', [TargetController::class, 'create']);
@@ -48,6 +48,8 @@ Route::middleware('auth')->group(function () {
     });
 });
 
+Route::get('labels/actual', [CountersController::class, 'counters']);
+Route::get('labels/counters', [CountersController::class, 'index']);
 /* LABELS REMAN */
 Route::get('upc', [PrintLabelController::class, 'validateUPC']);
 Route::get('print', [PrintLabelController::class, 'printLabel']);
