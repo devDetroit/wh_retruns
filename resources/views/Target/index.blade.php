@@ -28,6 +28,7 @@
                         <input type="text" class="form-control" id="total_printed" name="total_printed" required>
                     </div>
                     <div class="text-end">
+                        <button type="reset" class="btn btn-danger">Nuevo</button>
                         <button type="submit" class="btn btn-primary">Guardar</button>
                     </div>
                 </form>
