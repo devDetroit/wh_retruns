@@ -49,6 +49,12 @@ class PrintLabelController extends Controller
         ]);
     }
 
+    private function validateRequesterID()
+    {
+        if (!isset(request()->user()->id)) {
+            return response()->route('login');
+        }
+    }
     public function getPrinter()
     {
         return Printer::whereRelation('computer', 'computer_ip', request()->getClientIp())->get();
@@ -56,6 +62,8 @@ class PrintLabelController extends Controller
 
     public function printLabel()
     {
+        $this->validateRequesterID();
+
         try {
             $printer = $this->getPrinter();
             $message = '';
@@ -70,6 +78,7 @@ class PrintLabelController extends Controller
 ^BY3,2,65
 ^FO50,110^BCN,120,N,N^FD' . request()->upc . '^FS
 ^FO10,245^A0,32^FD' . $location . '^FS
+^FO350,245^A0,32^FD Made in china^FS
 ^XZ
 ';
                 fputs($conn, $data, strlen($data));
@@ -111,61 +120,5 @@ class PrintLabelController extends Controller
     public function create()
     {
         return view('reman_labels.add-upcnumbers');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
