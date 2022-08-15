@@ -64,7 +64,8 @@ $isValid = isset($computer[0]);
             upc: '',
             partNumber: '',
             location: '',
-            warehouse: ''
+            warehouse: '',
+            newWindow: null
         },
         methods: {
             getWarehouse(warehouse) {
@@ -72,6 +73,8 @@ $isValid = isset($computer[0]);
                 closeModalButton.click();
             },
             generateLabel() {
+
+                const startWithFilter = ['43', '53', '50', '51']
                 if (this.fieldToSearch.trim().length <= 0) {
                     sweetAlertAutoClose('warning', "No se escaneo ni un UPC");
                     this.clearFields()
@@ -97,6 +100,12 @@ $isValid = isset($computer[0]);
                             instance.location = response.data.upc[0]['LocationNumber'];
                             instance.upc = response.data.upc[0]['UPC'];
                             instance.generateCodeBar()
+
+                            if (instance.partNumber.length == 6) {
+                                if (startWithFilter.indexOf(instance.partNumber.substring(0, 2)) >= 0) {
+                                    window.open("https://www.detroitaxle.com/?s=" + instance.partNumber, 'detroit', 'location=yes,toolbar=yes,menubar=yes,directories=yes', false);
+                                }
+                            }
                         }
 
                     }).catch(error => {
