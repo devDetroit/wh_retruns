@@ -110,7 +110,10 @@ class PrintLabelController extends Controller
     }
     private function updateCounter()
     {
-        DB::table('targets')->where('station', Str::of(request()->user()->complete_name)->ucfirst())->increment('total_printed');
+        DB::table('targets')->where([
+            ['station', Str::of(request()->user()->complete_name)->ucfirst()],
+            ['production_day', date('Y-m-d')]
+        ])->increment('total_printed');
     }
     /**
      * Show the form for creating a new resource.
