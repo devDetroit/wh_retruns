@@ -18,6 +18,26 @@ class CountersController extends Controller
             ]
         ]
     );
+    
+   /*  protected $groupLines = array(
+        "jrz" => [
+            "line 1" => [
+                "Station 1" => [
+                    "id" => 21,
+                ],               
+                ],
+                 "line 2" => [
+                "Station 2" => [
+                    "id" => 22,
+                ]
+                ],
+                "line 3" => [
+                    "Station 3" => [
+                        "id" => 23,
+                    ]
+                    ],
+        ]
+    ); */
 
     public function index()
     {
