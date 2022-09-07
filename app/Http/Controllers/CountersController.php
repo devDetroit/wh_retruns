@@ -19,6 +19,26 @@ class CountersController extends Controller
             ]
         ]
     );
+    
+   /*  protected $groupLines = array(
+        "jrz" => [
+            "line 1" => [
+                "Station 1" => [
+                    "id" => 21,
+                ],               
+                ],
+                 "line 2" => [
+                "Station 2" => [
+                    "id" => 22,
+                ]
+                ],
+                "line 3" => [
+                    "Station 3" => [
+                        "id" => 23,
+                    ]
+                    ],
+        ]
+    ); */
 
     public function index()
     {
@@ -52,16 +72,6 @@ class CountersController extends Controller
             ])
                 ->whereIn('station', $filterUsers['stations'])
                 ->get(),
-
-            /*  "totalScanned" => DB::table('print_label_histories')
-                ->select(DB::raw('count(user_id) as total_labels_scanned, user_id'))
-                ->where($filters)
-                ->where(function ($query) use ($filterUsers) {
-                    $query->where('user_id', $filterUsers['users'][0])
-                        ->orWhere('user_id', $filterUsers['users'][1]);
-                })
-                ->groupBy('user_id')
-                ->get(), */
             "info" => isset($this->groupLines[request()->warehouse]) ?  $this->groupLines[request()->warehouse][request()->line] : []
         ]);
     }
