@@ -5,6 +5,7 @@ use App\Http\Controllers\ReturnController;
 use App\Http\Controllers\PrintLabelController;
 use App\Http\Controllers\TargetController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
 
 
 /*
@@ -44,7 +45,16 @@ Route::middleware('auth')->group(function () {
         return view('returns.report-tracking');
     });
     Route::get('/elp-dashboard', function () {
-        return view('returns.wh_dashboard');
+        return view('returns.wh_dashboard', [
+            "counters" => DB::select('CALL sp_counters()'),
+            "totalRecords" => DB::table('returns')->count()
+        ]);
+    });
+    Route::get('/jrz-dashboard', function () {
+        return view('returns.cc_dashboard', [
+            "counters" => DB::select('CALL sp_counters()'),
+            "totalRecords" => DB::table('returns')->count()
+        ]);
     });
 });
 

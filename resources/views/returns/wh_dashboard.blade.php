@@ -87,7 +87,7 @@
 
                 axios({
                         method: 'get',
-                        url: 'api/dashboard',
+                        url: 'api/elpDashboard',
                         params: {
                             date: ins.filterDate
                         }

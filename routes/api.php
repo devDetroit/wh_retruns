@@ -24,7 +24,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('returns', [ReturnApiController::class, 'index']);
 Route::get('user', [ReturnApiController::class, 'loginUser']);
 Route::get('tracking/{tracking}', [ReturnApiController::class, 'getTrackingNumberCount']);
-Route::get('dashboard', [ReturnApiController::class, 'getProductionPerUserDashboard']);
+Route::get('elpDashboard', [ReturnApiController::class, 'getELPProductionDashboard']);
+Route::get('jrzDashboard', [ReturnApiController::class, 'getJRZProductionDashboard']);
 Route::get('photos', [ReturnApiController::class, 'getPhotosPerPartNumber']);
 Route::post('return/partnumbers', [ReturnApiController::class, 'submitPartNumber']);
 Route::post('return', [ReturnApiController::class, 'submitTrackingNumber']);

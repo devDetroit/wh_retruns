@@ -35,8 +35,14 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/returns">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/elp-dashboard">WH Dashboard</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Dashboards
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="/elp-dashboard">El Paso Warehouse</a></li>
+                                <li><a class="dropdown-item" href="/jrz-dashboard">Juarez Call Center</a></li>
+                            </ul>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

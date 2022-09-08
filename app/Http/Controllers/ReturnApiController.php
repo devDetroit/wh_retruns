@@ -28,14 +28,26 @@ class ReturnApiController extends Controller
         return null;
     }
 
-    public function getProductionPerUserDashboard()
+    public function getELPProductionDashboard()
     {
         $getCurrentDate = date('m/d/Y');
 
         $searchByDate = isset(request()->date) ? date_format(date_create(request()->date), 'm/d/Y')  : $getCurrentDate;
         return  response()->json([
-            'generalSummary' => DB::select('CALL `elpdashboarGeneral`()'),
-            'dailySummary' =>  DB::select("CALL elpdasboard('$searchByDate')")
+            'generalSummary' => DB::select('CALL `elpDashboardGeneral`()'),
+            'dailySummary' =>  DB::select("CALL elpDashboard('$searchByDate')")
+        ]);
+    }
+
+    public function getJRZProductionDashboard()
+    {
+        $getCurrentDate = date('m/d/Y');
+
+        $searchByDate = isset(request()->date) ? date_format(date_create(request()->date), 'm/d/Y')  : $getCurrentDate;
+        return  response()->json([
+            'generalSummary' => DB::select('CALL `jrzDashboardGeneral`()'),
+            'dailySummary' =>  DB::select("CALL jrzDashboard('$searchByDate')"),
+            'storeSummary' => DB::select('CALL `storesDashboardTotal`()')
         ]);
     }
 
