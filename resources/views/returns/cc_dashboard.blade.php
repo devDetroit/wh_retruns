@@ -36,7 +36,7 @@
     <div class="row mt-4">
         <div class="card">
             <div class="card-header">
-                <h4>General Summary</h4>
+                <h4>General User Summary</h4>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -49,7 +49,7 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">User</th>
-                                    <th scope="col">Total Registred</th>
+                                    <th scope="col">Total Registered</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -66,41 +66,38 @@
         </div>
     </div>
     <div class="row mt-4">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5>General Stores Summary</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <canvas id="storesChart"></canvas>
-                        </div>
+        <div class="card">
+            <div class="card-header">
+                <h5>General Stores Summary</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Store</th>
+                                    <th scope="col">Total Orders</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(item, index) in stores" :key="index">
+                                    <th scope="row">@{{ index + 1 }}</th>
+                                    <td>@{{item.name}}</td>
+                                    <td>@{{item.totalQuantity}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Store</th>
-                                        <th scope="col">Total Orders</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="(item, index) in stores" :key="index">
-                                        <th scope="row">@{{ index + 1 }}</th>
-                                        <td>@{{item.name}}</td>
-                                        <td>@{{item.totalQuantity}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="col-md-6">
+                        <canvas id="storesChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+    </div>
+    <div class="row mt-4">
             <div class="card">
                 <div class="card-header">
                     <div class="row">
@@ -117,28 +114,59 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col">
-                            <canvas id="myChart2" height="150"></canvas>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col">
+                                    <canvas id="dailyStoresChart" height="150"></canvas>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Store</th>
+                                                <th scope="col">Total Orders</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(item, index) in dailyStores" :key="index">
+                                                <th scope="row">@{{ index + 1 }}</th>
+                                                <td>@{{item.name}}</td>
+                                                <td>@{{item.totalQuantity}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">User</th>
-                                        <th scope="col">Total Registred</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="(item, index) in daily" :key="index">
-                                        <th scope="row">@{{ index + 1 }}</th>
-                                        <td>@{{item.complete_name}}</td>
-                                        <td>@{{item.totalQuantity}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col">
+                                    <canvas id="myChart2" height="150"></canvas>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">User</th>
+                                                <th scope="col">Total Registered</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(item, index) in daily" :key="index">
+                                                <th scope="row">@{{ index + 1 }}</th>
+                                                <td>@{{item.complete_name}}</td>
+                                                <td>@{{item.totalQuantity}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -158,10 +186,12 @@
             general: [],
             daily: [],
             stores: [],
+            dailyStores: [],
             filterDate: new Date().toLocaleDateString(),
             generalGraph: null,
             dailyGraph: null,
             storesGraph: null,
+            dailyStoresGraph: null,
         },
         methods: {
             initializeData() {
@@ -169,6 +199,7 @@
                 this.general = [];
                 this.daily = [];
                 this.stores = [];
+                this.dailyStores = [];
 
                 axios({
                         method: 'get',
@@ -181,9 +212,11 @@
                         ins.general = response.data.generalSummary;
                         ins.daily = response.data.dailySummary;
                         ins.stores = response.data.storeSummary;
+                        ins.dailyStores = response.data.dailyStoreSummary;
                         ins.initializeGraphics(response.data.generalSummary);
                         ins.initializeDailyGraphics(response.data.dailySummary);
                         ins.initializeStoresGraphics(response.data.storeSummary);
+                        ins.initializeDailyStoresGraphics(response.data.dailyStoreSummary);
                     });
             },
             initializeGraphics(data) {
@@ -222,6 +255,15 @@
                         parsing: {
                             xAxisKey: 'complete_name',
                             yAxisKey: 'totalQuantity'
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'User Summary',
+                                font: {
+                                    size: 16
+                                }
+                            }
                         }
                     }
                 });
@@ -254,6 +296,44 @@
                         }
                     }
                 });
+            },
+            initializeDailyStoresGraphics(data) {
+                const ctx = document.getElementById('dailyStoresChart');
+                this.dailyStoresGraph = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        datasets: [{
+                            label: 'Daily records per Store',
+                            data: data,
+                            backgroundColor: [
+                                'rgba(255, 99, 132)',
+                                'rgba(255, 159, 64)',
+                                'rgba(255, 205, 86)',
+                                'rgba(75, 192, 192)',
+                                'rgba(54, 162, 235)',
+                                'rgba(153, 102, 255)',
+                                'rgba(201, 203, 207)'
+                            ],
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        parsing: {
+                            yAxisKey: 'name',
+                            xAxisKey: 'totalQuantity'
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Store Summary',
+                                font: {
+                                    size: 16
+                                }
+                            }
+                        }
+                    }
+                });
             }
         },
         mounted() {
@@ -268,6 +348,8 @@
                         this.dailyGraph.destroy();
                     if (this.storesGraph != null)
                         this.storesGraph.destroy();
+                    if (this.dailyStoresGraph != null)
+                        this.dailyStoresGraph.destroy();
                     this.initializeData();
                 }
             }

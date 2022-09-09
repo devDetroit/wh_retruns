@@ -47,7 +47,8 @@ class ReturnApiController extends Controller
         return  response()->json([
             'generalSummary' => DB::select('CALL `jrzDashboardGeneral`()'),
             'dailySummary' =>  DB::select("CALL jrzDashboard('$searchByDate')"),
-            'storeSummary' => DB::select('CALL `storesDashboardTotal`()')
+            'storeSummary' => DB::select('CALL `storesDashboardTotal`()'),
+            'dailyStoreSummary' => DB::select("CALL storesDashboard('$searchByDate')")
         ]);
     }
 
