@@ -36,6 +36,106 @@
     <div class="row mt-4">
         <div class="card">
             <div class="card-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4 class="mt-4">Daily Summary - @{{ filterDate }}</h4>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="m-1">
+                            <label for="dateFilter" class="form-label">Filter by date</label>
+                            <input type="date" class="form-control form-control-sm" id="dateFilter" v-model="filterDate">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <canvas id="dailyPNStatusChart" height="200"></canvas>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>    
+                                    <th scope="col">Store</th>
+                                    <th scope="col">Good</th>
+                                    <th scope="col">Bad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(item, index) in dailyPNStatus" :key="index">
+                                    <th scope="row">@{{ index + 1 }}</th>
+                                    <td>@{{item.name}}</td>
+                                    <td>@{{item.good}}</td>
+                                    <td>@{{item.bad}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col">
+                                <canvas id="dailyStoresChart" height="150"></canvas>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Store</th>
+                                            <th scope="col">Total Orders</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(item, index) in dailyStores" :key="index">
+                                            <th scope="row">@{{ index + 1 }}</th>
+                                            <td>@{{item.name}}</td>
+                                            <td>@{{item.totalQuantity}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col">
+                                <canvas id="myChart2" height="150"></canvas>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">User</th>
+                                            <th scope="col">Total Registered</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(item, index) in daily" :key="index">
+                                            <th scope="row">@{{ index + 1 }}</th>
+                                            <td>@{{item.complete_name}}</td>
+                                            <td>@{{item.totalQuantity}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="card">
+            <div class="card-header">
                 <h4>General User Summary</h4>
             </div>
             <div class="card-body">
@@ -68,7 +168,7 @@
     <div class="row mt-4">
         <div class="card">
             <div class="card-header">
-                <h5>General Stores Summary</h5>
+                <h4>General Stores Summary</h4>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -97,82 +197,6 @@
             </div>
         </div>
     </div>
-    <div class="row mt-4">
-            <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h5 class="mt-4">Daily Summary - @{{ filterDate }}</h5>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="m-1">
-                                <label for="dateFilter" class="form-label">Filter by date</label>
-                                <input type="date" class="form-control form-control-sm" id="dateFilter" v-model="filterDate">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col">
-                                    <canvas id="dailyStoresChart" height="150"></canvas>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Store</th>
-                                                <th scope="col">Total Orders</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="(item, index) in dailyStores" :key="index">
-                                                <th scope="row">@{{ index + 1 }}</th>
-                                                <td>@{{item.name}}</td>
-                                                <td>@{{item.totalQuantity}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col">
-                                    <canvas id="myChart2" height="150"></canvas>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">User</th>
-                                                <th scope="col">Total Registered</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="(item, index) in daily" :key="index">
-                                                <th scope="row">@{{ index + 1 }}</th>
-                                                <td>@{{item.complete_name}}</td>
-                                                <td>@{{item.totalQuantity}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 @endsection
@@ -187,11 +211,13 @@
             daily: [],
             stores: [],
             dailyStores: [],
+            dailyPNStatus: [],
             filterDate: new Date().toLocaleDateString(),
             generalGraph: null,
             dailyGraph: null,
             storesGraph: null,
             dailyStoresGraph: null,
+            dailyPNStatusGraph: null,
         },
         methods: {
             initializeData() {
@@ -213,10 +239,12 @@
                         ins.daily = response.data.dailySummary;
                         ins.stores = response.data.storeSummary;
                         ins.dailyStores = response.data.dailyStoreSummary;
+                        ins.dailyPNStatus = response.data.dailyPNStatusSummary;
                         ins.initializeGraphics(response.data.generalSummary);
                         ins.initializeDailyGraphics(response.data.dailySummary);
                         ins.initializeStoresGraphics(response.data.storeSummary);
                         ins.initializeDailyStoresGraphics(response.data.dailyStoreSummary);
+                        ins.initializeDailyPNStatusGraphics(response.data.dailyPNStatusSummary);
                     });
             },
             initializeGraphics(data) {
@@ -259,7 +287,7 @@
                         plugins: {
                             title: {
                                 display: true,
-                                text: 'User Summary',
+                                text: 'User Orders Summary',
                                 font: {
                                     size: 16
                                 }
@@ -326,7 +354,47 @@
                         plugins: {
                             title: {
                                 display: true,
-                                text: 'Store Summary',
+                                text: 'Store Orders Summary',
+                                font: {
+                                    size: 16
+                                }
+                            }
+                        }
+                    }
+                });
+            },
+            initializeDailyPNStatusGraphics(data) {
+                const ctx = document.getElementById('dailyPNStatusChart');
+                this.dailyPNStatusGraph = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        datasets: [{
+                            label: 'Good returns',
+                            data: data,
+                            index: 'good',
+                            backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                            borderColor: 'rgb(54, 162, 235)',
+                            borderWidth: 1,
+                            hoverOffset: 4
+                        }, {
+                            label: 'Bad returns',
+                            data: data,
+                            index: 'bad',
+                            backgroundColor: 'rgba(255, 99, 132, 0.7)',
+                            borderColor: 'rgb(255, 99, 132)',
+                            borderWidth: 1,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        parsing: {
+                            xAxisKey: 'name',
+                            yAxisKey: ['good', 'bad']
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Return conditions per Store',
                                 font: {
                                     size: 16
                                 }
@@ -350,6 +418,8 @@
                         this.storesGraph.destroy();
                     if (this.dailyStoresGraph != null)
                         this.dailyStoresGraph.destroy();
+                    if (this.dailyPNStatusGraph != null)
+                        this.dailyPNStatusGraph.destroy();
                     this.initializeData();
                 }
             }
