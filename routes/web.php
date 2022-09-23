@@ -44,6 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::get('returns/reports/general', function () {
         return view('returns.report-tracking');
     });
+    Route::get('returns/reports/condition', function () {
+        return view('returns.report-condition');
+    });
     Route::get('/elp-dashboard', function () {
         return view('returns.wh_dashboard', [
             "counters" => DB::select('CALL sp_counters()'),

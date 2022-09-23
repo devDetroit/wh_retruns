@@ -22,6 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::get('returns', [ReturnApiController::class, 'index']);
+Route::get('returnsCondition', [ReturnApiController::class, 'returnsCondition']);
 Route::get('user', [ReturnApiController::class, 'loginUser']);
 Route::get('tracking/{tracking}', [ReturnApiController::class, 'getTrackingNumberCount']);
 Route::get('elpDashboard', [ReturnApiController::class, 'getELPProductionDashboard']);

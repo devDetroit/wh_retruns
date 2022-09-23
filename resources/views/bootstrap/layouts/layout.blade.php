@@ -50,6 +50,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="/returns/reports/general">Tracking Number</a></li>
+                                <li><a class="dropdown-item" href="/returns/reports/condition">Returns Condition</a></li>
                             </ul>
                         </li>
                         @endcan
