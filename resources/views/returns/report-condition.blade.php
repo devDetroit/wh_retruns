@@ -3,31 +3,37 @@
 @section('content')
 
 <div id="indexapp">
-    <div class="row mt-4">
-        <div class="col-md-4">
-            <h3>Returns Condition Report</h3>
-        </div>
-        <div class="col-md-4">
-            <div class="row">
-                <div class="col">
-                    <h5>Filter by date</h5>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-10">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="row">
+                        <h4 class="card-title">Returns Condition Report</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-text">From:</span>
+                                <input type="date" class="form-control form-control-sm" v-model="startDate">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-text">To:</span>
+                                <input type="date" class="form-control form-control-sm" v-model="endDate">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-sm btn-success" v-on:click="applySearch">Search</button>
+                            <button type="button" class="btn btn-sm btn-dark" v-on:click="downloadData">Download CSV File</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <input type="date" class="form-control form-control-sm" v-model="startDate">
-                </div>
-                <div class="col-md-6">
-                    <input type="date" class="form-control form-control-sm" v-model="endDate">
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 text-end">
-            <button type="button" class="btn btn-sm btn-dark" v-on:click="downloadData">Download CSV File</button>
         </div>
     </div>
-    <div class="row mt-4">
-        <div class="col-md-12">
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-10">
             <div id="returns-table"></div>
         </div>
     </div>
@@ -51,30 +57,17 @@
             downloadData() {
                 this.table.download("csv", "data.csv");
             },
-            /* initializeData() {
-                let ins = this
-                this.records = [];
-
-                axios({
-                    method: 'get',
-                    url: 'api/returnsCondition',
-                    params: {
-                        startDate: ins.startDate,
-                        endDate: ins.endDate
-                    }
-                })
-                .then(function(response) {
-                    ins.records = response.data.returnRecords;
-                    ins.initializeTabulator(response.data.returnRecords);
-                });
-            }, */
+            applySearch() {
+                if (this.table != null)
+                    this.table.destroy();
+                this.initializeTabulator();
+            },
             initializeTabulator() {
                 let ins = this;
                 this.table = new Tabulator("#returns-table", {
                     height: '700',
                     pagination: true, //enable.
                     paginationSize: 25,
-                    // data: data,
                     ajaxURL: '/api/returnsCondition',
                     ajaxParams: {
                         startDate: this.startDate,
@@ -89,75 +82,69 @@
                         {
                             title: "Store",
                             field: "store_name",
-                            headerFilter: true
+                            // headerFilter: true
                         },
                         {
                             title: "Track Number",
                             field: "track_number",
-                            headerFilter: true
+                            // headerFilter: true
 
                         },
                         {
                             title: "Order Number",
                             field: "order_number",
-                            headerFilter: true
+                            // headerFilter: true
                         },
                         {
                             title: "Order Status",
                             field: "order_status",
-                            headerFilter: true
+                            // headerFilter: true
                         },
                         {
                             title: "Created at",
                             field: "created_at",
-                            headerFilter: true
+                            // headerFilter: true
                         },
                         {
                             title: "Created by",
                             field: "created_by",
-                            headerFilter: true
+                            // headerFilter: true
                         },
                         {
                             title: "Updated at",
                             field: "updated_at",
-                            headerFilter: true
+                            // headerFilter: true
                         },
                         {
                             title: "Updated by",
                             field: "updated_by",
-                            headerFilter: true
+                            // headerFilter: true
                         },
                         {
                             title: "Part Number",
                             field: "partnumber",
-                            headerFilter: true
+                            // headerFilter: true
                         },
                         {
                             title: "PN Description",
                             field: "pn_status",
-                            headerFilter: true
+                            // headerFilter: true
                         },
                     ],
                 });
             }
         },
-        mounted() {
+        /* mounted() {
             this.initializeTabulator();
-        },
+        }, */
         watch: {
             startDate: function() {
-                if (this.startDate != null && this.endDate != null) {
-                    if (this.table != null)
-                        this.table.destroy();
-                    this.initializeTabulator();
-                }
+                if (this.startDate > this.endDate)
+                    this.startDate = this.endDate;
             },
             endDate: function() {
-                if (this.startDate != null && this.endDate != null) {
-                    if (this.table != null)
-                        this.table.destroy();
-                    this.initializeTabulator();
-                }
+                if (this.startDate > this.endDate)
+                    this.endDate = this.startDate;
             }
         }
     })
