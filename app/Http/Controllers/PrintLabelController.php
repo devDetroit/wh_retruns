@@ -74,12 +74,12 @@ class PrintLabelController extends Controller
                 $conn = fsockopen($printer[0]->printer, 9100, $errno, $errstr);
                 $data = ' 
 ^XA
-^FO155,57^A0,57^FDPart #:' . request()->partNumber . '^FS
-^FO520,57^A0,20^FD' . $getCurrentDate . '^FS
+^FO130,57^A0,57^FDPart #:' . request()->partNumber . '^FS
+^FO530,57^A0,20^FD' . $getCurrentDate . '^FS
 ^BY3,2,65
 ^FO50,110^BCN,120,N,N^FD' . request()->upc . '^FS
 ^FO10,245^A0,32^FD' . $location . '^FS
-^FO420,245^A0,32^FD Made in China^FS
+^FO420,245^A0,32^FDMade in China^FS
 ^XZ
 ';
                 fputs($conn, $data, strlen($data));
