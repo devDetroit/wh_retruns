@@ -72,9 +72,10 @@ class PrintLabelController extends Controller
             if (isset($printer[0])) {
 
                 $conn = fsockopen($printer[0]->printer, 9100, $errno, $errstr);
+                $pnXPosition = strlen(request()->partNumber) < 6 ? 'FO130' : 'FO85';
                 $data = ' 
 ^XA
-^FO130,57^A0,57^FDPart #:' . request()->partNumber . '^FS
+^' . $pnXPosition . ',57^A0,57^FDPart #:' . request()->partNumber . '^FS
 ^FO530,57^A0,20^FD' . $getCurrentDate . '^FS
 ^BY3,2,65
 ^FO50,110^BCN,120,N,N^FD' . request()->upc . '^FS
