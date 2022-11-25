@@ -70,6 +70,12 @@
                                     <td>@{{item.good}}</td>
                                     <td>@{{item.bad}}</td>
                                 </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>Total</td>
+                                    <td>@{{totalGoodOrders}}</td>
+                                    <td>@{{totalBadOrders}}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -218,6 +224,18 @@
             storesGraph: null,
             dailyStoresGraph: null,
             dailyPNStatusGraph: null,
+        },
+        computed: {
+            totalGoodOrders() {
+                return this.dailyPNStatus.reduce((counter, store) => {
+                    return counter + store.good;
+                }, 0);
+            },
+            totalBadOrders() {
+                return this.dailyPNStatus.reduce((counter, store) => {
+                    return counter + store.bad;
+                }, 0);
+            },
         },
         methods: {
             initializeData() {
