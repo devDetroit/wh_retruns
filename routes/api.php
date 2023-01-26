@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ReturnApiController;
+use App\Http\Controllers\UsersController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,3 +32,9 @@ Route::get('jrzDashboard', [ReturnApiController::class, 'getJRZProductionDashboa
 Route::get('photos', [ReturnApiController::class, 'getPhotosPerPartNumber']);
 Route::post('return/partnumbers', [ReturnApiController::class, 'submitPartNumber']);
 Route::post('return', [ReturnApiController::class, 'submitTrackingNumber']);
+
+Route::get('/users/get', [App\Http\Controllers\UsersController::class, 'getUsers']);
+Route::post('/users/store', [App\Http\Controllers\UsersController::class, 'store']);
+Route::get('/users/delete/{id}', [App\Http\Controllers\UsersController::class, 'delete']);
+Route::get('/folio/{folio}', [App\Http\Controllers\UsersController::class, 'showEmpleado']);
+Route::post('/reestablecer/contrasena', [UsersController::class, 'reset']);
