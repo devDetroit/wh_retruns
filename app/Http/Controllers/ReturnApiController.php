@@ -14,7 +14,12 @@ class ReturnApiController extends Controller
 {
     public function index()
     {
-        return  DB::select('CALL `SelectReturns`()');
+        $getCurrentDate = date('m/d/Y');
+
+        $startSearchDate = isset(request()->startDate) ? (date_format(date_create(request()->startDate), 'm/d/Y')) : $getCurrentDate;
+        $endSearchDate = isset(request()->endDate) ? date_format(date_create(request()->endDate), 'm/d/Y') : $getCurrentDate;
+
+        return  DB::select("CALL SelectReturns('$startSearchDate', '$endSearchDate')");
     }
 
     public function returnsCondition()

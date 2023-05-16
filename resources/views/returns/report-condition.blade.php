@@ -48,7 +48,6 @@
     const app = new Vue({
         el: '#indexapp',
         data: {
-            // records: [],
             startDate: new Date().toLocaleDateString(),
             endDate: new Date().toLocaleDateString(),
             table: null,
@@ -59,8 +58,9 @@
             },
             applySearch() {
                 if (this.table != null)
-                    this.table.destroy();
-                this.initializeTabulator();
+                    this.table.setData();
+                else
+                    this.initializeTabulator();
             },
             initializeTabulator() {
                 let ins = this;
@@ -69,9 +69,11 @@
                     pagination: true, //enable.
                     paginationSize: 25,
                     ajaxURL: '/api/returnsCondition',
-                    ajaxParams: {
-                        startDate: this.startDate,
-                        endDate: this.endDate
+                    ajaxParams: function() {
+                        return {
+                            startDate: ins.startDate,
+                            endDate: ins.endDate
+                        }
                     },
                     layout: "fitColumns",
                     columns: [{
@@ -140,7 +142,7 @@
         watch: {
             startDate: function() {
                 if (this.startDate > this.endDate)
-                    this.startDate = this.endDate;
+                    this.endDate = this.startDate;
             },
             endDate: function() {
                 if (this.startDate > this.endDate)
