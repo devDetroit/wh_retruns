@@ -11,18 +11,18 @@ $isValid = isset($computer[0]);
     <div class="row mt-4">
         <div class="col-md-6">
             <h5>Impresion etiquetas:</h5>
-            <h1> <strong style="color: red;">@{{warehouseDescription}}</strong></h1>
+            <h1> <strong style="color: red;">Reman Calipers</strong></h1>
         </div>
         <div class="col-md-6 text-end">
             <h5>Impresora asignada: <strong>{{$computer[0]->printer}}</strong></h5>
         </div>
     </div>
     @endif
-    <div class="container" v-show="!showInputs">
-        <div class="row  mt-4 justify-content-center">
+    <div class="container">
+        <div class=" row mt-4 justify-content-center">
             <div class="col-md-10">
                 @if($isValid)
-                <x-print-label></x-print-label>
+                <x-print-label isCaliper="true"></x-print-label>
                 @else
                 <x-printer-not-found></x-printer-not-found>
                 @endif
@@ -34,7 +34,7 @@ $isValid = isset($computer[0]);
                 <div class="card">
                     <div class="card-header"><strong>Vista previa etiqueta</strong></div>
                     <div class="card-body  text-center">
-                        <h1>Part #: @{{partNumber}}</h1>
+                        <h1>@{{family}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @{{ partNumber}} </h1>
                         <svg id="barcode"></svg>
                         <h4>@{{location}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made in china</h4>
                     </div>
@@ -46,15 +46,15 @@ $isValid = isset($computer[0]);
         </div>
         @endif
     </div>
-
-    <x-location-labels></x-location-labels>
-
+    @include('components.AddFamily')
 </div>
 @endsection
 
 
 
 @section('scripts')
+<link rel="stylesheet" href="/css/vue-multiselect.min.css">
+<script src="/js/vue-multiselect.js"></script>
 <script src=" https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 <script>
     const app = new Vue({
@@ -62,15 +62,22 @@ $isValid = isset($computer[0]);
         data: {
             fieldToSearch: '',
             upc: '',
+            family: '',
             partNumber: '',
             location: '',
             warehouse: '',
-            newWindow: null
+            newWindow: null,
+            families: [],
+            familyDataSelect: null,
+            familyDataInput: null,
+            createOrSelect: true,
+            modal: null,
+            part_number: null
         },
+
         methods: {
             getWarehouse(warehouse) {
                 this.warehouse = warehouse;
-                closeModalButton.click();
             },
             generateLabel() {
 
@@ -84,26 +91,30 @@ $isValid = isset($computer[0]);
                 let instance = this;
                 axios({
                         method: 'get',
-                        url: '/upc',
-                        params: {
-                            upc: instance.fieldToSearch.trim(),
-                            warehouse: instance.warehouse
-                        }
+                        url: '/labels/calipers/get/' + instance.fieldToSearch.trim(),
                     })
                     .then(function(response) {
-                        if (response.data.upc.length <= 0) {
+                        if (response.data.state == false) {
                             sweetAlertAutoClose('error', "UPC no encontrado")
                             instance.clearFields()
                         } else {
 
-                            instance.partNumber = response.data.upc[0]['Item'];
-                            instance.location = response.data.upc[0]['LocationNumber'];
-                            instance.upc = response.data.upc[0]['UPC'];
+                            if (response.data.data.family == null || response.data.data.family == '') {
+
+                                instance.getFamilies()
+
+                                const modalButton = document.querySelector('#modalButton');
+                                instance.modal = new bootstrap.Modal(document.querySelector('#exampleModal'));
+                                instance.modal.show();
+                            }
+
+                            instance.partNumber = response.data.data.part_number;
+                            instance.family = response.data.data.family;
                             instance.generateCodeBar()
 
                             if (instance.partNumber.length == 6) {
                                 if (startWithFilter.indexOf(instance.partNumber.substring(0, 2)) >= 0) {
-                                    window.open("https://fallback.detroitaxle.com/?s=" + instance.partNumber, 'detroit', 'location=yes,toolbar=yes,menubar=yes,directories=yes', false);
+                                    window.open("https://www.detroitaxle.com/?s=" + instance.partNumber, 'detroit', 'location=yes,toolbar=yes,menubar=yes,directories=yes', false);
                                 }
                             }
                         }
@@ -114,12 +125,42 @@ $isValid = isset($computer[0]);
                         instance.clearFields()
                     });
             },
+            StoreFamily() {
+
+                var url = "/labels/families/store";
+                var data = {
+                    'select': this.familyDataSelect,
+                    'input': this.familyDataInput,
+                    'part_number': this.partNumber
+                };
+                axios.post(url, data).then((response) => {
+                    this.modal.hide();
+                    this.fieldToSearch = ''
+                    this.partNumber = response.data.part_number;
+                    this.family = response.data.family;
+                }).catch(function(error) {
+                    console.log(error);
+                });
+            },
             generateCodeBar() {
-                JsBarcode("#barcode", this.upc, {
+                JsBarcode("#barcode", this.family + ' ' + this.partNumber, {
                     displayValue: false,
                     width: 5,
                     height: 200
                 });
+            },
+            getFamilies() {
+                let instance = this;
+                axios({
+                        method: 'get',
+                        url: '/labels/families/get',
+                    })
+                    .then(function(response) {
+
+                        instance.families = response.data
+                    }).catch(error => {
+                        sweetAlertAutoClose('error', "Error procesando la informacion")
+                    });
             },
             printLabel() {
                 if (this.partNumber.length <= 0) {
@@ -130,11 +171,10 @@ $isValid = isset($computer[0]);
                 let instance = this;
                 axios({
                         method: 'get',
-                        url: '/print',
+                        url: '/labels/caliper/print',
                         params: {
-                            upc: instance.upc.toString().trim(),
                             partNumber: instance.partNumber.trim(),
-                            location: instance.location
+                            family: instance.family.trim(),
                         }
                     })
                     .then(function(response) {
@@ -153,13 +193,12 @@ $isValid = isset($computer[0]);
                 this.upc = '';
                 this.partNumber = '';
                 this.location = '';
+                this.family = '';
                 document.getElementById('barcode').replaceChildren();
                 document.getElementById('scanningInput').focus();
             }
         },
-        mounted() {
-            locationButton.click();
-        },
+        mounted() {},
         computed: {
             warehouseDescription: function() {
                 var description = ''
@@ -181,9 +220,11 @@ $isValid = isset($computer[0]);
             showInputs: function() {
                 return this.warehouse.length <= 0;
             }
-        }
+        },
+        components: {
+            Multiselect: window.VueMultiselect.default,
+        },
     })
 </script>
-
 
 @endsection

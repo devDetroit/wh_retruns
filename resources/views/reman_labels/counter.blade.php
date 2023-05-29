@@ -149,7 +149,7 @@
                     <div class="col-md-12">
                         <div class="row justify-content-center">
                             <div class="col-md-12 d-flex justify-content-center">
-                                <p style="font-size: 3em;  color: black; font-weight: bold;">Linea 1</p>
+                                <p style="font-size: 3em;  color: black; font-weight: bold;"> @{{line}}</p>
                             </div>
                         </div>
 
@@ -256,6 +256,7 @@
             totalPZS: 0,
             totalScanned: 0,
             url: new URLSearchParams(location.search),
+            line: new URLSearchParams(location.search).get('line'),
             porcentaje: 0,
             counters: null,
             total: {

@@ -6,7 +6,7 @@ use App\Models\Target;
 
 class CountersController extends Controller
 {
-    protected $groupLines = array(
+    /* protected $groupLines = array(
         "jrz" => [
             "line 1" => [
                 "Station 1" => [
@@ -17,9 +17,9 @@ class CountersController extends Controller
                 ]
             ]
         ]
-    );
+    ); */
     
-   /*  protected $groupLines = array(
+    protected $groupLines = array(
         "jrz" => [
             "line 1" => [
                 "Station 1" => [
@@ -37,7 +37,7 @@ class CountersController extends Controller
                     ]
                     ],
         ]
-    ); */
+    ); 
 
     public function index()
     {

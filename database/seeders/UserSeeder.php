@@ -17,14 +17,15 @@ class UserSeeder extends Seeder
     {
 
         User::create([
-            'complete_name' => 'kevin Iraheta',
-            'username' => 'kevinDax',
-            'email' => 'kevinDax@test.com',
+            'complete_name' => 'Jose Gonzalez',
+            'username' => 'jogonzalez',
+            'email' => 'jgonzalez@detroitaxle.com',
             'email_verified_at' => now(),
-            'user_type' => 'viwer',
-            'password' => bcrypt('kevinDax7'), // password
+            'user_type' => 'editor',
+            'password' => bcrypt('jgonzalez8'), // password
             'remember_token' => Str::random(10),
         ]);
+
 
     }
 }

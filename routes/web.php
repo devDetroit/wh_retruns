@@ -6,7 +6,7 @@ use App\Http\Controllers\PrintLabelController;
 use App\Http\Controllers\TargetController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
-
+use App\Http\Controllers\CaliperController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +35,19 @@ Route::middleware('auth')->group(function () {
     Route::get('labels/print', [PrintLabelController::class, 'index'])->name('labels');
     Route::get('labels/add', [PrintLabelController::class, 'create'])->name('upcnumber');
 
+    Route::get('labels/calipers', [CaliperController::class, 'calipers'])->name('calipers');
+    Route::get('labels/calipers/get/{partnumber}', [CaliperController::class, 'getCaliper']);
+    Route::get('labels/families/get', [CaliperController::class, 'getFamilies']);
+    Route::post('labels/families/store', [CaliperController::class, 'storeFamily']);
+    Route::get('labels/caliper/print', [CaliperController::class, 'printLabel']);
+    Route::prefix('calipers')->group(function () {
+        Route::get('/', [CaliperController::class, 'index'])->name('.index');
+        Route::get('/obtener', [CaliperController::class, 'show']);
+        Route::post('/agregar', [CaliperController::class, 'store']);
+        Route::post('/actualizar', [CaliperController::class, 'update']);
+        Route::post('/eliminar', [CaliperController::class, 'delete']);
+        Route::get('/folio/{concepto}', [CaliperController::class, 'showCaliper']);
+    });
 
 
     Route::get('target', [TargetController::class, 'index']);

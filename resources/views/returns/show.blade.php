@@ -14,7 +14,7 @@ $totalImages = 0;
         <div class="col-md-8">
             <div class="card shadow-sm p-2 bg-body rounded">
                 <div class="card-body">
-                    <h5 class="card-title text-center">Wharehouse Return Information</h5>
+                    <h5 class="card-title text-center">Wharehouse Return Information </h5>
                     <form enctype="multipart/form-data" method="post" action="/returns/{{$return->id}}">
                         @csrf
                         @method('PUT')
@@ -93,7 +93,7 @@ $totalImages = 0;
 
                         <div class="card-body">
                             <div class="text-end">
-                                <h6 class="card-subtitle mb-2 text-muted">Total images {{ $totalImages }} <i style="cursor: pointer;" class="fa-solid fa-eye" v-on:click="getPhotos({{ $partnumber->id}}, '{{$partnumber->partnumber}}')"></i></h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Total images {{ $totalImages }} <i style="cursor: pointer;" class="fa-solid fa-eye" v-on:click='getPhotos({{ $partnumber->id}}, "{{$partnumber->partnumber}}")'></i></h6>
                             </div>
                             <h6 style="color:red; font-weight: bold;">Deposco PN</h6>
                             <ul>

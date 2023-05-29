@@ -58,6 +58,9 @@
                             <a class="nav-link" href="/labels/print">Print Labels</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="/labels/calipers">Print Calipers</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="/target">Targets</a>
                         </li>
                         <!--       <li class="nav-item dropdown">
