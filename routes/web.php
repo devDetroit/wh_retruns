@@ -4,6 +4,7 @@ use App\Http\Controllers\CountersController;
 use App\Http\Controllers\ReturnController;
 use App\Http\Controllers\PrintLabelController;
 use App\Http\Controllers\TargetController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\CaliperController;
@@ -20,7 +21,9 @@ use App\Http\Controllers\CaliperController;
 */
 
 Route::middleware('auth')->group(function () {
-
+    Route::get('/users', [UsersController::class, 'index'])->name('userIndex');;
+    Route::get('/recover-password', [UsersController::class, 'recoverPassword'])->name('recover-password');
+    Route::post('/admin/password', [UsersController::class, 'updatePassword']);
     Route::controller(ReturnController::class)->group(function () {
         Route::get('returns', 'index');
         Route::get('/', 'index');

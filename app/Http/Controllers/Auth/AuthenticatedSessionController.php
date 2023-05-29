@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -35,7 +36,11 @@ class AuthenticatedSessionController extends Controller
         if (str_contains(Auth::user()->complete_name, 'station')) {
             return redirect()->route('labels');
         } else {
-            return redirect(RouteServiceProvider::HOME);
+            if (Hash::check('temporal', Auth::user()->password)) {
+                return redirect('recover-password');
+            } else {
+                return redirect(RouteServiceProvider::HOME);
+            }
         }
     }
 
