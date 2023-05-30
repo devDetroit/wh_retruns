@@ -12,9 +12,18 @@ use Illuminate\Support\Facades\Validator;
 
 class ReturnApiController extends Controller
 {
+
+    public function selectTrackingNumbers()
+    {
+        return DB::select('SELECT id, track_number as data FROM returns WHERE track_number LIKE ?', ['' . request()->tracking . '%']);
+    }
+    public function selectOrders()
+    {
+        return DB::select('SELECT id, order_number as data FROM returns WHERE order_number LIKE ?', ['' . request()->tracking . '%']);
+    }
     public function index()
     {
-        return  DB::select("CALL SelectReturns()");
+        return  DB::select("CALL SelectReturns2()");
     }
 
     public function returnsCondition()

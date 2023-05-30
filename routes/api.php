@@ -24,6 +24,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::get('returns', [ReturnApiController::class, 'index']);
+Route::get('returns/tracking', [ReturnApiController::class, 'selectTrackingNumbers']);
+Route::get('returns/order', [ReturnApiController::class, 'selectOrders']);
 Route::get('returnsCondition', [ReturnApiController::class, 'returnsCondition']);
 Route::get('user', [ReturnApiController::class, 'loginUser']);
 Route::get('tracking/{tracking}', [ReturnApiController::class, 'getTrackingNumberCount']);

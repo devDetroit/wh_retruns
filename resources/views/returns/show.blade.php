@@ -11,10 +11,16 @@ $totalImages = 0;
 <div id="app">
 
     <div class="row justify-content-md-center mt-4">
+
         <div class="col-md-8">
             <div class="card shadow-sm p-2 bg-body rounded">
                 <div class="card-body">
                     <h5 class="card-title text-center">Wharehouse Return Information </h5>
+                    <div class="row m-2">
+                        <div class="col-md-12 text-end">
+                            <search-tracking></search-tracking>
+                        </div>
+                    </div>
                     <form enctype="multipart/form-data" method="post" action="/returns/{{$return->id}}">
                         @csrf
                         @method('PUT')
@@ -74,16 +80,16 @@ $totalImages = 0;
                             <strong> Part Number:</strong> {{ $partnumber->partnumber }}
                         </div>
                         @if(isset($partnumber->image))
-                            <a href="/storage/PartNumbers/{{$partnumber->returns_id}}-{{$partnumber->image}}"> <img src="/storage/PartNumbers/{{$partnumber->returns_id}}-{{$partnumber->image}}" class="card-img-top" alt="{{$partnumber->returns_id}}-{{$partnumber->image}}"></a>
+                        <a href="/storage/PartNumbers/{{$partnumber->returns_id}}-{{$partnumber->image}}"> <img src="/storage/PartNumbers/{{$partnumber->returns_id}}-{{$partnumber->image}}" class="card-img-top" alt="{{$partnumber->returns_id}}-{{$partnumber->image}}"></a>
                         @php
-                            $totalImages = 1;
+                        $totalImages = 1;
                         @endphp
                         @else
                         @if($totalImages > 0)
-                            @php
-                            $totalImages = $totalImages;
-                            @endphp
-                            <a href="/storage/PartNumbers/{{$partnumber->photos[0]->image}}"> <img src="/storage/PartNumbers/{{$partnumber->photos[0]->image}}" class="card-img-top" alt="{{$partnumber->photos[0]->image}}"></a>                        
+                        @php
+                        $totalImages = $totalImages;
+                        @endphp
+                        <a href="/storage/PartNumbers/{{$partnumber->photos[0]->image}}"> <img src="/storage/PartNumbers/{{$partnumber->photos[0]->image}}" class="card-img-top" alt="{{$partnumber->photos[0]->image}}"></a>
                         @else
                         <img src="/storage/PartNumbers/noimage.jpg" class="card-img-top">
                         @endif
@@ -149,34 +155,6 @@ $totalImages = 0;
 
 @section('scripts')
 
-<script>
-    new Vue({
-        el: '#app',
-        data: {
-            photosModal: new bootstrap.Modal(document.getElementById('photosModal')),
-            photos: [],
-            currentPartNumber: '',
-        },
-        methods: {
-            getPhotos(partnumber_id, partnumber) {
-
-                let instance = this;
-                this.currentPartNumber = partnumber;
-                this.photos = [];
-                document.getElementById('bntHiddenModal').click();
-                axios({
-                        method: 'get',
-                        url: '/api/photos',
-                        params: {
-                            partNumber_id: partnumber_id
-                        }
-                    })
-                    .then(function(response) {
-                        instance.photos = response.data.photos;
-                    }).catch(error => sweetAlertAutoClose('error', "no photos to show"));
-            }
-        },
-    })
-</script>
+<script src="/js/show.js"></script>
 
 @endsection
