@@ -69,20 +69,36 @@ class PrintLabelController extends Controller
             $returnValue = 0;
             $location = isset(request()->location) ? request()->location : '';
             $getCurrentDate = date('m/d/y');
+            $data  = '';
             if (isset($printer[0])) {
 
                 $conn = fsockopen($printer[0]->printer, 9100, $errno, $errstr);
                 $pnXPosition = strlen(request()->partNumber) < 6 ? 'FO130' : 'FO85';
-                $data = ' 
-^XA
-^' . $pnXPosition . ',57^A0,57^FDPart #:' . request()->partNumber . '^FS
-^FO530,57^A0,20^FD' . $getCurrentDate . '^FS
-^BY3,2,65
-^FO50,110^BCN,120,N,N^FD' . request()->upc . '^FS
-^FO10,245^A0,32^FD' . $location . '^FS
-^FO420,245^A0,32^FDMade in China^FS
-^XZ
-';
+
+
+                if (Str::contains(request()->getClientIp(), '80')) {
+                    $data = '^XA
+                        ^FO85,37^A0,37^FDPart #' . request()->partNumber . '^FS
+                        ^FO530,37^A0,17^FD' . $getCurrentDate . '^FS
+                        ^BY3,2,65
+                        ^FO50,80^BCN,80,N,N^FD' . request()->upc . '^FS
+                        ^FO30,165^A0,22^FD' . $location . '^FS
+                        ^FO420,165^A0,22^FDMade in China^FS
+                    ^XZ
+                    ';
+                } else {
+                    $data = ' 
+                        ^XA
+                            ^' . $pnXPosition . ',57^A0,57^FDPart #:' . request()->partNumber . '^FS
+                            ^FO530,57^A0,20^FD' . $getCurrentDate . '^FS
+                            ^BY3,2,65
+                            ^FO50,110^BCN,120,N,N^FD' . request()->upc . '^FS
+                            ^FO10,245^A0,32^FD' . $location . '^FS
+                            ^FO420,245^A0,32^FDMade in China^FS
+                        ^XZ
+                        ';
+                }
+
                 fputs($conn, $data, strlen($data));
                 fclose($conn);
                 $returnValue = 1;
