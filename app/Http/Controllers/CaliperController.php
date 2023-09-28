@@ -7,6 +7,7 @@ use App\Models\CaliperLog;
 use App\Models\Printer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CaliperController extends Controller
 {
@@ -27,10 +28,11 @@ class CaliperController extends Controller
     public function printLabel()
     {
 
-         
-         $printer = $this->getPrinter();
+
+        $printer = $this->getPrinter();
         $message = '';
         $returnValue = 0;
+        $data = '';
         if (isset($printer[0])) {
             if ($printer[0]->printer == '192.168.80.19') {
                 $digitos = strlen(request()->partNumber);
@@ -46,15 +48,25 @@ class CaliperController extends Controller
                     $by = 80;
                 }
                 $conn = fsockopen($printer[0]->printer, 9100, $errno, $errstr);
-                $data = ' 
-                ^XA
-                ^FO50,30^A0,30^FD' . request()->family  . '^FS
-                ^FO400,30^A0,30^FD' . request()->partNumber . '^FS
-                ^BY' . $bclon . ',2,65
-                ^FO' . $by . ',60^BCN,120,N,N^FD' . request()->partNumber . '^FS
-                ^FO200,185^A0,32^FDMade in China^FS
-                ^XZ
-                            ';
+
+                if (Str::contains(request()->getClientIp(), '80') || Str::contains(request()->getClientIp(), '81') || Str::contains(request()->getClientIp(), '82')) {
+                    $data = '^XA
+                        ^FO85,37^A0,37^FD' . request()->family . '^FS
+                        ^FO385,37^A0,37^FD' . request()->partNumber . '^FS
+                        ^BY' . $bclon . ',2,65
+                        ^FO65,80^BCN,80,N,N^FD' . request()->partNumber . '^FS
+                        ^FO200,165^A0,22^FDMade in China^FS
+                    ^XZ
+                    ';
+                } else {
+                    $data = '^XA
+                            ^FO50,30^A0,30^FD' . request()->family  . '^FS
+                            ^FO400,30^A0,30^FD' . request()->partNumber . '^FS
+                            ^BY' . $bclon . ',2,65
+                            ^FO' . $by . ',60^BCN,120,N,N^FD' . request()->partNumber . '^FS
+                            ^FO200,185^A0,32^FDMade in China^FS
+                            ^XZ';
+                }
                 fputs($conn, $data, strlen($data));
                 fclose($conn);
                 $returnValue = 1;
@@ -74,22 +86,32 @@ class CaliperController extends Controller
                     $by = 80;
                 }
                 $conn = fsockopen($printer[0]->printer, 9100, $errno, $errstr);
-                $data = ' 
+                if (Str::contains(request()->getClientIp(), '80') || Str::contains(request()->getClientIp(), '81') || Str::contains(request()->getClientIp(), '82')) {
+                    $data = '^XA
+                        ^FO85,37^A0,37^FD' . request()->family . '^FS
+                        ^FO385,37^A0,37^FD' . request()->partNumber . '^FS
+                        ^BY' . $bclon . ',2,65
+                        ^FO65,80^BCN,80,N,N^FD' . request()->partNumber . '^FS
+                        ^FO200,165^A0,22^FDMade in China^FS
+                    ^XZ
+                    ';
+                } else {
+                    $data = ' 
                     ^XA
                     ^FO50,80^A0,30^FD' . request()->family  . '^FS
                     ^FO400,80^A0,30^FD' . request()->partNumber . '^FS
                     ^BY' . $bclon . ',2,65
                     ^FO' . $by . ',110^BCN,120,N,N^FD' . request()->partNumber . '^FS
                     ^FO200,240^A0,32^FDMade in China^FS
-                    ^XZ
-                                ';
+                    ^XZ';
+                }
                 fputs($conn, $data, strlen($data));
                 fclose($conn);
                 $returnValue = 1;
                 $message = 'Etiqueta impresa exitosamente';
             }
 
-            
+
 
 
             $log = new CaliperLog;
