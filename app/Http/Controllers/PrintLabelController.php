@@ -76,7 +76,7 @@ class PrintLabelController extends Controller
                 $pnXPosition = strlen(request()->partNumber) < 6 ? 'FO130' : 'FO85';
 
 
-                if (Str::contains(request()->getClientIp(), '80')) {
+                if (Str::contains(request()->getClientIp(), '80') || Str::contains(request()->getClientIp(), '81') || Str::contains(request()->getClientIp(), '82')) {
                     $data = '^XA
                         ^FO85,37^A0,37^FDPart #' . request()->partNumber . '^FS
                         ^FO530,37^A0,17^FD' . $getCurrentDate . '^FS
