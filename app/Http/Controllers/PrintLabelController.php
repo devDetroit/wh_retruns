@@ -75,7 +75,7 @@ class PrintLabelController extends Controller
                 $conn = fsockopen($printer[0]->printer, 9100, $errno, $errstr);
                 $pnXPosition = strlen(request()->partNumber) < 6 ? 'FO130' : 'FO85';
 
-
+                /* 
                 if (Str::contains(request()->getClientIp(), '80') || Str::contains(request()->getClientIp(), '81') || Str::contains(request()->getClientIp(), '82')) {
                     $data = '^XA
                         ^FO85,37^A0,37^FDPart #' . request()->partNumber . '^FS
@@ -86,8 +86,8 @@ class PrintLabelController extends Controller
                         ^FO420,165^A0,22^FDMade in China^FS
                     ^XZ
                     ';
-                } else {
-                    $data = ' 
+                } else { */
+                $data = ' 
                         ^XA
                             ^' . $pnXPosition . ',57^A0,57^FDPart #:' . request()->partNumber . '^FS
                             ^FO530,57^A0,20^FD' . $getCurrentDate . '^FS
@@ -97,7 +97,7 @@ class PrintLabelController extends Controller
                             ^FO420,245^A0,32^FDMade in China^FS
                         ^XZ
                         ';
-                }
+                /* } */
 
                 fputs($conn, $data, strlen($data));
                 fclose($conn);
