@@ -45,6 +45,10 @@
 @section('scripts')
 
 <script>
+    var customAccessorDownload = function(value, data, type, params, column, row) {
+        return value + ' .'; //return the new value for the cell data.
+    }
+
     const app = new Vue({
         el: '#indexapp',
         data: {
@@ -84,6 +88,7 @@
                         {
                             title: "tracking number",
                             field: "track_number",
+                            accessorDownload: customAccessorDownload,
                             headerFilter: true
                         },
                         {
