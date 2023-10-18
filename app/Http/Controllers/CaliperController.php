@@ -28,8 +28,7 @@ class CaliperController extends Controller
     public function printLabel()
     {
 
-
-        $printer = $this->getPrinter();
+          $printer = $this->getPrinter();
         $message = '';
         $returnValue = 0;
         $data = '';

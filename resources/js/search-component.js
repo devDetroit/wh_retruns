@@ -51,10 +51,10 @@ const SearchTracking = {
     search() {
 
       if (this.$refs.trackingMultiselect.selectedRecord != null) {
-        location.href = 'returns/' + this.$refs.trackingMultiselect.selectedRecord.id;
+        location.href = '/returns/' + this.$refs.trackingMultiselect.selectedRecord.id;
       }
       if (this.$refs.orderMultiselect.selectedRecord != null) {
-        location.href = 'returns/' + this.$refs.orderMultiselect.selectedRecord.id;
+        location.href = '/returns/' + this.$refs.orderMultiselect.selectedRecord.id;
       }
 
     }
