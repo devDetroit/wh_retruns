@@ -67,9 +67,11 @@ class PrintLabelController extends Controller
             $printer = $this->getPrinter();
             $message = '';
             $returnValue = 0;
+            $clientIP = request()->ip();
             $location = isset(request()->location) ? request()->location : '';
             $getCurrentDate = date('m/d/y');
             $data  = '';
+            $facility = '';
             if (isset($printer[0])) {
 
                 $conn = fsockopen($printer[0]->printer, 9100, $errno, $errstr);
@@ -87,6 +89,13 @@ class PrintLabelController extends Controller
                     ^XZ
                     ';
                 } else { */
+                if (Str::startsWith($clientIP, '10.10')) {
+                    $facility = 'DT';
+                } elseif (Str::startsWith($clientIP, '10.0')) {
+                    $facility = 'EP';
+                } else {
+                    $facility = 'RM';
+                }
                 $data = ' 
                         ^XA
                             ^' . $pnXPosition . ',57^A0,57^FDPart #:' . request()->partNumber . '^FS
@@ -94,7 +103,8 @@ class PrintLabelController extends Controller
                             ^BY3,2,65
                             ^FO50,110^BCN,120,N,N^FD' . request()->upc . '^FS
                             ^FO10,245^A0,32^FD' . $location . '^FS
-                            ^FO420,245^A0,32^FDMade in China^FS
+                            ^FO310,245^A0,32^FDMade in China^FS
+                            ^FO520,250^A0,20^FD' . $facility . '^FS
                         ^XZ
                         ';
                 /* } */
