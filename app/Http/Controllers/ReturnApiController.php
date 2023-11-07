@@ -21,14 +21,18 @@ class ReturnApiController extends Controller
     {
         return DB::select('SELECT id, order_number as data FROM returns WHERE order_number LIKE ?', ['%' . request()->tracking . '%']);
     }
+    public function selectFedexReport()
+    {
+        return DB::select('CALL NoTrackingNumberScanned()');
+    }
     public function index()
     {
         return  DB::select("CALL SelectReturns()");
     }
-public function selectTrackingsReport(){
-    return  DB::select("CALL SelectReturnsReport(?,?)", [request()->startDate, request()->endDate]);
-
-}
+    public function selectTrackingsReport()
+    {
+        return  DB::select("CALL SelectReturnsReport(?,?)", [request()->startDate, request()->endDate]);
+    }
     public function returnsCondition()
     {
         $getCurrentDate = date('m/d/Y');
