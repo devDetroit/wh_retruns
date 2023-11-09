@@ -32,7 +32,7 @@ export default {
       this.searchTimeout = setTimeout(() => {
         if(query)
           this.fetchData(query);
-      }, 3000);
+      }, 2000);
     },
     async fetchData(query) {
       axios({

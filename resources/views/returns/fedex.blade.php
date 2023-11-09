@@ -8,9 +8,9 @@
             <div class="card shadow">
                 <div class="card-body">
                     <div class="row">
-                        <h4 class="card-title">Tracking Numbers Report</h4>
+                        <h4 class="card-title">FEDEX -DAX Tracking Numbers Report</h4>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-md-4">
                             <div class="input-group">
                                 <span class="input-group-text">From:</span>
@@ -22,21 +22,21 @@
                                 <span class="input-group-text">To:</span>
                                 <input type="date" class="form-control form-control-sm" v-model="endDate">
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <button type="button" class="btn btn-sm btn-success" v-on:click="applySearch">Search</button>
-                            <button type="button" class="btn btn-sm btn-dark" v-on:click="downloadData">Download CSV File</button>
-                        </div>
+                        </div> -->
+                    <div class="col-md-4">
+                        <!--  <button type="button" class="btn btn-sm btn-success" v-on:click="applySearch">Search</button> -->
+                        <button type="button" class="btn btn-sm btn-dark" v-on:click="downloadData">Download CSV File</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row justify-content-center mt-4">
-        <div class="col-md-10">
-            <div id="returns-table"></div>
-        </div>
+</div>
+<div class="row justify-content-center mt-4">
+    <div class="col-md-10">
+        <div id="returns-table"></div>
     </div>
+</div>
 </div>
 @endsection
 
@@ -72,7 +72,7 @@
                     height: '700',
                     pagination: true, //enable.
                     paginationSize: 25,
-                    ajaxURL: '/api/returns',
+                    ajaxURL: '/api/returns/fedex',
                     ajaxParams: function() {
                         return {
                             startDate: ins.startDate,
@@ -86,50 +86,27 @@
                             maxWidth: 50
                         },
                         {
-                            title: "tracking number",
-                            field: "track_number",
-                            accessorDownload: customAccessorDownload,
+                            title: "Fedex Tracking",
+                            field: "tracking_number",
                             headerFilter: true
                         },
                         {
-                            title: "order number",
-                            field: "order_number",
+                            title: "DAX Tracking",
+                            field: "track_number",
                             headerFilter: true
 
-                        },
-                        {
-                            title: "status",
-                            field: "description",
-                            headerFilter: true
-                        },
-                        {
-                            title: "store",
-                            field: "name",
-                            headerFilter: true
-                        },
-                        {
-                            title: "created by",
-                            field: "createdBy",
                         },
                         {
                             title: "created At",
                             field: "created_at",
                         },
-                        {
-                            title: "updated by",
-                            field: "updatedBy",
-                        },
-                        {
-                            title: "updated At",
-                            field: "updated_at",
-                        },
                     ],
                 });
             }
         },
-        /* mounted() {
+        mounted() {
             this.initializeTabulator();
-        }, */
+        },
         watch: {
             startDate: function() {
                 if (this.startDate > this.endDate)

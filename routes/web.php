@@ -87,6 +87,9 @@ Route::middleware('auth')->group(function () {
     Route::get('returns/reports/general', function () {
         return view('returns.report-tracking');
     });
+    Route::get('returns/reports/fedex', function () {
+        return view('returns.fedex');
+    });
     Route::get('returns/reports/condition', function () {
         return view('returns.report-condition');
     });
