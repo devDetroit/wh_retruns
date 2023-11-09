@@ -8,6 +8,9 @@ use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\CaliperController;
+use App\Http\Controllers\NewCaliperController;
+use App\Http\Controllers\PartTypesController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +55,30 @@ Route::middleware('auth')->group(function () {
         Route::get('/folio/{concepto}', [CaliperController::class, 'showCaliper']);
     });
 
+    Route::prefix('part')->group(function () {
+        Route::get('/', [NewCaliperController::class, 'index'])->name('caliper');
+        Route::get('/add', [NewCaliperController::class, 'indexAdd']);
+        Route::get('/{id}', [NewCaliperController::class, 'findPart']);
+        Route::get('/get/components/{id}', [NewCaliperController::class, 'component']);
+        Route::get('/get/last', [NewCaliperController::class, 'lastRecords']);
+    });
+
+    Route::prefix('report')->group(function () {
+        Route::get('/', [ReportController::class, 'index'])->name('report.part');
+       
+    });
+
+
+    Route::prefix('checked')->group(function () {
+        Route::get('/', [NewCaliperController::class, 'indexChecked'])->name('checked-caliper');
+        Route::get('/{id}', [NewCaliperController::class, 'findPartChecked']);
+        Route::post('/part/store', [NewCaliperController::class, 'storePart']);
+    });
+
+    Route::get('/get/part/types', [PartTypesController::class, 'getTypes']);
+
+
+    Route::post('/caliper/print', [NewCaliperController::class, 'printCaliper']);
 
     Route::get('target', [TargetController::class, 'index']);
     Route::get('target/create', [TargetController::class, 'create']);

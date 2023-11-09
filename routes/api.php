@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PrintLabelController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,3 +41,5 @@ Route::post('/users/store', [App\Http\Controllers\UsersController::class, 'store
 Route::get('/users/delete/{id}', [App\Http\Controllers\UsersController::class, 'delete']);
 Route::get('/folio/{folio}', [App\Http\Controllers\UsersController::class, 'showEmpleado']);
 Route::post('/reestablecer/contrasena', [UsersController::class, 'reset']);
+
+Route::post('/report/get/data', [ReportController::class, 'getData']);
