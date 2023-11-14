@@ -19,7 +19,7 @@ const app = new Vue({
         part_number: null,
         part: null,
         serialNumber: null,
-        lasts: null, 
+        lasts: null,
     },
 
     methods: {
@@ -40,6 +40,7 @@ const app = new Vue({
                 });
         },
         findCaliper() {
+            this.disableButtons()
             const startWithFilter = ["43", "53", "50", "51"];
             if (this.fieldToSearch.trim().length <= 0) {
                 sweetAlertAutoClose("warning", "No se escaneo ni un caliper");
@@ -62,6 +63,8 @@ const app = new Vue({
                     } else {
                         this.part = response.data.part;
                     }
+                    this.enableButtons()
+
                 })
                 .catch((error) => {
                     sweetAlertAutoClose(
@@ -70,12 +73,24 @@ const app = new Vue({
                     );
                     console.error(error);
                     instance.clearFields();
+                    this.enableButtons()
                 });
         },
-
+        disableButtons() {
+            scanningInput.disabled = true
+            cleanButton.disabled = true
+            if (document.getElementById('submitButton'))
+                submitButton.disabled = true
+        },
+        enableButtons() {
+            scanningInput.disabled = false
+            cleanButton.disabled = false
+            if (document.getElementById('submitButton'))
+                submitButton.disabled = false
+        },
         saveComponents() {
+            this.disableButtons()
             var _this2 = this;
-
             var url = "/checked/part/store";
             var data = {
                 part: this.part,
@@ -89,9 +104,11 @@ const app = new Vue({
                         "success",
                         "Parte recibida exitosamente"
                     );
-                })
+                    _this2.enableButtons()
+                }).then(() => _this2.getLastRecords())
                 .catch(function (error) {
                     console.log(error);
+                    _this2.enableButtons()
                 });
         },
         clearFields() {
@@ -104,7 +121,7 @@ const app = new Vue({
             this.serialNumber = null;
         },
     },
-    mounted() {},
+    mounted() { },
     computed: {
         warehouseDescription: function () {
             var description = "";

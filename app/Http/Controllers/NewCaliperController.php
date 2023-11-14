@@ -58,12 +58,16 @@ class NewCaliperController extends Controller
 
     function printCaliper(Request $request)
     {
+        if (!$request->has("caliper.parttype"))
+            return 'No data found';
+
         $returnValue = 0;
         try {
 
             $tmpArr = explode(".", request()->getClientIp());
             array_pop($tmpArr);
             $tmpArr = implode(".", $tmpArr);
+            $prefix = '';
             if ($tmpArr == '192.168.80' || $tmpArr == '192.168.81' || $tmpArr == '192.168.62') {
                 $prefix = 'DAXJZRM';
             }
@@ -76,7 +80,7 @@ class NewCaliperController extends Controller
             ]);
             $message = '';
             $returnValue = 0;
-            $conn = fsockopen("192.168.80.52", 9100, $errno, $errstr);
+            $conn = fsockopen("192.168.80.19", 9100, $errno, $errstr);
             $data = ' 
             ^XA
 
