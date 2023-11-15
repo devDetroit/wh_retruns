@@ -81,7 +81,7 @@ class NewCaliperController extends Controller
             ]);
             $message = '';
             $returnValue = 0;
-            $conn = fsockopen($printer[0]->printer, 9100, $errno, $errstr);
+
             $data = ' 
             ^XA
 
@@ -144,6 +144,7 @@ class NewCaliperController extends Controller
             ^FO75,450^BC^FD' . $prefix . $prefijo . '^FS
             ^XZ
                         ';
+            $conn = fsockopen($printer[0]->printer, 9100, $errno, $errstr);
             fputs($conn, $data, strlen($data));
             fclose($conn);
             $returnValue = 1;
