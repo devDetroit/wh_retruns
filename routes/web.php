@@ -65,7 +65,8 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('report')->group(function () {
         Route::get('/', [ReportController::class, 'index'])->name('report.part');
-       
+        Route::get('/detallado', [ReportController::class, 'detallado'])->name('report.detallado');
+        Route::get('/detallado/data', [ReportController::class, 'getDataDetallado']);
     });
 
 
