@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\Component;
+
+use App\Models\Printer;
 use App\Models\ComponentType;
 use App\Models\Part;
 use App\Models\PartRecord;
@@ -70,6 +71,7 @@ class NewCaliperController extends Controller
             if ($tmpArr == '192.168.80' || $tmpArr == '192.168.81' || $tmpArr == '192.168.62') {
                 $prefix = 'DAXJZRM';
             }
+            $printer = $this->getPrinter();
             $prefijo =  $this->generateSerialNumber($prefix);
 
             $caliper = PartRecord::create([
@@ -79,7 +81,7 @@ class NewCaliperController extends Controller
             ]);
             $message = '';
             $returnValue = 0;
-            $conn = fsockopen("192.168.80.19", 9100, $errno, $errstr);
+            $conn = fsockopen($printer[0]->printer, 9100, $errno, $errstr);
             $data = ' 
             ^XA
 
@@ -202,6 +204,11 @@ class NewCaliperController extends Controller
         } else {
             return ['state' => 2, 'message' => 'Part ready to check', 'part' => PartRecord::where('serial_number', $id)->with('details.part', 'details.component.type')->first()];
         }
+    }
+
+    public function getPrinter()
+    {
+        return Printer::whereRelation('computer', 'computer_ip', request()->getClientIp())->get();
     }
 
     function indexAdd()
