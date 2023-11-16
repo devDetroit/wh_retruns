@@ -39,12 +39,13 @@ const app = new Vue({
                     console.log(error);
                 });
         },
+
         findCaliper() {
             this.disableButtons()
-            const startWithFilter = ["43", "53", "50", "51"];
             if (this.fieldToSearch.trim().length <= 0) {
                 sweetAlertAutoClose("warning", "No se escaneo ni un caliper");
                 this.clearFields();
+                this.enableButtons()
                 return;
             }
 
@@ -61,10 +62,14 @@ const app = new Vue({
                         sweetAlertAutoClose("error", response.data.message);
                         instance.clearFields();
                     } else {
-                        this.part = response.data.part;
+                        instance.part = response.data.part;
+
                     }
                     this.enableButtons()
 
+                }).then(() => {
+                    if (instance.part != null)
+                        instance.saveComponents()
                 })
                 .catch((error) => {
                     sweetAlertAutoClose(
@@ -87,6 +92,7 @@ const app = new Vue({
             cleanButton.disabled = false
             if (document.getElementById('submitButton'))
                 submitButton.disabled = false
+            scanningInput.focus()
         },
         saveComponents() {
             this.disableButtons()
@@ -121,7 +127,7 @@ const app = new Vue({
             this.serialNumber = null;
         },
     },
-    mounted() { },
+    mounted() { scanningInput.focus() },
     computed: {
         warehouseDescription: function () {
             var description = "";
