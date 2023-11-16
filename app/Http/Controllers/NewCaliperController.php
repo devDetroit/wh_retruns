@@ -8,6 +8,7 @@ use App\Models\ComponentType;
 use App\Models\Part;
 use App\Models\PartRecord;
 use App\Models\PartRecordDetails;
+use App\Models\Printer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -58,9 +59,10 @@ class NewCaliperController extends Controller
 
     function printCaliper(Request $request)
     {
+
         $returnValue = 0;
         try {
-
+            $printer = $this->getPrinter();
             $tmpArr = explode(".", request()->getClientIp());
             array_pop($tmpArr);
             $tmpArr = implode(".", $tmpArr);
@@ -76,7 +78,6 @@ class NewCaliperController extends Controller
             ]);
             $message = '';
             $returnValue = 0;
-            $conn = fsockopen("192.168.80.52", 9100, $errno, $errstr);
             $data = ' 
             ^XA
 
@@ -137,8 +138,11 @@ class NewCaliperController extends Controller
             //Barcode
             $data = $data . '^BY2,3,100
             ^FO75,450^BC^FD' . $prefix . $prefijo . '^FS
+            ^BY2,3,100
+            ^FO25,200^BC^FD' . $request->caliper['part_num'] . '^FS
             ^XZ
                         ';
+            $conn = fsockopen($printer[0]->printer, 9100, $errno, $errstr);
             fputs($conn, $data, strlen($data));
             fclose($conn);
             $returnValue = 1;
@@ -153,7 +157,10 @@ class NewCaliperController extends Controller
         ]);
     }
 
-
+    public function getPrinter()
+    {
+        return Printer::whereRelation('computer', 'computer_ip', request()->getClientIp())->get();
+    }
     public function index()
     {
         $print = new PrintLabelController;

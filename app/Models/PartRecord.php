@@ -16,7 +16,8 @@ class PartRecord extends Model
         'part',
         'received_date',
         'serial_number',
-        'created_at'
+        'created_at',
+        'status'
     ];
     protected $casts = [
         'updated_by' => 'integer',
