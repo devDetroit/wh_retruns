@@ -22,7 +22,20 @@ const app = new Vue({
         getWarehouse(warehouse) {
             this.warehouse = warehouse;
         },
+        disableButtons() {
+            scanningInput.disabled = true
+            cleanButton.disabled = true
+            if (document.getElementById('printButton'))
+                printButton.disabled = true
+        },
+        enableButtons() {
+            scanningInput.disabled = false
+            cleanButton.disabled = false
+            if (document.getElementById('printButton'))
+                printButton.disabled = false
+        },
         findCaliper() {
+            this.disableButtons()
             const startWithFilter = ["43", "53", "50", "51"];
             if (this.fieldToSearch.trim().length <= 0) {
                 sweetAlertAutoClose("warning", "No se escaneo ni un caliper");
@@ -44,6 +57,7 @@ const app = new Vue({
                         this.serialNumber = response.data.serialnumber;
                         this.generateCodeBar(response.data.serialnumber);
                     }
+                    instance.enableButtons()
                 })
                 .catch((error) => {
                     sweetAlertAutoClose(
@@ -52,6 +66,7 @@ const app = new Vue({
                     );
                     console.error(error);
                     instance.clearFields();
+                    instance.enableButtons()
                 });
         },
         StoreFamily() {
@@ -97,8 +112,8 @@ const app = new Vue({
                 });
         },
         printLabel() {
-            printButton.disabled = true;
             let instance = this;
+            instance.disableButtons()
             var url = "/caliper/print";
             var data = {
                 caliper: this.caliper,
@@ -107,10 +122,12 @@ const app = new Vue({
                 .post(url, data)
                 .then(() => {
                     this.clearFields();
+                    instance.enableButtons()
                 })
                 .catch(function (error) {
                     toastr.warning("Error", "Ha ocurrido un error ");
                     console.log(error);
+                    instance.enableButtons()
                 });
         },
         clearFields() {
@@ -125,7 +142,7 @@ const app = new Vue({
             document.getElementById("scanningInput").focus();
         },
     },
-    mounted() {},
+    mounted() { },
     computed: {
         warehouseDescription: function () {
             var description = "";

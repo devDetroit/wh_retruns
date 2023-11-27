@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\Component;
+
+
 use App\Models\ComponentType;
 use App\Models\Part;
 use App\Models\PartRecord;
@@ -59,6 +60,8 @@ class NewCaliperController extends Controller
 
     function printCaliper(Request $request)
     {
+        if (!$request->has("caliper.parttype"))
+            return 'No data found';
 
         $returnValue = 0;
         try {
@@ -69,6 +72,7 @@ class NewCaliperController extends Controller
             if ($tmpArr == '192.168.80' || $tmpArr == '192.168.81' || $tmpArr == '192.168.62') {
                 $prefix = 'DAXJZRM';
             }
+            $printer = $this->getPrinter();
             $prefijo =  $this->generateSerialNumber($prefix);
 
             $caliper = PartRecord::create([
@@ -207,6 +211,8 @@ class NewCaliperController extends Controller
             return ['state' => 2, 'message' => 'Part ready to check', 'part' => PartRecord::where('serial_number', $id)->with('details.part', 'details.component.type')->first()];
         }
     }
+
+
 
     function indexAdd()
     {
