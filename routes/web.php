@@ -58,9 +58,19 @@ Route::middleware('auth')->group(function () {
     Route::prefix('part')->group(function () {
         Route::get('/', [NewCaliperController::class, 'index'])->name('caliper');
         Route::get('/add', [NewCaliperController::class, 'indexAdd']);
+        Route::get('/verify/{part}', [NewCaliperController::class, 'verifyPart']);
+        Route::post('/print', [NewCaliperController::class, 'print']);
+        Route::post('/details/store', [NewCaliperController::class, 'storeDetails']);
+        Route::post('/store', [NewCaliperController::class, 'store']);
         Route::get('/{id}', [NewCaliperController::class, 'findPart']);
-        Route::get('/get/components/{id}', [NewCaliperController::class, 'component']);
+        Route::get('/add/find/{id}/{type}', [NewCaliperController::class, 'findAddPart']);
+        Route::get('/get/components/{id}/{type}', [NewCaliperController::class, 'component']);
         Route::get('/get/last', [NewCaliperController::class, 'lastRecords']);
+        Route::get('/get/{id}', [NewCaliperController::class, 'getPartsOfExistentPart']);
+    });
+    Route::controller(cvAxleController::class)->group(function () {
+        Route::get('cvaxle/print', 'index');
+        Route::post('orders', 'store');
     });
 
     Route::prefix('report')->group(function () {
@@ -75,9 +85,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}', [NewCaliperController::class, 'findPartChecked']);
         Route::post('/part/store', [NewCaliperController::class, 'storePart']);
     });
-
+    Route::get('/get/families', [FamilyController::class, 'getFamilies']);
     Route::get('/get/part/types', [PartTypesController::class, 'getTypes']);
-
+    Route::get('/get/components/types/{id}', [PartTypesController::class, 'getComponentsOfType']);
 
     Route::post('/caliper/print', [NewCaliperController::class, 'printCaliper']);
 

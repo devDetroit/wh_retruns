@@ -3,98 +3,60 @@
 namespace App\Http\Controllers;
 
 use App\Models\Component;
+use App\Models\Printer;
 use App\Models\ComponentType;
 use App\Models\Part;
 use App\Models\PartComponent;
 use App\Models\PartRecord;
 use App\Models\PartRecordDetails;
-use App\Models\Printer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class NewCaliperController extends Controller
 {
-    public function getPartsOfExistentPart($id)
-    {
-        $part = Part::with('components.component')->where('id_part', $id)->first();
-        return $part;
-    }
-
-    public function verifyPart($part)
-    {
-
-        $part = Part::where('part_num', $part)->with('parttype', 'family')->first();
-        if ($part) {
-            if ($part->id_part_type == 1) {
-
-                return [
-                    'type' => $part->parttype,
-                    'family' => $part->family,
-                    'part' => $part,
-                    'exists' => true
-                ];
-            } else {
-                return [
-                    'type' => $part->parttype,
-                    'family' => $part->family,
-                    'part' => $part,
-                    'exists' => true
-                ];
-            }
-        } else {
-            return ['state' => false, 'exists' => true,  'message' => 'Part not exists'];
-        }
-    }
 
     public function storeDetails(Request $request)
     {
+        return $request;
         $partrecord = PartRecord::create(
             [
                 'part' => $request->part['id_part'],
-                'serial_number' => $request->serial,
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s')
+                'serial_number' => $request->serial
             ]
         );
 
         foreach ($request->components as $component) {
-            if ($component['quantity'] > 0) {
-                PartRecordDetails::create(
-                    [
-                        'part_record_id' => $partrecord->id,
-                        'component' => $component['component']['part_num'],
-                        'quantity' => $component['quantity']
-                    ]
-                );
-            }
+            PartRecordDetails::create(
+                [
+                    'part_record_id' => $partrecord->id,
+                    'component' => $component['component']['id_component'],
+                    'component' => $component['quantity']
+                ]
+            );
         }
         return $partrecord;
     }
 
     public function store(Request $request)
     {
-        $partExists = Part::where('part_num', $request->part_number)->first();
-        if (!$partExists) {
 
-            $part = Part::create([
-                'id_part_type' => $request->type['id'],
-                'part_num' => $request->part_number,
-                'id_family' => $request->family['id']
+        $part = Part::create([
+            'id_part_type' => $request->type['id'],
+            'part_num' => $request->part_number,
+            'id_family' => $request->family['id']
+        ]);
+
+        foreach ($request->components as $component) {
+            PartComponent::create([
+                'id_part' => $part->id_part,
+                'id_component' => $component['component']['id_component'],
+                'quantity' => $component['quantity']
             ]);
-            if ($part->id_part_type != 2) {
-                foreach ($request->components as $component) {
-                    PartComponent::create([
-                        'id_part' => $part->id_part,
-                        'id_component' => $component['component']['id_component'],
-                        'quantity' => $component['quantity']
-                    ]);
-                }
-            }
-
-            return $part;
-        } else {
-            return $partExists;
         }
+
+        return $part;
     }
+
     function lastRecords()
     {
 
@@ -136,6 +98,8 @@ class NewCaliperController extends Controller
         return  $prt;
     }
 
+
+
     public function print(Request $request)
     {
         try {
@@ -158,9 +122,9 @@ class NewCaliperController extends Controller
             
             
             //Data
-            ^CF0,15
+            ^CF0,17
             ^FO300,30^GB2,40,3^FS // Tercera linea V
-            ^FO5,80^FD' . $request->serial . '^FS // 1,1
+            ^FO5,80^FD' . $request->serial['serial_number'] . '^FS // 1,1
             ^FO185,80^FD' . $request->part['part_num'] . '^FS // 1,2
             ^FO500,30^GB2,40,3^FS // Cuarta linea V
             ^FO600,30^GB2,40,3^FS // Quinta linea V
@@ -179,35 +143,33 @@ class NewCaliperController extends Controller
             $bottom = 60;
             foreach ($request->components as $component) {
 
-                if ($component['quantity'] > 0) {
-                    $data = $data .
-                        '^FO310,' . $top . '^FD' . $component['component']['part_num'] . '^FS // 1,3
+                $data = $data .
+                    '^FO310,' . $top . '^FD' . $component['component']['part_num'] . '^FS // 1,3
                     ^FO525,' . $top . '^FD' . $component['quantity'] . '^FS //1,4 
                     ^FO300,' . $middle . '^GB300,0,3^FS // Segunda linea H
                     ^FO600,' . $bottom . '^GB2,40,3^FS // Quinta linea V
                     ^FO500,' . $bottom . '^GB2,40,3^FS // Quinta linea V
                     ^FO300,' . $bottom . '^GB2,40,3^FS // Tercera linea V';
 
-                    $top += 30;
-                    $middle += 30;
-                    $bottom += 30;
-                }
+                $top += 30;
+                $middle += 30;
+                $bottom += 30;
             }
 
             //Barcode
-            $length = strlen($request->part['part_num']);
+            $length = strlen($request->caliper['part_num']);
             if ($length >= 10) {
                 $size = 0;
             } else {
                 $size = 25;
             }
             $data = $data . '^BY2,3,100
-            ^FO75,450^BC^FD' . $request->serial . '^FS
+            ^FO75,450^BC^FD' . $request->serial['serial_number'] . '^FS
             ^BY2,3,100
-            ^FO' . $size . ',200^BC^FD' . $request->part['part_num'] . '^FS
+            ^FO' . $size . ',200^BC^FD' . $request->caliper['part_num'] . '^FS
             ^XZ
                         ';
-            $conn = fsockopen($printer[0]->printer, 9100, $errno, $errstr);
+            $conn = fsockopen(/* $printer[0]->printer */'192.168.80.19', 9100, $errno, $errstr);
             fputs($conn, $data, strlen($data));
             fclose($conn);
             $returnValue = 1;
@@ -223,6 +185,9 @@ class NewCaliperController extends Controller
     }
 
 
+
+
+
     function printCaliper(Request $request)
     {
         if (!$request->has("caliper.parttype"))
@@ -230,7 +195,7 @@ class NewCaliperController extends Controller
 
         $returnValue = 0;
         try {
-            $printer = $this->getPrinter();
+
             $tmpArr = explode(".", request()->getClientIp());
             array_pop($tmpArr);
             $tmpArr = implode(".", $tmpArr);
@@ -247,6 +212,7 @@ class NewCaliperController extends Controller
             ]);
             $message = '';
             $returnValue = 0;
+
             $data = ' 
             ^XA
 
@@ -305,13 +271,19 @@ class NewCaliperController extends Controller
             }
 
             //Barcode
+            $length = strlen($request->caliper['part_num']);
+            if ($length >= 10) {
+                $size = 0;
+            } else {
+                $size = 25;
+            }
             $data = $data . '^BY2,3,100
             ^FO75,450^BC^FD' . $prefix . $prefijo . '^FS
             ^BY2,3,100
-            ^FO25,200^BC^FD' . $request->caliper['part_num'] . '^FS
+            ^FO' . $size . ',200^BC^FD' . $request->caliper['part_num'] . '^FS
             ^XZ
                         ';
-            $conn = fsockopen($printer[0]->printer, 9100, $errno, $errstr);
+            $conn = fsockopen(/* $printer[0]->printer */'192.168.80.19', 9100, $errno, $errstr);
             fputs($conn, $data, strlen($data));
             fclose($conn);
             $returnValue = 1;
@@ -326,14 +298,11 @@ class NewCaliperController extends Controller
         ]);
     }
 
-    public function getPrinter()
-    {
-        return Printer::whereRelation('computer', 'computer_ip', request()->getClientIp())->get();
-    }
+
     public function index()
     {
         $print = new PrintLabelController;
-        return view('newcaliper.index', [
+        return view('newcaliper.pr', [
             "computer" => $print->getPrinter()
         ]);
     }
@@ -361,7 +330,6 @@ class NewCaliperController extends Controller
 
         return $prefix . $prefijo;
     }
-
 
     function findPart($id)
     {
@@ -393,17 +361,21 @@ class NewCaliperController extends Controller
         }
     }
 
-
+    public function getPrinter()
+    {
+        return Printer::whereRelation('computer', 'computer_ip', request()->getClientIp())->get();
+    }
 
     function indexAdd()
     {
+
         $typecomponent = ComponentType::with('components')->get();
-        return view('newcaliper.addCaliper', ['components' => $typecomponent]);
+        return view('newcaliper.addCaliper', compact('typecomponent'));
     }
 
-    function component($id, $type)
+    function component($id)
     {
-        $typecomponent = Component::where('belongs_to', $type)->get();
+        $typecomponent = Component::all();
         $caliper = Part::with('parttype', 'family', 'components.part', 'components.component', 'components.component.type')->where('part_num', $id)->first();
         if ($caliper) {
             return ['state' => true, 'components' => $typecomponent];

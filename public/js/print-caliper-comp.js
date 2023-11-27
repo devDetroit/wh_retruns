@@ -26,9 +26,20 @@ var app = new Vue({
     getWarehouse: function getWarehouse(warehouse) {
       this.warehouse = warehouse;
     },
+    disableButtons: function disableButtons() {
+      scanningInput.disabled = true;
+      cleanButton.disabled = true;
+      if (document.getElementById('printButton')) printButton.disabled = true;
+    },
+    enableButtons: function enableButtons() {
+      scanningInput.disabled = false;
+      cleanButton.disabled = false;
+      if (document.getElementById('printButton')) printButton.disabled = false;
+    },
     findCaliper: function findCaliper() {
       var _this = this;
 
+      this.disableButtons();
       var startWithFilter = ["43", "53", "50", "51"];
 
       if (this.fieldToSearch.trim().length <= 0) {
@@ -51,10 +62,13 @@ var app = new Vue({
 
           _this.generateCodeBar(response.data.serialnumber);
         }
+
+        instance.enableButtons();
       })["catch"](function (error) {
         sweetAlertAutoClose("error", "Error procesando la informacion");
         console.error(error);
         instance.clearFields();
+        instance.enableButtons();
       });
     },
     StoreFamily: function StoreFamily() {
@@ -97,17 +111,20 @@ var app = new Vue({
     printLabel: function printLabel() {
       var _this3 = this;
 
-      printButton.disabled = true;
       var instance = this;
+      instance.disableButtons();
       var url = "/caliper/print";
       var data = {
         caliper: this.caliper
       };
       axios.post(url, data).then(function () {
         _this3.clearFields();
+
+        instance.enableButtons();
       })["catch"](function (error) {
         toastr.warning("Error", "Ha ocurrido un error ");
         console.log(error);
+        instance.enableButtons();
       });
     },
     clearFields: function clearFields() {
