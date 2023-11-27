@@ -8,6 +8,7 @@ use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\CaliperController;
+use App\Http\Controllers\FamilyController;
 use App\Http\Controllers\NewCaliperController;
 use App\Http\Controllers\PartTypesController;
 use App\Http\Controllers\ReportController;
