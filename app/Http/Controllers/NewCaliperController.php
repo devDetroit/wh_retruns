@@ -303,12 +303,17 @@ class NewCaliperController extends Controller
                     $bottom += 30;
                 }
             }
-
+            $length = strlen($request->caliper['part_num']);
+            if ($length >= 8) {
+                $size = 0;
+            } else {
+                $size = 25;
+            }
             //Barcode
             $data = $data . '^BY2,3,100
             ^FO75,450^BC^FD' . $prefix . $prefijo . '^FS
             ^BY2,3,100
-            ^FO25,200^BC^FD' . $request->caliper['part_num'] . '^FS
+            ^FO' . $size . ',200^BC^FD' . $request->caliper['part_num'] . '^FS
             ^XZ
                         ';
             $conn = fsockopen($printer[0]->printer, 9100, $errno, $errstr);
