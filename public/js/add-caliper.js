@@ -27,6 +27,7 @@ const app = new Vue({
         familyStatus: false,
         partAlreadyExists: false,
         isRequired: true,
+        disablePrintButton: false,
     },
     components: {
         Multiselect: window.VueMultiselect.default,
@@ -50,6 +51,7 @@ const app = new Vue({
                 (this.partTypeStatus = false),
                 (this.familyStatus = false),
                 (this.partAlreadyExists = false);
+            this.disablePrintButton = false;
         },
         getPartsOfExistentPart: function (id) {
             var url = "/part/get/" + id;
@@ -121,34 +123,46 @@ const app = new Vue({
         printLabel: function printLabel() {
             var self = this; // Store the reference to 'this' in a variable
 
-            this.storePart().then(function (partSavedData) {
-                self.storePartDetails(partSavedData).then(function (
-                    partDetailed
-                ) {
-                    printButton.disabled = true;
-
-                    var url = "/part/print";
-                    var data = {
-                        part: partSavedData,
-                        serial: self.serial,
-                        type: self.typeSelected,
-                        family: self.familySelected,
-                        components: self.parts,
-                    };
-                    axios
-                        .post(url, data)
-                        .then(function () {
-                            self.resetAllVariables(); // Use 'self' to call resetAllVariables
-                            sweetAlertAutoClose(
-                                "success",
-                                "Etiqueta impresa exitosamente"
-                            );
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                });
+            const isQuantityNotInRange = self.parts.some((part) => {
+                return part.quantity < part.min || part.quantity > part.max;
             });
+
+            if (isQuantityNotInRange) {
+                sweetAlertAutoClose(
+                    "error",
+                    "There is at least one quantity value outside the specified range. Please verify."
+                );
+            } else {
+                this.generateSerial();
+                this.storePart().then(function (partSavedData) {
+                    self.storePartDetails(partSavedData).then(function (
+                        partDetailed
+                    ) {
+                        this.disablePrintButton = true;
+
+                        var url = "/part/print";
+                        var data = {
+                            part: partSavedData,
+                            serial: self.serial,
+                            type: self.typeSelected,
+                            family: self.familySelected,
+                            components: self.parts,
+                        };
+                        axios
+                            .post(url, data)
+                            .then(function () {
+                                self.resetAllVariables(); // Use 'self' to call resetAllVariables
+                                sweetAlertAutoClose(
+                                    "success",
+                                    "Etiqueta impresa exitosamente"
+                                );
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    });
+                });
+            }
         },
         generateCodeBar: function generateCodeBar(prefix) {
             this.serial = prefix;
