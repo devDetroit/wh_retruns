@@ -152,6 +152,7 @@
                             and
                             Store
                             Part</button>
+                        <button type="button" class="btn btn-danger" v-on:click="resetAllVariables">Reset</button>
                     </div>
                 </template>
             </div>

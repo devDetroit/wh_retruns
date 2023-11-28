@@ -122,7 +122,7 @@ const app = new Vue({
 
         printLabel: function printLabel() {
             var self = this; // Store the reference to 'this' in a variable
-
+            self.disablePrintButton = true;
             const isQuantityNotInRange = self.parts.some((part) => {
                 return part.quantity < part.min || part.quantity > part.max;
             });
@@ -138,8 +138,6 @@ const app = new Vue({
                     self.storePartDetails(partSavedData).then(function (
                         partDetailed
                     ) {
-                        this.disablePrintButton = true;
-
                         var url = "/part/print";
                         var data = {
                             part: partSavedData,
@@ -151,11 +149,12 @@ const app = new Vue({
                         axios
                             .post(url, data)
                             .then(function () {
-                                self.resetAllVariables(); // Use 'self' to call resetAllVariables
+                                /*   self.resetAllVariables();  */ // Use 'self' to call resetAllVariables
                                 sweetAlertAutoClose(
                                     "success",
                                     "Etiqueta impresa exitosamente"
                                 );
+                                self.disablePrintButton = false;
                             })
                             .catch(function (error) {
                                 console.log(error);
