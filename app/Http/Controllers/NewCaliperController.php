@@ -57,14 +57,16 @@ class NewCaliperController extends Controller
         );
 
         foreach ($request->components as $component) {
-            if ($component['quantity'] > 0) {
-                PartRecordDetails::create(
-                    [
-                        'part_record_id' => $partrecord->id,
-                        'component' => $component['component']['part_num'],
-                        'quantity' => $component['quantity']
-                    ]
-                );
+            if ($component['component'] != null) {
+                if ($component['quantity'] > 0) {
+                    PartRecordDetails::create(
+                        [
+                            'part_record_id' => $partrecord->id,
+                            'component' => $component['component']['part_num'],
+                            'quantity' => $component['quantity']
+                        ]
+                    );
+                }
             }
         }
         return $partrecord;
@@ -178,19 +180,20 @@ class NewCaliperController extends Controller
             $middle = 100;
             $bottom = 60;
             foreach ($request->components as $component) {
-
-                if ($component['quantity'] > 0) {
-                    $data = $data .
-                        '^FO310,' . $top . '^FD' . $component['component']['part_num'] . '^FS // 1,3
+                if ($component['component'] != null) {
+                    if ($component['quantity'] > 0) {
+                        $data = $data .
+                            '^FO310,' . $top . '^FD' . $component['component']['part_num'] . '^FS // 1,3
                     ^FO525,' . $top . '^FD' . $component['quantity'] . '^FS //1,4 
                     ^FO300,' . $middle . '^GB300,0,3^FS // Segunda linea H
                     ^FO600,' . $bottom . '^GB2,40,3^FS // Quinta linea V
                     ^FO500,' . $bottom . '^GB2,40,3^FS // Quinta linea V
                     ^FO300,' . $bottom . '^GB2,40,3^FS // Tercera linea V';
 
-                    $top += 30;
-                    $middle += 30;
-                    $bottom += 30;
+                        $top += 30;
+                        $middle += 30;
+                        $bottom += 30;
+                    }
                 }
             }
 

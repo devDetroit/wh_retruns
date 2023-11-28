@@ -69,10 +69,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/get/last', [NewCaliperController::class, 'lastRecords']);
         Route::get('/get/{id}', [NewCaliperController::class, 'getPartsOfExistentPart']);
     });
-    Route::controller(cvAxleController::class)->group(function () {
-        Route::get('cvaxle/print', 'index');
-        Route::post('orders', 'store');
-    });
 
     Route::prefix('report')->group(function () {
         Route::get('/', [ReportController::class, 'index'])->name('report.part');
