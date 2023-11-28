@@ -22,7 +22,7 @@ class PartTypesController extends Controller
             $components = Component::where('belongs_to', $id)->get();
             $data1 = [
                 'component' => null,
-                'quantity' => 1,
+                'quantity' => 0,
                 'components' => $components,
                 'disableComponent' => false,
                 'disableQuantity' => true,

@@ -54,107 +54,109 @@
             </div>
         </div>
         <br><br>
-        <form method="POST" v-on:submit.prevent="printLabel(2)">
-            <div class="container">
-                <div v-if="components || parts" class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <strong>Components</strong>
-                        <div>
-                            <template v-if="typeSelected">
-                                <template v-if="typeSelected.id == 1">
-                                    <button class="btn btn-primary" @click="addComponent">Add new component</button>
-                                </template>
-                            </template>
-                        </div>
-                    </div>
 
-                    <div class="card-body">
+        <div class="container">
+            <div v-if="components || parts" class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <strong>Components</strong>
+                    <div>
                         <template v-if="typeSelected">
                             <template v-if="typeSelected.id == 1">
-                                <template v-if="parts.length > 0">
-                                    <template v-for="part in parts">
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <multiselect v-model="part.component"
-                                                    placeholder="Seleccionar componente .." label="part_num" track-by="id"
-                                                    :options="components" :multiple="false" :taggable="false"
-                                                    selected-label="{!! trans('Seleccionado') !!}"
-                                                    deselect-label="{!! trans('Quitar') !!}" open-direction="bottom">
-                                                </multiselect>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <input type="number" class="form-control" v-model="part.quantity">
-                                            </div>
+                                <button class="btn btn-primary" @click="addComponent">Add new component</button>
+                            </template>
+                        </template>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <template v-if="typeSelected">
+                        <template v-if="typeSelected.id == 1">
+                            <template v-if="parts.length > 0">
+                                <template v-for="part in parts">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <multiselect v-model="part.component" placeholder="Seleccionar componente .."
+                                                label="part_num" track-by="id" :options="components"
+                                                :multiple="false" :taggable="false"
+                                                selected-label="{!! trans('Seleccionado') !!}"
+                                                deselect-label="{!! trans('Quitar') !!}" open-direction="bottom">
+                                            </multiselect>
                                         </div>
-                                        <hr>
-                                        <br>
-                                    </template>
+                                        <div class="col-md-4">
+                                            <input type="number" class="form-control" v-model="part.quantity">
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <br>
                                 </template>
                             </template>
-                            <template v-else-if="typeSelected.id == 2">
-                                <template v-if="parts.length > 0">
-                                    <template v-for="part in parts">
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <multiselect v-model="part.component"
-                                                    placeholder="Seleccionar componente .." label="part_num" track-by="id"
-                                                    :options="part.components" :multiple="false"
-                                                    :taggable="false" selected-label="{!! trans('Seleccionado') !!}"
-                                                    deselect-label="{!! trans('Quitar') !!}" open-direction="bottom"
-                                                    :disabled="part.disableComponent" :required="isRequired">
-                                                </multiselect>
-                                            </div>
+                        </template>
+                        <template v-else-if="typeSelected.id == 2">
+                            <template v-if="parts.length > 0">
+                                <template v-for="part in parts">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <multiselect v-model="part.component" placeholder="Seleccionar componente .."
+                                                label="part_num" track-by="id" :options="part.components"
+                                                :multiple="false" :taggable="false"
+                                                selected-label="{!! trans('Seleccionado') !!}"
+                                                deselect-label="{!! trans('Quitar') !!}" open-direction="bottom"
+                                                :disabled="part.disableComponent" :required="isRequired">
+                                            </multiselect>
+                                        </div>
+                                        <template v-if="part.component != null">
                                             <div class="col-md-4">
                                                 <input type="number" class="form-control" v-model="part.quantity"
                                                     :min="part.min" :max="part.max">
                                             </div>
-                                        </div>
-                                        <hr>
-                                        <br>
-                                    </template>
+                                        </template>
+                                    </div>
+                                    <hr>
+                                    <br>
                                 </template>
                             </template>
-
                         </template>
 
+                    </template>
 
-                        <div v-if="parts.length > 1">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <strong>Actions</strong>
-                                <div>
 
-                                    <div v-if="typeSelected.id == 2 || partAlreadyExists">
-                                        <button class="btn btn-info" @click="generateSerial">Visualize label</button>
-                                    </div>
-                                    <div v-else>
-                                        <button class="btn btn-success" @click="storePart(1)">Save Part</button>
-                                    </div>
+                    <div v-if="parts.length > 1">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <strong>Actions</strong>
+                            <div>
+                                <div v-if="typeSelected.id == 2 || partAlreadyExists">
+                                    <button class="btn btn-info" @click="generateSerial">Visualize label</button>
+                                </div>
+                                <div v-else>
+                                    <button class="btn btn-success" @click="storePart(1)">Save Part</button>
                                 </div>
                             </div>
-
                         </div>
+
                     </div>
                 </div>
-                <br>
             </div>
-            <div class="container">
-                <div class="card">
-                    <div class="card-header"><strong>Vista previa etiqueta</strong></div>
-                    <div class="card-body  text-center">
-                        <h4 v-if="serial">@{{ serial }} </h4>
-                        <svg id="barcode"></svg>
-                    </div>
+            <br>
+        </div>
+        <div class="container">
+            <div class="card">
+                <div class="card-header"><strong>Vista previa etiqueta</strong></div>
+                <div class="card-body  text-center">
+                    <h4 v-if="serial">@{{ serial }} </h4>
+                    <svg id="barcode"></svg>
+                </div>
+                <template v-if="serial">
                     <div class="card-footer text-end">
-                        {{-- <button type="button" id="printButton" class="btn btn-primary" v-on:click="printLabel(2)">Print
+                        <button type="button" :disabled="disablePrintButton" class="btn btn-primary"
+                            v-on:click="printLabel(2)">Print
                             and
                             Store
-                            Part</button> --}}
-                        <button v-if="serial" id="printButton" type="submit" class="btn btn-primary">Print and Store
                             Part</button>
                     </div>
-                </div>
+                </template>
             </div>
-        </form>
+        </div>
+
         <br>
     </div>
     </div>

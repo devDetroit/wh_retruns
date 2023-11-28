@@ -142,18 +142,21 @@ class NewCaliperController extends Controller
             $middle = 100;
             $bottom = 60;
             foreach ($request->components as $component) {
+                if ($component['component'] != null) {
+                    if ($component['quantity'] > 0) {
+                        $data = $data .
+                            '^FO310,' . $top . '^FD' . $component['component']['part_num'] . '^FS // 1,3
+                        ^FO525,' . $top . '^FD' . $component['quantity'] . '^FS //1,4 
+                        ^FO300,' . $middle . '^GB300,0,3^FS // Segunda linea H
+                        ^FO600,' . $bottom . '^GB2,40,3^FS // Quinta linea V
+                        ^FO500,' . $bottom . '^GB2,40,3^FS // Quinta linea V
+                        ^FO300,' . $bottom . '^GB2,40,3^FS // Tercera linea V';
 
-                $data = $data .
-                    '^FO310,' . $top . '^FD' . $component['component']['part_num'] . '^FS // 1,3
-                    ^FO525,' . $top . '^FD' . $component['quantity'] . '^FS //1,4 
-                    ^FO300,' . $middle . '^GB300,0,3^FS // Segunda linea H
-                    ^FO600,' . $bottom . '^GB2,40,3^FS // Quinta linea V
-                    ^FO500,' . $bottom . '^GB2,40,3^FS // Quinta linea V
-                    ^FO300,' . $bottom . '^GB2,40,3^FS // Tercera linea V';
-
-                $top += 30;
-                $middle += 30;
-                $bottom += 30;
+                        $top += 30;
+                        $middle += 30;
+                        $bottom += 30;
+                    }
+                }
             }
 
             //Barcode
@@ -215,7 +218,6 @@ class NewCaliperController extends Controller
 
             $data = ' 
             ^XA
-
             ^CF0,30 //Tamaño de letra
             ^FO0,30^GB600,2,3^FS //Primera primera linea h
             ^FO0,70^GB600,2,3^FS     // Primera linea H
@@ -302,7 +304,7 @@ class NewCaliperController extends Controller
     public function index()
     {
         $print = new PrintLabelController;
-        return view('newcaliper.pr', [
+        return view('newcaliper.print', [
             "computer" => $print->getPrinter()
         ]);
     }
