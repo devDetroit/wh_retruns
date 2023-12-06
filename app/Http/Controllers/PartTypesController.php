@@ -51,7 +51,7 @@ class PartTypesController extends Controller
             $nut = [
                 'component' => null,
                 'quantity' => 1,
-                'components' => Component::whereIn('id_component', [1371, 1372, 1373, 1374])->get(),
+                'components' => Component::where('belongs_to', 3)->get(),
                 'disableComponent' => false,
                 'disableQuantity' => true,
                 'min' => 0,
